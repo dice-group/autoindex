@@ -9,15 +9,8 @@ import com.hp.hpl.jena.query.ResultSetFormatter;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 
-public class InputSparql {
-	public static void main(String[] args) {
-		// ParameterizedSparqlString qs = new ParameterizedSparqlString( "" +
-		// "PREFIX : <http://dbpedia.org/resource/>\n" +
-		// "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
-		// "\n" +
-		// "select ?s WHERE {\n" +
-		// " ?s rdfs:label \"Rock\" @en\n" +
-		// "}" );
+public class GetClass {
+	public static ResultSet getallclasses() {
 		ParameterizedSparqlString sparql_query = new ParameterizedSparqlString(
 				"PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 						+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
@@ -32,26 +25,27 @@ public class InputSparql {
 						+ "PREFIX type: <http://dbpedia.org/class/yago/>\n"
 						+ "PREFIX prop: <http://dbpedia.org/property/>\n"
 						// + "" + "\n"
-						+ "SELECT ?country_name ?population\n" + "WHERE {\n"
-						+ " ?country a type:LandlockedCountries ;\n" + " rdfs:label ?country_name ;\n"
-						+ " prop:populationEstimate ?population .\n" + "FILTER (?population > 15000000) .\n}");
 
-		// Literal london = ResourceFactory.createLangLiteral( "London", "en" );
-		// qs.setParam( "label", london );
+						+ "SELECT DISTINCT ?type ?label\n" + "WHERE {\n" + "?type a owl:Class .\n"
+						+ "?type rdfs:label ?label .\n" + "}\n");
+
 		String ontology_service = "http://dbpedia.org/sparql";
 		String endpoint = "DBpedia";
 		System.out.println(sparql_query);
 
 		QueryExecution exec = QueryExecutionFactory.sparqlService(ontology_service, sparql_query.asQuery());
 
-		// Normally you'd just do results = exec.execSelect(), but I want to
-		// use this ResultSet twice, so I'm making a copy of it.
 		ResultSet results = ResultSetFactory.copyResults(exec.execSelect());
 
-		
+		return results;
+	}
 
-		// A simpler way of printing the results.
+	// System.out.println(results.next().get("resource"));
+	public static void main(String[] args) {
+
+		ResultSet results = getallclasses();
+
 		ResultSetFormatter.out(results);
-		// System.out.println(results.next().get("resource"));
+
 	}
 }
