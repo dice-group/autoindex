@@ -13,14 +13,14 @@ public class GetInstance {
 
 	public static void main(String[] args) {
 
-		ResultSet results = getallinstances();
+		ResultSet results = getallinstances("http://dbpedia.org/sparql");
 		// A simpler way of printing the results.
 		ResultSetFormatter.out(results);
 		// System.out.println(results.next().get("resource"));
 
 	}
 
-	public static ResultSet getallinstances() {
+	public static ResultSet getallinstances(String endpoint_service) {
 		ParameterizedSparqlString sparql_query = new ParameterizedSparqlString(
 				"PREFIX owl: <http://www.w3.org/2002/07/owl#>\n" + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
 						+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
@@ -34,15 +34,20 @@ public class GetInstance {
 						+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 						+ "PREFIX type: <http://dbpedia.org/class/yago/>\n"
 						+ "PREFIX prop: <http://dbpedia.org/property/>\n"
+						+ "PREFIX vrank:<http://purl.org/voc/vrank#>\n"
+						+ "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+						+ "PREFIX dbo:<http://dbpedia.org/ontology/>\n"
+
 						// + "" + "\n"
 
-						+ "SELECT ?class ?instance\n" + "WHERE {\n" + "?instance rdf:type ?class\n" + "}\n");
+						+ "SELECT ?instance ?v  \n" + "FROM <http://dbpedia.org>  \n"
+						+ "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank> \n" + "WHERE {\n"
+						+ "?instance vrank:hasRank/vrank:rankValue ?v. \n" + "}\n");
 
-		String ontology_service = "http://dbpedia.org/sparql";
 		String endpoint = "DBpedia";
 		System.out.println(sparql_query);
 
-		QueryExecution exec = QueryExecutionFactory.sparqlService(ontology_service, sparql_query.asQuery());
+		QueryExecution exec = QueryExecutionFactory.sparqlService(endpoint_service, sparql_query.asQuery());
 
 		ResultSet results = ResultSetFactory.copyResults(exec.execSelect());
 

@@ -24,10 +24,12 @@ public class GetClass {
 						+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 						+ "PREFIX type: <http://dbpedia.org/class/yago/>\n"
 						+ "PREFIX prop: <http://dbpedia.org/property/>\n"
+						+ "PREFIX vrank:<http://purl.org/voc/vrank#>\n"
+						
 						// + "" + "\n"
 
-						+ "SELECT DISTINCT ?type ?label\n" + "WHERE {\n" + "?type a owl:Class .\n"
-						+ "?type rdfs:label ?label .\n" + "}\n");
+						+ "SELECT DISTINCT ?type ?label ?v \n" + "WHERE {\n" + "?type a owl:Class .\n"
+						+ "?type rdfs:label ?label .\n?type vrank:hasRank/vrank:rankValue ?v. \n" + "}\n");
 
 		String ontology_service = "http://dbpedia.org/sparql";
 		String endpoint = "DBpedia";

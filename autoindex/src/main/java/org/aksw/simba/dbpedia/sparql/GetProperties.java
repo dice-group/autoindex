@@ -16,6 +16,7 @@ public class GetProperties {
 		ResultSet results = getallproperties();
 		// A simpler way of printing the results.
 		ResultSetFormatter.out(results);
+		
 		// System.out.println(results.next().get("resource"));
 
 	}
@@ -34,11 +35,15 @@ public class GetProperties {
 						+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 						+ "PREFIX type: <http://dbpedia.org/class/yago/>\n"
 						+ "PREFIX prop: <http://dbpedia.org/property/>\n"
+						+ "PREFIX vrank:<http://purl.org/voc/vrank#>\n"
+
 						// + "" + "\n"
+						
+								
 
-						+ "SELECT DISTINCT ?pred ?label\n" + "WHERE {\n" + "?pred a rdf:Property;\n" + "rdfs:label ?label . \n" +"}\n");
+						+ "SELECT DISTINCT ?pred ?label\n" + "WHERE {\n" + "?pred a rdf:Property;\n" +"rdfs:label ?label.\n"
+						 + "}\n");
 
-	
 		String ontology_service = "http://dbpedia.org/sparql";
 		String endpoint = "DBpedia";
 		System.out.println(sparql_query);
