@@ -1,45 +1,44 @@
 package org.aksw.simba.dbpedia.indexcreation;
 
-
 public class Triple {
-	public Triple(String subject, String predicate, String object) {
-		super();
-		this.subject = subject;
-		this.predicate = predicate;
-		this.object = object;
+	public Triple(String uri, String label, String object) {
+
+		this.uri = uri;
+		this.label = label;
+		this.pagerank = object;
 	}
 
-	String subject;
-	String predicate;
-	String object;
+	String uri;
+	String label;
+	String pagerank;
 
 	public String getSubject() {
-		return subject;
+		return uri;
 	}
 
 	public void setSubject(String subject) {
-		this.subject = subject;
+		this.uri = subject;
 	}
 
 	public String getPredicate() {
-		return predicate;
+		return label;
 	}
 
 	public void setPredicate(String predicate) {
-		this.predicate = predicate;
+		this.label = predicate;
 	}
 
 	public String getObject() {
-		return object;
+		return pagerank;
 	}
 
 	public void setObject(String object) {
-		this.object = object;
+		this.pagerank = object;
 	}
 
 	@Override
 	public String toString() {
-		return subject + " " + predicate + " " + object;
+		return uri + " " + label + " " + pagerank;
 	}
 
 }

@@ -16,7 +16,7 @@ public class GetProperties {
 		ResultSet results = getallproperties();
 		// A simpler way of printing the results.
 		ResultSetFormatter.out(results);
-		
+
 		// System.out.println(results.next().get("resource"));
 
 	}
@@ -38,11 +38,9 @@ public class GetProperties {
 						+ "PREFIX vrank:<http://purl.org/voc/vrank#>\n"
 
 						// + "" + "\n"
-						
-								
 
-						+ "SELECT DISTINCT ?pred ?label\n" + "WHERE {\n" + "?pred a rdf:Property;\n" +"rdfs:label ?label.\n"
-						 + "}\n");
+						+ "SELECT DISTINCT ?pred ?label\n" + "WHERE {\n" + "?pred a rdf:Property;\n"
+						+ "rdfs:label ?label.\n" + "}\n");
 
 		String ontology_service = "http://dbpedia.org/sparql";
 		String endpoint = "DBpedia";

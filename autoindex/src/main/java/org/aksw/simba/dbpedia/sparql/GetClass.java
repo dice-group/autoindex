@@ -3,10 +3,12 @@ package org.aksw.simba.dbpedia.sparql;
 import com.hp.hpl.jena.query.ParameterizedSparqlString;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFactory;
 import com.hp.hpl.jena.query.ResultSetFormatter;
 import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 
 public class GetClass {
@@ -25,7 +27,7 @@ public class GetClass {
 						+ "PREFIX type: <http://dbpedia.org/class/yago/>\n"
 						+ "PREFIX prop: <http://dbpedia.org/property/>\n"
 						+ "PREFIX vrank:<http://purl.org/voc/vrank#>\n"
-						
+
 						// + "" + "\n"
 
 						+ "SELECT DISTINCT ?type ?label ?v \n" + "WHERE {\n" + "?type a owl:Class .\n"
@@ -46,8 +48,20 @@ public class GetClass {
 	public static void main(String[] args) {
 
 		ResultSet results = getallclasses();
+		while (results.hasNext()) {
+			QuerySolution qs = results.next();
+			String url = qs.getResource("type").getURI();
+			String label = qs.getLiteral("label").getString();
+			String pagerank = qs.getLiteral("v").getString();
+			
+			System.out.println(url + "  --------");
+			System.out.print(label + "  --------");
 
-		ResultSetFormatter.out(results);
+			System.out.println(pagerank);
+			System.out.println("_____________________________________________");
+
+		}
+		// ResultSetFormatter.out(results);
 
 	}
 }
