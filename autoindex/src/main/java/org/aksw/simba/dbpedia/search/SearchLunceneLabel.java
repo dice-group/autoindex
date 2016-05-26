@@ -23,7 +23,7 @@ import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
-import org.apache.lucene.search.SortedNumericSortField;
+import org.apache.lucene.search.;
 import com.google.gson.Gson;
 
 public class SearchLunceneLabel
@@ -71,6 +71,9 @@ public DirectoryReader readerFromIndex(NIOFSDirectory dir) {
 			res.add(result);
 		}
 		return res;
+	}
+	public static void main(String[] args) {
+		
 	}
 
 }

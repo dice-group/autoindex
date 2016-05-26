@@ -37,8 +37,8 @@ public class GetProperties {
 
 						// + "" + "\n"
 
-						+ "SELECT DISTINCT ?pred ?label\n" + "WHERE {\n" + "?pred a rdf:Property;\n"
-						+ "rdfs:label ?label.\n" + "}\n");
+						+ "SELECT DISTINCT ?pred ?label (COUNT(*)AS ?frequency)\n" + "WHERE {\n" + "?pred a rdf:Property;\n"
+						+ "rdfs:label ?label.\n" + "}\n GROUP BY ?pred ?label \n ORDER BY DESC(?frequency)");
 
 		String ontology_service = "http://dbpedia.org/sparql";
 		String endpoint = "DBpedia";
