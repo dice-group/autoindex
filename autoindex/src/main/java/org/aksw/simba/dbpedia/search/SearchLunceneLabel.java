@@ -57,13 +57,15 @@ public DirectoryReader readerFromIndex(NIOFSDirectory dir) throws IOException {
 		return query;
 	}
 
-	public List<Result> search(IndexSearcher searcher, String queryString, Integer limit) {
+	public List<Result> search(IndexSearcher searcher, String queryString, Integer limit) throws IOException {
 		if (limit == 0)
 			limit = 10;
 		BooleanQuery query = queryFromString(queryString);
+		
 		int hitsPerPage = limit * TIMES_MORE_RESULTS;
-		Sort sort = Sort(SortField.FIELD_SCORE, SortedNumericSortField("pagerank_sort", SortField.Type.FLOAT, true));
+		Sort sort = new Sort(SortField.FIELD_SCORE, new SortedNumericSortField("pagerank_sort", SortField.Type.FLOAT, true));
 		TopFieldDocs hits = searcher.search(query, hitsPerPage, sort);
+	
 
 		List<Result> res = new ArrayList<Result>();
 
