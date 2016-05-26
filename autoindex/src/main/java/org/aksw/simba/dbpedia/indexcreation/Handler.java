@@ -4,7 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
+import org.aksw.simba.dbpedia.indexcreation.IndexCreator;
 import org.aksw.simba.dbpedia.sparql.GetClass;
 import org.aksw.simba.dbpedia.sparql.GetInstance;
 import org.aksw.simba.dbpedia.sparql.GetProperties;
