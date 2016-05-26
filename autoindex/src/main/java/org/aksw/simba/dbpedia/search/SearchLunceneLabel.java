@@ -6,18 +6,22 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Handler;
 import java.net.URLDecoder;
 import org.apache.lucene.util.Version;
-
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.NIOFSDirectory;
+import org.apache.lucene.store.Directory;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexableField;
 import org.apache.lucene.index.Term;
+
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.TopFieldDocs;
 import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.ScoreDoc;
@@ -28,12 +32,10 @@ import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.SortedNumericSortField;
 import com.google.gson.Gson;
 
-public class SearchLunceneLabel
-{
-final static int TIMES_MORE_RESULTS = 10;
+public class SearchLunceneLabel {
+	final static int TIMES_MORE_RESULTS = 10;
 
-
-public DirectoryReader readerFromIndex(NIOFSDirectory dir) throws IOException {
+	public DirectoryReader readerFromIndex(NIOFSDirectory dir) throws IOException {
 		return DirectoryReader.open(dir);
 	}
 
@@ -61,23 +63,44 @@ public DirectoryReader readerFromIndex(NIOFSDirectory dir) throws IOException {
 		if (limit == 0)
 			limit = 10;
 		BooleanQuery query = queryFromString(queryString);
-		
+
 		int hitsPerPage = limit * TIMES_MORE_RESULTS;
-		Sort sort = new Sort(SortField.FIELD_SCORE, new SortedNumericSortField("pagerank_sort", SortField.Type.FLOAT, true));
+		Sort sort = new Sort(SortField.FIELD_SCORE,
+				new SortedNumericSortField("pagerank_sort", SortField.Type.FLOAT, true));
 		TopFieldDocs hits = searcher.search(query, hitsPerPage, sort);
-	
 
 		List<Result> res = new ArrayList<Result>();
 
 		for (ScoreDoc scoreDoc : hits.scoreDocs) {
 			Document doc = searcher.doc(scoreDoc.doc);
-			Result result = new Result (doc.get("url"), doc.get("label"), Double.parseDouble(doc.get("pagerank")));
+			Result result = new Result(doc.get("url"), doc.get("label"), Double.parseDouble(doc.get("pagerank")));
 			res.add(result);
 		}
 		return res;
 	}
-	public static void main(String[] args) {
-		
+
+	public static void main(String[] args) throws IOException {
+		String indexDir = "src/main/java/indexdbpedia_en";
+
+		@SuppressWarnings("deprecation")
+		IndexReader reader = IndexReader.open(NIOFSDirectory.open(new File(indexDir)));
+		IndexSearcher searcher = new IndexSearcher(reader);
+		SearchLunceneLabel tester;
+		try {
+			tester = new SearchLunceneLabel();
+			org.aksw.simba.dbpedia.indexcreation.Handler.generateIndexforClass();
+
+			List<Result> res = tester.search(searcher, "ffilm", 0);
+			for (Result re : res) {
+				System.out.println("URI : " + re.getUrl());
+				System.out.println("Label" + re.getLabel());
+				System.out.println("Pagerank : " + re.getPagerank());
+
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }

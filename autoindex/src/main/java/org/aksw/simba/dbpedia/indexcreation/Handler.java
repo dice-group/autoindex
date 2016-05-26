@@ -16,13 +16,13 @@ import com.hp.hpl.jena.query.ResultSet;
 public class Handler {
 	private static Logger log = LoggerFactory.getLogger(Handler.class);
 
-	public static void main(String args[]) {
-		generateIndexforClass();
-		generateIndexforInstances();
-		generateIndexforProperties();
-	}
+//	public static void main(String args[]) {
+//		generateIndexforClass();
+////		generateIndexforInstances();
+////		generateIndexforProperties();
+//	}
 
-	public static void generateIndexforClass() {
+	public static  void generateIndexforClass() {
 		try {
 			Properties prop = new Properties();
 			InputStream input = new FileInputStream("src/main/java/properties/autoindex.properties");

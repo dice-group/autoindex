@@ -6,7 +6,7 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFactory;
-
+	
 public class GetClass {
 	public static ResultSet getallclasses() {
 		ParameterizedSparqlString sparql_query = new ParameterizedSparqlString(
