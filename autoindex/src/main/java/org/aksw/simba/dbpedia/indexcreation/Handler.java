@@ -25,7 +25,7 @@ public class Handler {
 	public static void generateIndexforClass() {
 		try {
 			Properties prop = new Properties();
-			InputStream input = new FileInputStream("src/main/java/autoindex.properties");
+			InputStream input = new FileInputStream("src/main/java/properties/autoindex.properties");
 			prop.load(input);
 
 			String index = prop.getProperty("index");
@@ -46,7 +46,7 @@ public class Handler {
 	public static void generateIndexforInstances() {
 		try {
 			Properties prop = new Properties();
-			InputStream input = new FileInputStream("src/main/java/autoindex.properties");
+			InputStream input = new FileInputStream("src/main/java/properties/autoindex.properties");
 			prop.load(input);
 
 			String index = prop.getProperty("index");
@@ -67,7 +67,7 @@ public class Handler {
 	public static void generateIndexforProperties() {
 		try {
 			Properties prop = new Properties();
-			InputStream input = new FileInputStream("src/main/java/autoindex.properties");
+			InputStream input = new FileInputStream("src/main/java/properties/autoindex.properties");
 			prop.load(input);
 
 			String index = prop.getProperty("index");
