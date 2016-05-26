@@ -1,6 +1,8 @@
 package org.aksw.simba.dbpedia.search;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +25,7 @@ import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
-import org.apache.lucene.search.;
+import org.apache.lucene.search.SortedNumericSortField;
 import com.google.gson.Gson;
 
 public class SearchLunceneLabel
@@ -31,11 +33,11 @@ public class SearchLunceneLabel
 final static int TIMES_MORE_RESULTS = 10;
 
 
-public DirectoryReader readerFromIndex(NIOFSDirectory dir) {
+public DirectoryReader readerFromIndex(NIOFSDirectory dir) throws IOException {
 		return DirectoryReader.open(dir);
 	}
 
-	public BooleanQuery queryFromString(String queryString) {
+	public BooleanQuery queryFromString(String queryString) throws UnsupportedEncodingException {
 		BooleanQuery query = new BooleanQuery();
 		PhraseQuery phraseQuery = new PhraseQuery();
 		String[] words = URLDecoder.decode(queryString, "UTF-8").toLowerCase().split(" ");
