@@ -8,17 +8,18 @@ import org.aksw.simba.dbpedia.indexcreation.IndexCreator;
 import org.aksw.simba.dbpedia.sparql.GetClass;
 import org.aksw.simba.dbpedia.sparql.GetInstance;
 import org.aksw.simba.dbpedia.sparql.GetProperties;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.query.ResultSet;
 
 public class Handler {
-	private static org.slf4j.Logger log = LoggerFactory.getLogger(Handler.class);
+	private static Logger log = LoggerFactory.getLogger(Handler.class);
 
 	public static void main(String args[]) {
 		generateIndexforClass();
 		generateIndexforInstances();
-//		generateIndexforProperties();
+		generateIndexforProperties();
 	}
 
 	public static void generateIndexforClass() {

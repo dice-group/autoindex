@@ -18,13 +18,14 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.MMapDirectory;
 import org.apache.lucene.util.Version;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 
 public class IndexCreator {
-	private static org.slf4j.Logger log = LoggerFactory.getLogger(IndexCreator.class);
+	private static Logger log = LoggerFactory.getLogger(IndexCreator.class);
 
 	public static final Version LUCENE_VERSION = Version.LUCENE_44;
 
