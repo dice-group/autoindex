@@ -1,10 +1,13 @@
 package org.aksw.simba.dbpedia.search;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.net.URLDecoder;
 import org.apache.lucene.store.NIOFSDirectory;
 import org.apache.lucene.document.Document;
@@ -76,10 +79,12 @@ public class SearchLuceneLabel {
 		Handler.generateIndexforClass();
 		
 		Handler.generateIndexforProperties();
-
-		String indexDir_class = "src/main/java/indexdbpedia_en_class";
-		String indexDir_instance = "src/main/java/indexdbpedia_en_instance ";
-		String indexDir_property = "src/main/java/indexdbpedia_en_property";
+		Properties prop = new Properties();
+		InputStream input = new FileInputStream("src/main/java/properties/autoindex.properties");
+		prop.load(input);
+		String indexDir_class = prop.getProperty("index_class");
+		String indexDir_instance = prop.getProperty("index_instance");
+		String indexDir_property = prop.getProperty("index_property");
 
 		@SuppressWarnings("deprecation")
 		IndexReader reader = IndexReader.open(NIOFSDirectory.open(new File(indexDir_instance)));
