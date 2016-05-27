@@ -24,7 +24,7 @@ import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.SortedNumericSortField;
 
-public class SearchLunceneLabel {
+public class SearchLuceneLabel {
 	final static int TIMES_MORE_RESULTS = 10;
 
 	public DirectoryReader readerFromIndex(NIOFSDirectory dir) throws IOException {
@@ -73,9 +73,9 @@ public class SearchLunceneLabel {
 
 	public static void main(String[] args) throws IOException {
 		Handler.generateIndexforInstances();
-//		Handler.generateIndexforClass();
+		Handler.generateIndexforClass();
 		
-//		Handler.generateIndexforProperties();
+		Handler.generateIndexforProperties();
 
 		String indexDir_class = "src/main/java/indexdbpedia_en_class";
 		String indexDir_instance = "src/main/java/indexdbpedia_en_instance ";
@@ -84,9 +84,9 @@ public class SearchLunceneLabel {
 		@SuppressWarnings("deprecation")
 		IndexReader reader = IndexReader.open(NIOFSDirectory.open(new File(indexDir_instance)));
 		IndexSearcher searcher = new IndexSearcher(reader);
-		SearchLunceneLabel tester;
+		SearchLuceneLabel tester;
 		try {
-			tester = new SearchLunceneLabel();
+			tester = new SearchLuceneLabel();
 
 			List<Result> res = tester.search(searcher, "The Texas Mile", 0);
 			for (Result re : res) {
