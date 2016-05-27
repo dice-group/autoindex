@@ -125,7 +125,7 @@
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.2.1</version>
 				<configuration>
-					<mainClass>org.aksw.simba.dbpedia.indexcreation.Handler</mainClass>
+					<mainClass>org.aksw.simba.dbpedia.search.SearchLuceneLabel</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
