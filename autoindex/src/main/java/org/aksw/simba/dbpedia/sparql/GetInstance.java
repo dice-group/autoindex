@@ -5,17 +5,18 @@ import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFactory;
+import com.hp.hpl.jena.query.ResultSetFormatter;
 
 public class GetInstance {
 
-	// public static void main(String[] args) {
-	//
-	// ResultSet results = getallinstances("");
-	// // A simpler way of printing the results.
-	// ResultSetFormatter.out(results);
-	// // System.out.println(results.next().get("resource"));
-	//
-	// }
+	 public static void main(String[] args) {
+	
+	 ResultSet results = getallinstances();
+	 // A simpler way of printing the results.
+	 ResultSetFormatter.out(results);
+	 // System.out.println(results.next().get("resource"));
+	
+	 }
 
 	public static ResultSet getallinstances() {
 		ParameterizedSparqlString sparql_query = new ParameterizedSparqlString(
@@ -37,11 +38,11 @@ public class GetInstance {
 
 						// + "" + "\n"
 
-						+ "SELECT ?instance ?label ?v  \n" + "FROM <http://dbpedia.org>  \n"
+						+ "SELECT ?type ?label ?v  \n" + "FROM <http://dbpedia.org>  \n"
 						+ "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank> \n" + "WHERE {\n"
-						+ "?instance a <http://www.w3.org/2002/07/owl#Thing> . \n"
-						+ " ?instance <http://www.w3.org/2000/01/rdf-schema#label> ?label .\n "
-						+ " ?instance vrank:hasRank/vrank:rankValue ?v .\n" + "}\n");
+						+ "?type a <http://www.w3.org/2002/07/owl#Thing> . \n"
+						+ " ?type <http://www.w3.org/2000/01/rdf-schema#label> ?label .\n "
+						+ " ?type vrank:hasRank/vrank:rankValue ?v .\n" + "}\n");
 
 		String endpoint = "DBpedia";
 		System.out.println(sparql_query);

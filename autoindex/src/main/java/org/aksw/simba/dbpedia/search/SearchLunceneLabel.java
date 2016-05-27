@@ -4,21 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Handler;
 import java.net.URLDecoder;
-import org.apache.lucene.util.Version;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.NIOFSDirectory;
-import org.apache.lucene.store.Directory;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexableField;
 import org.apache.lucene.index.Term;
-
+import org.aksw.simba.dbpedia.indexcreation.Handler;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.TermQuery;
@@ -30,7 +23,6 @@ import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.SortedNumericSortField;
-import com.google.gson.Gson;
 
 public class SearchLunceneLabel {
 	final static int TIMES_MORE_RESULTS = 10;
@@ -80,17 +72,23 @@ public class SearchLunceneLabel {
 	}
 
 	public static void main(String[] args) throws IOException {
-		String indexDir = "src/main/java/indexdbpedia_en";
+		Handler.generateIndexforInstances();
+//		Handler.generateIndexforClass();
+		
+//		Handler.generateIndexforProperties();
+
+		String indexDir_class = "src/main/java/indexdbpedia_en_class";
+		String indexDir_instance = "src/main/java/indexdbpedia_en_instance ";
+		String indexDir_property = "src/main/java/indexdbpedia_en_property";
 
 		@SuppressWarnings("deprecation")
-		IndexReader reader = IndexReader.open(NIOFSDirectory.open(new File(indexDir)));
+		IndexReader reader = IndexReader.open(NIOFSDirectory.open(new File(indexDir_instance)));
 		IndexSearcher searcher = new IndexSearcher(reader);
 		SearchLunceneLabel tester;
 		try {
 			tester = new SearchLunceneLabel();
-			org.aksw.simba.dbpedia.indexcreation.Handler.generateIndexforClass();
 
-			List<Result> res = tester.search(searcher, "ffilm", 0);
+			List<Result> res = tester.search(searcher, "The Texas Mile", 0);
 			for (Result re : res) {
 				System.out.println("URI : " + re.getUrl());
 				System.out.println("Label" + re.getLabel());

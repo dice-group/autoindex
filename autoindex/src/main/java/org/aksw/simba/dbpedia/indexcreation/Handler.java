@@ -28,7 +28,7 @@ public class Handler {
 			InputStream input = new FileInputStream("src/main/java/properties/autoindex.properties");
 			prop.load(input);
 
-			String index = prop.getProperty("index");
+			String index = prop.getProperty("index_class");
 			log.info("The index will be here: " + index);
 
 			String baseURI = prop.getProperty("baseURI");
@@ -49,7 +49,7 @@ public class Handler {
 			InputStream input = new FileInputStream("src/main/java/properties/autoindex.properties");
 			prop.load(input);
 
-			String index = prop.getProperty("index");
+			String index = prop.getProperty("index_instance");
 			log.info("The index will be here: " + index);
 
 			String baseURI = prop.getProperty("baseURI");
@@ -70,7 +70,7 @@ public class Handler {
 			InputStream input = new FileInputStream("src/main/java/properties/autoindex.properties");
 			prop.load(input);
 
-			String index = prop.getProperty("index");
+			String index = prop.getProperty("index_propoerty");
 			log.info("The index will be here: " + index);
 
 			String baseURI = prop.getProperty("baseURI");
