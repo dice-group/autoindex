@@ -1,15 +1,21 @@
 package org.aksw.simba.dbpedia.search;
 
 import java.io.File;
+import static spark.Spark.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.net.URLDecoder;
 import org.apache.lucene.store.NIOFSDirectory;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -77,7 +83,7 @@ public class SearchLuceneLabel {
 	public static void main(String[] args) throws IOException {
 		Handler.generateIndexforInstances();
 		Handler.generateIndexforClass();
-		
+
 		Handler.generateIndexforProperties();
 		Properties prop = new Properties();
 		InputStream input = new FileInputStream("src/main/java/properties/autoindex.properties");
@@ -93,13 +99,19 @@ public class SearchLuceneLabel {
 		try {
 			tester = new SearchLuceneLabel();
 
-			List<Result> res = tester.search(searcher, "The Texas Mile", 0);
-			for (Result re : res) {
-				System.out.println("URI : " + re.getUrl());
-				System.out.println("Label" + re.getLabel());
-				System.out.println("Pagerank : " + re.getPagerank());
+			List<Result> resultlist = tester.search(searcher, "The Texas Mile", 0);
+			Gson gson = new GsonBuilder().create();
+			
+			port(8181);
+			get("/search",  (req, res) ->  gson.toJson(resultlist));
+			
+//			 for (Result re : resultlist) {
+			// System.out.println("URI : " + re.getUrl());
+			// System.out.println("Label" + re.getLabel());
+			// System.out.println("Pagerank : " + re.getPagerank());
 
-			}
+				
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
