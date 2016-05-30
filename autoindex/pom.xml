@@ -6,6 +6,7 @@
 	<artifactId>autoindex</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
+	
 
 	<name>autoindex</name>
 	<url>http://maven.apache.org</url>
@@ -128,6 +129,17 @@
 					<mainClass>org.aksw.simba.dbpedia.search.SearchLuceneLabel</mainClass>
 				</configuration>
 			</plugin>
+			
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.5.1</version>
+			<configuration>
+				<source>1.8</source>
+				<target>1.8</target>
+			</configuration>
+		</plugin>
+
 		</plugins>
 	</build>
 </project>
