@@ -80,41 +80,79 @@ public class SearchLuceneLabel {
 		return res;
 	}
 
-	public static void main(String[] args) throws IOException {
-		Handler.generateIndexforInstances();
-		Handler.generateIndexforClass();
-
-		Handler.generateIndexforProperties();
+	public static List<Result>  getResut(String index, String term) throws IOException {
 		Properties prop = new Properties();
 		InputStream input = new FileInputStream("src/main/java/properties/autoindex.properties");
 		prop.load(input);
-		String indexDir_class = prop.getProperty("index_class");
-		String indexDir_instance = prop.getProperty("index_instance");
-		String indexDir_property = prop.getProperty("index_property");
+		IndexSearcher searcher = null;
+		
+		switch (index.toUpperCase()) {
+		case "CLASS": 
+		{
+			
+			String indexDir = prop.getProperty("index_class");
+			
+			@SuppressWarnings("deprecation")
+			IndexReader reader = IndexReader.open(NIOFSDirectory.open(new File(indexDir)));
+			searcher = new IndexSearcher(reader);
+			
 
-		@SuppressWarnings("deprecation")
-		IndexReader reader = IndexReader.open(NIOFSDirectory.open(new File(indexDir_instance)));
-		IndexSearcher searcher = new IndexSearcher(reader);
+			break;
+			}
+		case "INSTANCE":
+		
+		{
+			
+			String indexDir = prop.getProperty("index_instence");
+			
+			@SuppressWarnings("deprecation")
+			IndexReader reader = IndexReader.open(NIOFSDirectory.open(new File(indexDir)));
+			searcher = new IndexSearcher(reader);
+			break;}
+		case "PROPERTIES":
+		{
+			String indexDir = prop.getProperty("index_properties");
+			
+			@SuppressWarnings("deprecation")
+			IndexReader reader = IndexReader.open(NIOFSDirectory.open(new File(indexDir)));
+			searcher = new IndexSearcher(reader);
+			break;
+		}
+		default:
+			break;
+		}
+		
+		
 		SearchLuceneLabel tester;
+		List<Result> resultlist=null;
 		try {
 			tester = new SearchLuceneLabel();
 
-			List<Result> resultlist = tester.search(searcher, "The Texas Mile", 0);
-			Gson gson = new GsonBuilder().create();
+			 resultlist = tester.search(searcher, term, 0);
 			
-			port(8181);
-			get("/search",  (req, res) ->  gson.toJson(resultlist));
-			
-//			 for (Result re : resultlist) {
-			// System.out.println("URI : " + re.getUrl());
-			// System.out.println("Label" + re.getLabel());
-			// System.out.println("Pagerank : " + re.getPagerank());
 
-				
 			
+			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return resultlist;
+	}
+
+	public static void main(String[] args) throws IOException {
+		Handler.generateIndexforClass();
+		Handler.generateIndexforProperties();
+		Handler.generateIndexforInstances();
+		
+		port(8080);
+		Gson gson = new GsonBuilder().create();
+		
+		get("/search", (req, res) -> {
+			String index = req.queryParams("Index");
+			String searchlabel = req.queryParams("term");
+			return gson.toJson(getResut(index, searchlabel));
+		});
 
 	}
 
