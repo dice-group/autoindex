@@ -6,15 +6,16 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Logger;
 import java.net.URLDecoder;
 import org.apache.lucene.store.NIOFSDirectory;
 import org.slf4j.LoggerFactory;
-
+import io.swagger.annotations.Contact;
+import io.swagger.annotations.Info;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -23,7 +24,7 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.aksw.simba.dbpedia.indexcreation.Handler_SparqlEndpoint;
-
+import org.aksw.simba.dbpedia.swagger.SwaggerParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.TermQuery;
@@ -36,7 +37,18 @@ import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.SortedNumericSortField;
 
+@SwaggerDefinition(host = "localhost:4567", //
+		info = @Info(description = "AutoIndex", //
+		version = "V1.0", //
+		title = "Some random api for testing", //
+
+		contact = @Contact(name = "Aksw", url = "http://aksw.org/Team.html")), //
+		schemes = { SwaggerDefinition.Scheme.HTTP, SwaggerDefinition.Scheme.HTTPS }, //
+		consumes = { "application/json" }, //
+		produces = { "application/json" }, //
+		tags = { @Tag(name = "swagger") })
 public class SearchLuceneLabel {
+	public static final String APP_PACKAGE = "org.aksw.simba.dbpedia";
 	final static int TIMES_MORE_RESULTS = 10;
 	private static org.slf4j.Logger log = LoggerFactory.getLogger(SearchLuceneLabel.class);
 
@@ -150,7 +162,9 @@ public class SearchLuceneLabel {
 		Handler_SparqlEndpoint.generateIndexforClass();
 		Handler_SparqlEndpoint.generateIndexforProperties();
 		Handler_SparqlEndpoint.generateIndexforInstances();
-
+		final String swaggerJson = SwaggerParser.getSwaggerJson(APP_PACKAGE);
+		
+		
 		port(8080);
 		Gson gson = new GsonBuilder().create();
 
@@ -162,10 +176,14 @@ public class SearchLuceneLabel {
 			if (flag == true) {
 				log.info("Choosing default index");
 				flag = false;
-				return gson.toJson("RETURNING THE DEFAULT SEARCH                                  " + query_result);
+				System.out.println(swaggerJson);
+				return gson.toJson("RETURNING THE DEFAULT SEARCH" + query_result);
 
-			} else
+			} else{
+				System.out.println(swaggerJson);
+				
 				return gson.toJson(query_result);
+				}
 		});
 
 	}
