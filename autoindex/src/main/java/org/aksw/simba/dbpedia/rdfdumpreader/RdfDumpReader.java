@@ -26,7 +26,7 @@ import com.hp.hpl.jena.util.FileManager;
 public class RdfDumpReader {
 	static Set<Resource> listofResources;
 
-	public static 		CollectorStreamTriples getResource() {
+	public static CollectorStreamTriples getResource() {
 		FileManager.get().addLocatorClassLoader(RdfDumpReader.class.getClassLoader());
 		CollectorStreamTriples inputStream = new CollectorStreamTriples();
 		RDFDataMgr.parse(inputStream, "instance_types_en.ttl");
@@ -44,18 +44,17 @@ public class RdfDumpReader {
 		// System.out.println(stmt.getResource().getLocalName());
 		////
 		return inputStream;
-		
 
 	}
 
 	public static void main(String[] args) {
 
-		CollectorStreamTriples inputStream=getResource();
+		CollectorStreamTriples inputStream = getResource();
 		for (Triple triple : inputStream.getCollected()) {
-			
+
 			System.out.println(triple);
 		}
-		
+
 	}
 
 }
