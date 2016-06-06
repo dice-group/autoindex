@@ -27,6 +27,7 @@ import com.hp.hpl.jena.query.ResultSet;
 public class IndexCreator {
 	private static Logger log = LoggerFactory.getLogger(IndexCreator.class);
 
+	@SuppressWarnings("deprecation")
 	public static final Version LUCENE_VERSION = Version.LUCENE_44;
 
 	private Analyzer urlAnalyzer;
@@ -38,6 +39,7 @@ public class IndexCreator {
 
 
 
+	@SuppressWarnings("deprecation")
 	public void createIndex(ResultSet results, String idxDirectory, String baseURI) {
 		try {
 			urlAnalyzer = new SimpleAnalyzer(LUCENE_VERSION);
