@@ -114,13 +114,13 @@ import org.apache.lucene.search.SortedNumericSortField;
 	 * public List<Result> search_dump(IndexSearcher searcher, String
 	 * queryString, Integer limit) throws IOException { if (limit == 0) limit =
 	 * 10; BooleanQuery query = queryFromString(queryString);
-	 * 
+	 *
 	 * int hitsPerPage = limit * TIMES_MORE_RESULTS; Sort sort = new Sort(new
 	 * SortField("label", SortField.Type.STRING, true)); TopFieldDocs hits =
 	 * searcher.search(query, hitsPerPage, sort);
-	 * 
+	 *
 	 * List<Result> res = new ArrayList<Result>();
-	 * 
+	 *
 	 * for (ScoreDoc scoreDoc : hits.scoreDocs) { Document doc =
 	 * searcher.doc(scoreDoc.doc); Result result = new Result(doc.get("url"),
 	 * doc.get("label")); res.add(result); } return res; }
@@ -131,19 +131,19 @@ import org.apache.lucene.search.SortedNumericSortField;
 	 * FileInputStream("src/main/java/properties/autoindex.properties");
 	 * prop.load(input); IndexSearcher searcher = null; List<Result> resultlist
 	 * = null;
-	 * 
+	 *
 	 * String indexDir = prop.getProperty("index_dump");
-	 * 
+	 *
 	 * @SuppressWarnings("deprecation") IndexReader reader =
 	 * IndexReader.open(NIOFSDirectory.open(new File(indexDir))); searcher = new
 	 * IndexSearcher(reader);
-	 * 
+	 *
 	 * SearchLuceneLabel tester;
-	 * 
+	 *
 	 * try { tester = new SearchLuceneLabel();
-	 * 
+	 *
 	 * resultlist = tester.search_dump(searcher, term, 0);
-	 * 
+	 *
 	 * } catch (IOException e) { e.printStackTrace(); } return resultlist; }
 	 */
 	public static List<Result> getEndpointResult(String index, String term) throws IOException {
@@ -213,29 +213,29 @@ import org.apache.lucene.search.SortedNumericSortField;
 //		final String swaggerJson = SwaggerParser.getSwaggerJson(APP_PACKAGE);
 
 //		port(8082);
-		 
-		 
+
+
 		Gson gson = new GsonBuilder().create();
 		List<Result> query_result = getEndpointResult("instance", "berlin");
 //		Model model = RDFDataMgr.loadModel() ;
 //		 RDFDataMgr.write(System.out, model, Lang.JSONLD);
-		InputStream input = new FileInputStream("src\\main\\java\\context.json");
+		InputStream input = new FileInputStream("src" + File.separator + "main" + File.separator + "java" + File.separator + "context.json");
 		Object jsonObject = JsonUtils.fromString(gson.toJson(query_result));
 		final Object context = JsonUtils.fromInputStream(input);
 JsonLdOptions options = new JsonLdOptions();
 		options.format = "application/ld+json";
 		Object compact = JsonLdProcessor.compact(jsonObject, context, options);
-		
-		
-		
-		
+
+
+
+
 		System.out.println( JsonUtils.toPrettyString(compact));
-		
+
 /*		get("/search", (req, res) -> {
 			String index = req.queryParams("Index");
 			String searchlabel = req.queryParams("term");
 			List<Result> query_result = getEndpointResult(index, searchlabel);
-			
+
 			log.info("Responding to Query");
 			if (flag == true) {
 				log.info("Choosing default index");
@@ -247,8 +247,8 @@ JsonLdOptions options = new JsonLdOptions();
 //				JsonLdOptions options = new JsonLdOptions();
 //				Object compact = JsonLdProcessor.(jsonObject, context, options);
 				Object compact = JsonLdProcessor.(jsonObject);
-				
-				
+
+
 				return JsonUtils.toPrettyString(compact);
 
 			} else {
@@ -257,7 +257,7 @@ JsonLdOptions options = new JsonLdOptions();
 //				JsonLdOptions options = new JsonLdOptions();
 //				Object compact = JsonLdProcessor.(jsonObject, context, options);
 				Object compact = JsonLdProcessor.toRDF(jsonObject);
-				
+
 				return JsonUtils.toPrettyString(compact);
 
 			}
