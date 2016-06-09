@@ -1,10 +1,9 @@
 package org.aksw.simba.dbpedia.rdfdumpreader;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.jena.riot.RDFDataMgr;
-import org.apache.jena.riot.lang.CollectorStreamTriples;
 import org.apache.jena.riot.system.StreamRDF;
 import org.apache.jena.riot.system.StreamRDFLib;
 
@@ -17,11 +16,11 @@ import com.hp.hpl.jena.util.FileManager;
 public class RdfDumpReader {
 	static Set<Resource> listofResources;
 
-	public static ArrayList<Node> getResource() {
+	public static Set<Node> getResource() {
 		FileManager.get().addLocatorClassLoader(RdfDumpReader.class.getClassLoader());
 		StreamRDFLib lib= new StreamRDFLib();
 		
-		final ArrayList<Node> list = new ArrayList<>();
+		final Set<Node> list = new HashSet<Node>();
 		StreamRDF destination = new StreamRDF() {
 			
 			@Override
@@ -71,7 +70,7 @@ public class RdfDumpReader {
 		
 		
 
-		ArrayList<Node> inputStream = getResource();
+		Set<Node> inputStream = getResource();
 		for (Node triple : inputStream) {
 
 			System.out.println(triple.getURI());

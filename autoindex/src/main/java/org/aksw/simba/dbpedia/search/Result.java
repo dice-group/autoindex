@@ -12,6 +12,12 @@ public class Result {
 		this.setPagerank(pagerank);
 	}
 
+	public Result(String string, String string2) {
+		// TODO Auto-generated constructor stub
+		this.setUrl(url);
+		this.setLabel(label);
+	}
+
 	public String getUrl() {
 		return url;
 	}

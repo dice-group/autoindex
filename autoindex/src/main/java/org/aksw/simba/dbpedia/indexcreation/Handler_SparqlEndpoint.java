@@ -65,7 +65,7 @@ public class Handler_SparqlEndpoint {
 			InputStream input = new FileInputStream("src/main/java/properties/autoindex.properties");
 			prop.load(input);
 
-			String index = prop.getProperty("index_propoerty");
+			String index = prop.getProperty("index_property");
 			log.info("The index will be here: " + index);
 
 			String baseURI = prop.getProperty("baseURI");

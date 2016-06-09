@@ -1,9 +1,13 @@
 package org.aksw.simba.dbpedia.indexcreation;
 
 import java.io.File;
+import com.hp.hpl.jena.graph.Node;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
@@ -94,6 +98,43 @@ public class IndexCreator {
 //		iwriter.addDocument(doc);
 //	}
 //
+	@SuppressWarnings("deprecation")
+	public void createDumpIndex(Set<Node> results, String idxDirectory, String baseURI) {
+		try {
+			urlAnalyzer = new SimpleAnalyzer(LUCENE_VERSION);
+			literalAnalyzer = new LiteralAnalyzer(LUCENE_VERSION);
+
+			Map<String, Analyzer> mapping = new HashMap<String, Analyzer>();
+			mapping.put("url", urlAnalyzer);
+			mapping.put("label", literalAnalyzer);
+		
+			PerFieldAnalyzerWrapper perFieldAnalyzer = new PerFieldAnalyzerWrapper(urlAnalyzer, mapping);
+
+			File indexDirectory = new File(idxDirectory);
+			indexDirectory.mkdir();
+			directory = new MMapDirectory(indexDirectory);
+			IndexWriterConfig config = new IndexWriterConfig(LUCENE_VERSION, perFieldAnalyzer);
+			iwriter = new IndexWriter(directory, config);
+			iwriter.commit();
+		for(Node row: results){
+				
+				String url = row.getURI();
+				String label = row.getLocalName();
+			
+				Document doc = new Document();
+				doc.add(new StringField("url", url, Store.YES));
+				doc.add(new StringField("label", label, Store.YES));
+				iwriter.addDocument(doc);
+			}
+
+			iwriter.commit();
+
+			iwriter.close();
+			ireader = DirectoryReader.open(directory);
+		} catch (Exception e) {
+			log.error("Error while creating Index.", e);
+		}
+	}
 	public void close() throws IOException {
 		if (ireader != null) {
 			ireader.close();
