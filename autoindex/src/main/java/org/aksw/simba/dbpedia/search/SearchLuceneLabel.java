@@ -207,9 +207,9 @@ import org.apache.lucene.search.SortedNumericSortField;
 	}
 
 	public static void main(String[] args) throws IOException, JsonLdError {
-//		Handler_SparqlEndpoint.generateIndexforClass();
-//		Handler_SparqlEndpoint.generateIndexforProperties();
-//		Handler_SparqlEndpoint.generateIndexforInstances();
+		Handler_SparqlEndpoint.generateIndexforClass();
+		Handler_SparqlEndpoint.generateIndexforProperties();
+		Handler_SparqlEndpoint.generateIndexforInstances();
 //		final String swaggerJson = SwaggerParser.getSwaggerJson(APP_PACKAGE);
 
 //		port(8082);
@@ -229,7 +229,7 @@ JsonLdOptions options = new JsonLdOptions();
 		
 		
 		
-//		System.out.println( JsonUtils.toPrettyString(compact));
+		System.out.println( JsonUtils.toPrettyString(compact));
 		
 /*		get("/search", (req, res) -> {
 			String index = req.queryParams("Index");
