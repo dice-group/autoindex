@@ -23,6 +23,12 @@
 			<artifactId>json-simple</artifactId>
 			<version>1.1.1</version>
 		</dependency>
+		
+		<dependency>
+            <groupId>com.sparkjava</groupId>
+            <artifactId>spark-core</artifactId>
+            <version>2.3</version>
+        </dependency>
 		<!-- http://mvnrepository.com/artifact/com.jayway.jsonpath/json-path -->
 		<dependency>
 			<groupId>com.jayway.jsonpath</groupId>
@@ -141,11 +147,7 @@
 			<version>3.6.2</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.sparkjava</groupId>
-			<artifactId>spark-core</artifactId>
-			<version>2.3</version>
-		</dependency>
+		
 
 		<dependency>
 			<groupId>com.google.code.gson</groupId>

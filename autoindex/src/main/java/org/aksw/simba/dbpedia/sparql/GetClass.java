@@ -5,8 +5,7 @@ import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.query.ResultSetFactory;
-	
+
 public class GetClass {
 	public static ResultSet getallclasses() {
 		ParameterizedSparqlString sparql_query = new ParameterizedSparqlString(
@@ -24,23 +23,22 @@ public class GetClass {
 						+ "PREFIX prop: <http://dbpedia.org/property/>\n"
 						+ "PREFIX vrank:<http://purl.org/voc/vrank#>\n"
 
-
 						+ "SELECT DISTINCT ?type ?label ?v \n" + "WHERE {\n" + "?type a owl:Class .\n"
 						+ "?type rdfs:label ?label .\n?type vrank:hasRank/vrank:rankValue ?v. \n" + "}\n");
 
 		String ontology_service = "http://dbpedia.org/sparql";
-//		String endpoint = "DBpedia";
+		// String endpoint = "DBpedia";
 		System.out.println(sparql_query);
 
 		QueryExecution exec = QueryExecutionFactory.sparqlService(ontology_service, sparql_query.asQuery());
 
-//		ResultSet results = ResultSetFactory.copyResults(exec.execSelect());
+		// ResultSet results = ResultSetFactory.copyResults(exec.execSelect());
 
 		return exec.execSelect();
 	}
 
 	// System.out.println(results.next().get("resource"));
-	public static void main(String [] arg) {
+	public static void main(String[] arg) {
 
 		ResultSet results = getallclasses();
 		while (results.hasNext()) {
@@ -48,7 +46,7 @@ public class GetClass {
 			String url = qs.getResource("type").getURI();
 			String label = qs.getLiteral("label").getString();
 			String pagerank = qs.getLiteral("v").getString();
-			
+
 			System.out.println(url + "  --------");
 			System.out.print(label + "  --------");
 

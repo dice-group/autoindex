@@ -1,16 +1,27 @@
 package org.aksw.simba.dbpedia.search;
 
+import static spark.Spark.port;
+import static spark.Spark.get;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
 import java.net.URLDecoder;
 import org.apache.lucene.store.NIOFSDirectory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.aksw.simba.dbpedia.indexcreation.Handler_SparqlEndpoint;
+import org.aksw.simba.dbpedia.output.JsonLdOutput;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -113,7 +124,7 @@ public class SearchLuceneLabel {
 	 *
 	 * } catch (IOException e) { e.printStackTrace(); } return resultlist; }
 	 */
-	public static List<Result> getEndpointResult(String index, String term) throws IOException {
+	public static List<Result> searchEndpoint(String index, String term, int limit) throws IOException {
 		Properties prop = new Properties();
 		InputStream input = new FileInputStream("src/main/java/properties/autoindex.properties");
 		prop.load(input);
@@ -170,7 +181,61 @@ public class SearchLuceneLabel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		Collections.sort(resultlist, new Comparator<Result>() {
+			public int compare(Result a, Result b) {
+				return a.getPagerank().compareTo(b.getPagerank());
+			}
+		});
+		resultlist.subList(limit + 1, resultlist.size()).clear();
 		return resultlist;
+	}
+
+	private static Logger log = LoggerFactory.getLogger(ImplementationClass.class);
+
+	public static void main(String[] args) throws IOException {
+		 Handler_SparqlEndpoint.generateIndexforClass();
+		 Handler_SparqlEndpoint.generateIndexforProperties();
+		 Handler_SparqlEndpoint.generateIndexforInstances();
+//		 final String swaggerJson = SwaggerParser.getSwaggerJson(APP_PACKAGE);
+
+		port(8080);
+
+		Gson gson = new GsonBuilder().create();
+
+		// List<Result> query_result =
+		// SearchLuceneLabel.searchEndpoint("instance", "berlin");
+		// String x = JsonLdOutput.getJsonLDoutput(query_result,"instance");
+
+		// gson.toJson(query_result);
+
+		get("/search", (req, res) -> {
+			String index = req.queryParams("index");
+			String searchlabel = req.queryParams("query");
+			String indent = req.queryParams("indent");
+			int limit = Integer.parseInt(req.queryParams("limit"));
+			List<Result> query_result = SearchLuceneLabel.searchEndpoint(index, searchlabel, limit);
+
+			log.info("Responding to Query");
+			if (flag == true) {
+				log.info("Choosing default index");
+				flag = false;
+				if (indent.toUpperCase().equals("YES")) {
+					System.out.println(JsonLdOutput.getJsonLDoutput(query_result, index, limit));
+					return JsonLdOutput.getJsonLDoutput(query_result, index, limit);
+				} else
+					return gson.toJson(query_result);
+
+			} else {
+				if (indent.toUpperCase().equals("YES")) {
+					System.out.println(JsonLdOutput.getJsonLDoutput(query_result, index, limit));
+					return JsonLdOutput.getJsonLDoutput(query_result, index, limit);
+				} else
+					return gson.toJson(query_result);
+
+			}
+		});
+
 	}
 
 }
