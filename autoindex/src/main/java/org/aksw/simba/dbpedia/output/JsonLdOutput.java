@@ -1,24 +1,25 @@
 package org.aksw.simba.dbpedia.output;
 
 import java.util.List;
-
 import org.aksw.simba.dbpedia.search.Result;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class JsonLdOutput {
 
 	public static String getJsonLDoutput(List<Result> query_result, String Index, int limit) {
-		String output = "";
-		output += " { \n" + "\"@context\": {\n" + "\"@vocab\": \" \"," + "\"url\": \"goog:resultScore\",\n"
-				+ "\"pagerank\": \"goog:detailedDescription\",\n" + "\"Label\": \"goog:EntitySearchResult\",\n" + "},"
-				+ "\"@type\": \"ItemList\",;\n" + "\"itemListElement\": [\n{\n" + "\"@Index\": \"" + Index + "\",\n"+ "\"@Number of Results\": \"" + limit + "\",\n";
+		String json = "";
 
-		for (Result res : query_result) {
-			output += "\"result\": {\n\"" +"url\" : \"" + res.getUrl() + "\",\n" + "\"label\" : \"" + res.getLabel() + "\"\n}\n"
-					+ "\"pageRank\" : " + res.getPagerank() + "\n }\n";
+		json += " { \n" + "\"context\": {\n" + "\"vocab\": \" \",\n" + "\"url\": \"goog:resultScore\",\n"
+				+ "\"pagerank\": \"goog:detailedDescription\",\n" + "\"label\": \"goog:EntitySearchResult\",\n" + "},"
+				+ "\n\"type\": \"ItemList\",;\n" + "\"itemListElement\": \n[{\n" + "\"IndexType\": \"" + Index.toUpperCase() + "\",\n"+ "\"Number of Results\": \"" + limit + "\",\n";
 
-		}
-		output+="}";
+		
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-		return output;
+		json += gson.toJson(query_result);
+
+		return json;
 	}
 }

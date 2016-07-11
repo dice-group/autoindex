@@ -1,4 +1,4 @@
-package java.org.aksw.simba.dbpedia.autoindex;
+package org.aksw.simba.dbpedia.autoindex;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -7,7 +7,7 @@ import junit.framework.TestSuite;
 /**
  * Unit test for simple App.
  */
-public class AppTest 
+public class AppTest
     extends TestCase
 {
     /**

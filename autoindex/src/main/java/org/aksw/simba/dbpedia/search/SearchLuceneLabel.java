@@ -191,17 +191,17 @@ public class SearchLuceneLabel {
 		return resultlist;
 	}
 
-	private static Logger log = LoggerFactory.getLogger(ImplementationClass.class);
+	private static Logger log = LoggerFactory.getLogger(SearchLuceneLabel.class);
 
 	public static void main(String[] args) throws IOException {
-		 Handler_SparqlEndpoint.generateIndexforClass();
-		 Handler_SparqlEndpoint.generateIndexforProperties();
-		 Handler_SparqlEndpoint.generateIndexforInstances();
-//		 final String swaggerJson = SwaggerParser.getSwaggerJson(APP_PACKAGE);
+		Handler_SparqlEndpoint.generateIndexforClass();
+		Handler_SparqlEndpoint.generateIndexforProperties();
+		Handler_SparqlEndpoint.generateIndexforInstances();
+		// final String swaggerJson = SwaggerParser.getSwaggerJson(APP_PACKAGE);
 
 		port(8080);
 
-		Gson gson = new GsonBuilder().create();
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 		// List<Result> query_result =
 		// SearchLuceneLabel.searchEndpoint("instance", "berlin");
@@ -215,24 +215,26 @@ public class SearchLuceneLabel {
 			String indent = req.queryParams("indent");
 			int limit = Integer.parseInt(req.queryParams("limit"));
 			List<Result> query_result = SearchLuceneLabel.searchEndpoint(index, searchlabel, limit);
-
+			res.type("application/json");
 			log.info("Responding to Query");
 			if (flag == true) {
+
 				log.info("Choosing default index");
 				flag = false;
 				if (indent.toUpperCase().equals("YES")) {
 					System.out.println(JsonLdOutput.getJsonLDoutput(query_result, index, limit));
 					return JsonLdOutput.getJsonLDoutput(query_result, index, limit);
-				} else
-					return gson.toJson(query_result);
+				}
+
+				return gson.toJson(query_result);
 
 			} else {
 				if (indent.toUpperCase().equals("YES")) {
 					System.out.println(JsonLdOutput.getJsonLDoutput(query_result, index, limit));
 					return JsonLdOutput.getJsonLDoutput(query_result, index, limit);
 				} else
-					return gson.toJson(query_result);
 
+					return gson.toJson(query_result);
 			}
 		});
 
