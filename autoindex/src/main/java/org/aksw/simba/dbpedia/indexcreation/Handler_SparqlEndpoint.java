@@ -1,13 +1,12 @@
 package org.aksw.simba.dbpedia.indexcreation;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import org.aksw.simba.dbpedia.indexcreation.IndexCreator;
-import org.aksw.simba.dbpedia.sparql.GetClass;
-import org.aksw.simba.dbpedia.sparql.GetInstance;
-import org.aksw.simba.dbpedia.sparql.GetProperties;
+import org.aksw.simba.dbpedia.sparql.GetIndexData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,67 +15,89 @@ import com.hp.hpl.jena.query.ResultSet;
 public class Handler_SparqlEndpoint {
 	private static Logger log = LoggerFactory.getLogger(Handler_SparqlEndpoint.class);
 
-
-	public static  void generateIndexforClass() {
+	public static void generateIndex(String endpoint, String endpointUri, String typeofIndex) {
 		try {
 			Properties prop = new Properties();
 			InputStream input = new FileInputStream("src/main/java/properties/autoindex.properties");
 			prop.load(input);
 
-			String index = prop.getProperty("index_class");
-			log.info("The index will be here: " + index);
+			String index = prop.getProperty("folderWithIndexFiles");
+			
+			
+			switch (typeofIndex.toLowerCase()) {
+			case "class": {
+				index = index + "/" + endpoint + "/" + "index_class";
+				File dir = new File(index);
+				try {	
+				if(!dir.exists()) 
+				
+					dir.mkdirs();
+				} catch (Exception e) {
+					// TODO: handle exception
+					log.info("Error making Directory");
+				}
 
-			String baseURI = prop.getProperty("baseURI");
-			log.info("Setting Base URI to: " + baseURI);
-			ResultSet results = GetClass.getallclasses();
-			IndexCreator ic = new IndexCreator();
-			ic.createIndex(results, index, baseURI);
-			ic.close();
+				String baseURI = prop.getProperty("baseURI");
+				log.info("Setting Base URI to: " + baseURI);
+				ResultSet results = GetIndexData.getallclasses(endpointUri);
+				IndexCreator ic = new IndexCreator();
+				ic.createIndex(results, index, baseURI);
+				ic.close();
+				break;
+
+			}
+			case "property": {
+				index = index + "/" + endpoint + "/" + "index_property";
+				File dir = new File(index);
+
+				try {	
+					if(!dir.exists()) 
+					
+						dir.mkdirs();
+					} catch (Exception e) {
+						// TODO: handle exception
+						log.info("Error making Directory");
+					}
+				String baseURI = prop.getProperty("baseURI");
+				log.info("Setting Base URI to: " + baseURI);
+				ResultSet results = GetIndexData.getallproperties(endpointUri);
+				IndexCreator ic = new IndexCreator();
+				ic.createIndex(results, index, baseURI);
+				ic.close();
+				break;
+
+			}
+			case "instance": {
+				index = index + "/" + endpoint + "/" + "index_instance";
+				File dir = new File(index);
+
+				try {	
+					if(!dir.exists()) 
+					
+						dir.mkdirs();
+					} catch (Exception e) {
+						// TODO: handle exception
+						log.info("Error making Directory");
+					}
+
+				String baseURI = prop.getProperty("baseURI");
+				log.info("Setting Base URI to: " + baseURI);
+				ResultSet results = GetIndexData.getallinstances(endpointUri);
+				IndexCreator ic = new IndexCreator();
+				ic.createIndex(results, index, baseURI);
+				ic.close();
+				break;
+
+			}
+
+			default:
+				break;
+			}
+
 		} catch (IOException e) {
 			log.error("Error while creating index. Maybe the index is corrupt now.", e);
 		}
 
 	}
 
-	public static void generateIndexforInstances() {
-		try {
-			Properties prop = new Properties();
-			InputStream input = new FileInputStream("src/main/java/properties/autoindex.properties");
-			prop.load(input);
-
-			String index = prop.getProperty("index_instance");
-			log.info("The index will be here: " + index);
-
-			String baseURI = prop.getProperty("baseURI");
-			log.info("Setting Base URI to: " + baseURI);
-			ResultSet results = GetInstance.getallinstances();
-			IndexCreator ic = new IndexCreator();
-			ic.createIndex(results, index, baseURI);
-			ic.close();
-		} catch (IOException e) {
-			log.error("Error while creating index. Maybe the index is corrupt now.", e);
-		}
-
-	}
-
-	public static void generateIndexforProperties() {
-		try {
-			Properties prop = new Properties();
-			InputStream input = new FileInputStream("src/main/java/properties/autoindex.properties");
-			prop.load(input);
-
-			String index = prop.getProperty("index_property");
-			log.info("The index will be here: " + index);
-
-			String baseURI = prop.getProperty("baseURI");
-			log.info("Setting Base URI to: " + baseURI);
-			ResultSet results = GetProperties.getallproperties();
-			IndexCreator ic = new IndexCreator();
-			ic.createIndex(results, index, baseURI);
-			ic.close();
-		} catch (IOException e) {
-			log.error("Error while creating index. Maybe the index is corrupt now.", e);
-		}
-
-	}
 }

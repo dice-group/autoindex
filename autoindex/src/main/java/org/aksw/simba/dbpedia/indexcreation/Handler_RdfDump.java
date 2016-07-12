@@ -7,13 +7,9 @@ import java.util.Properties;
 import java.util.Set;
 import com.hp.hpl.jena.graph.Node;
 
-
 import org.aksw.simba.dbpedia.rdfdumpreader.RdfDumpReader;
-import org.aksw.simba.dbpedia.sparql.GetClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.hp.hpl.jena.query.ResultSet;
 
 public class Handler_RdfDump {
 	private static Logger log = LoggerFactory.getLogger(Handler_RdfDump.class);

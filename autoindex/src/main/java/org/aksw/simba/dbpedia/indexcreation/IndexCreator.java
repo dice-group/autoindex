@@ -42,7 +42,41 @@ public class IndexCreator {
 	private MMapDirectory directory;
 
 
+	@SuppressWarnings("deprecation")
+	public void createTextIndex(ResultSet results, String idxDirectory, String baseURI) {
+		try {
+			urlAnalyzer = new SimpleAnalyzer(LUCENE_VERSION);
+			literalAnalyzer = new LiteralAnalyzer(LUCENE_VERSION);
 
+			Map<String, Analyzer> mapping = new HashMap<String, Analyzer>();
+			mapping.put("url", urlAnalyzer);
+			mapping.put("label", literalAnalyzer);
+			PerFieldAnalyzerWrapper perFieldAnalyzer = new PerFieldAnalyzerWrapper(urlAnalyzer, mapping);
+			File indexDirectory = new File(idxDirectory);
+			indexDirectory.mkdir();
+			directory = new MMapDirectory(indexDirectory);
+			IndexWriterConfig config = new IndexWriterConfig(LUCENE_VERSION, perFieldAnalyzer);
+			iwriter = new IndexWriter(directory, config);
+			iwriter.commit();
+			while (results.hasNext()) {
+				QuerySolution row = results.next();
+				String url = row.getResource("type").getURI();
+				String label = row.getLiteral("label").getString();
+				Document doc = new Document();
+				doc.add(new StringField("url", url, Store.YES));
+				doc.add(new TextField("label", label, Store.YES));
+				
+				iwriter.addDocument(doc);
+			}
+
+			iwriter.commit();
+
+			iwriter.close();
+			ireader = DirectoryReader.open(directory);
+		} catch (Exception e) {
+			log.error("Error while creating TripleIndex.", e);
+		}
+	}
 	@SuppressWarnings("deprecation")
 	public void createIndex(ResultSet results, String idxDirectory, String baseURI) {
 		try {

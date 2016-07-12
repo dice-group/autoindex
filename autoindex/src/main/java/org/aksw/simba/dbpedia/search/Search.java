@@ -38,15 +38,58 @@ import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.SortedNumericSortField;
 
-public class SearchLuceneLabel {
+public class Search {
+	// static boolean flag = false;
 	public static final String APP_PACKAGE = "org.aksw.simba.dbpedia";
 	final static int TIMES_MORE_RESULTS = 10;
+	static String index = null;
+	static String indent = null;
+	static int limit = 0;
+	static String searchlabel = null;
+	static String endpoint = null;
+	static String endpointuri = null;
+
+	private static void setDefault() {
+		if (Search.indent.equals(null))
+			indent = "no";
+		if (Search.limit == 0)
+			limit = 10;
+		if (Search.index.equals(null))
+			index = "instance";
+		if (Search.endpoint.equals(null)&&(Search.endpointuri.equals(null))){
+			endpointuri = "http://dbpedia.org/sparql";
+			endpoint="Dbpedia";
+			}
+		if (Search.endpoint.equals(null)&&(!Search.endpointuri.equals(null))){
+			endpointuri = "http://dbpedia.org/sparql";
+			endpoint="RANDOM";
+			}
+	}
 
 	public DirectoryReader readerFromIndex(NIOFSDirectory dir) throws IOException {
 		return DirectoryReader.open(dir);
 	}
-
-	static boolean flag = false;
+	/*
+	 * public static List<Result> getRDFDumpResult(String term) throws
+	 * IOException { Properties prop = new Properties(); InputStream input = new
+	 * FileInputStream("src/main/java/properties/autoindex.properties");
+	 * prop.load(input); IndexSearcher searcher = null; List<Result> resultlist
+	 * = null;
+	 *
+	 * String indexDir = prop.getProperty("index_dump");
+	 *
+	 * @SuppressWarnings("deprecation") IndexReader reader =
+	 * IndexReader.open(NIOFSDirectory.open(new File(indexDir))); searcher = new
+	 * IndexSearcher(reader);
+	 *
+	 * SearchLuceneLabel tester;
+	 *
+	 * try { tester = new SearchLuceneLabel();
+	 *
+	 * resultlist = tester.search_dump(searcher, term, 0);
+	 *
+	 * } catch (IOException e) { e.printStackTrace(); } return resultlist; }
+	 */
 
 	public BooleanQuery queryFromString(String queryString) throws UnsupportedEncodingException {
 		BooleanQuery query = new BooleanQuery();
@@ -88,42 +131,25 @@ public class SearchLuceneLabel {
 		return res;
 	}
 
-	/*
-	 * public List<Result> search_dump(IndexSearcher searcher, String
-	 * queryString, Integer limit) throws IOException { if (limit == 0) limit =
-	 * 10; BooleanQuery query = queryFromString(queryString);
-	 *
-	 * int hitsPerPage = limit * TIMES_MORE_RESULTS; Sort sort = new Sort(new
-	 * SortField("label", SortField.Type.STRING, true)); TopFieldDocs hits =
-	 * searcher.search(query, hitsPerPage, sort);
-	 *
-	 * List<Result> res = new ArrayList<Result>();
-	 *
-	 * for (ScoreDoc scoreDoc : hits.scoreDocs) { Document doc =
-	 * searcher.doc(scoreDoc.doc); Result result = new Result(doc.get("url"),
-	 * doc.get("label")); res.add(result); } return res; }
-	 */
-	/*
-	 * public static List<Result> getRDFDumpResult(String term) throws
-	 * IOException { Properties prop = new Properties(); InputStream input = new
-	 * FileInputStream("src/main/java/properties/autoindex.properties");
-	 * prop.load(input); IndexSearcher searcher = null; List<Result> resultlist
-	 * = null;
-	 *
-	 * String indexDir = prop.getProperty("index_dump");
-	 *
-	 * @SuppressWarnings("deprecation") IndexReader reader =
-	 * IndexReader.open(NIOFSDirectory.open(new File(indexDir))); searcher = new
-	 * IndexSearcher(reader);
-	 *
-	 * SearchLuceneLabel tester;
-	 *
-	 * try { tester = new SearchLuceneLabel();
-	 *
-	 * resultlist = tester.search_dump(searcher, term, 0);
-	 *
-	 * } catch (IOException e) { e.printStackTrace(); } return resultlist; }
-	 */
+	public List<Result> search_norank(IndexSearcher searcher, String queryString, Integer limit) throws IOException {
+		if (limit == 0)
+			limit = 10;
+		BooleanQuery query = queryFromString(queryString);
+
+		int hitsPerPage = limit * TIMES_MORE_RESULTS;
+		Sort sort = new Sort(new SortField("label", SortField.Type.STRING, true));
+		TopFieldDocs hits = searcher.search(query, hitsPerPage, sort);
+
+		List<Result> res = new ArrayList<Result>();
+
+		for (ScoreDoc scoreDoc : hits.scoreDocs) {
+			Document doc = searcher.doc(scoreDoc.doc);
+			Result result = new Result(doc.get("url"), doc.get("label"));
+			res.add(result);
+		}
+		return res;
+	}
+
 	public static List<Result> searchEndpoint(String index, String term, int limit) throws IOException {
 		Properties prop = new Properties();
 		InputStream input = new FileInputStream("src/main/java/properties/autoindex.properties");
@@ -166,15 +192,15 @@ public class SearchLuceneLabel {
 			@SuppressWarnings("deprecation")
 			IndexReader reader = IndexReader.open(NIOFSDirectory.open(new File(indexDir)));
 			searcher = new IndexSearcher(reader);
-			flag = true;
+			// flag = true;
 			break;
 
 		}
 
-		SearchLuceneLabel tester;
+		Search tester;
 
 		try {
-			tester = new SearchLuceneLabel();
+			tester = new Search();
 
 			resultlist = tester.search(searcher, term, 0);
 
@@ -191,14 +217,19 @@ public class SearchLuceneLabel {
 		return resultlist;
 	}
 
-	private static Logger log = LoggerFactory.getLogger(SearchLuceneLabel.class);
+	private static Logger log = LoggerFactory.getLogger(Search.class);
+
+	public static void Indexgenerator(String epname, String ep) {
+		Handler_SparqlEndpoint.generateIndex(epname,ep, "class");
+		Handler_SparqlEndpoint.generateIndex(epname,ep, "instances");
+		Handler_SparqlEndpoint.generateIndex(epname,ep, "property");
+
+	}
 
 	public static void main(String[] args) throws IOException {
-		Handler_SparqlEndpoint.generateIndexforClass();
-		Handler_SparqlEndpoint.generateIndexforProperties();
-		Handler_SparqlEndpoint.generateIndexforInstances();
-		// final String swaggerJson = SwaggerParser.getSwaggerJson(APP_PACKAGE);
 
+		// final String swaggerJson = SwaggerParser.getSwaggerJson(APP_PACKAGE);
+		Search.Indexgenerator("Dbpedia", "http://dbpedia.org/sparql");
 		port(8080);
 
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -210,32 +241,48 @@ public class SearchLuceneLabel {
 		// gson.toJson(query_result);
 
 		get("/search", (req, res) -> {
-			String index = req.queryParams("index");
-			String searchlabel = req.queryParams("query");
-			String indent = req.queryParams("indent");
-			int limit = Integer.parseInt(req.queryParams("limit"));
-			List<Result> query_result = SearchLuceneLabel.searchEndpoint(index, searchlabel, limit);
+			try {
+				Search.index = req.queryParams("index");
+				Search.searchlabel = req.queryParams("query");
+				Search.indent = req.queryParams("indent");
+				Search.limit = Integer.parseInt(req.queryParams("limit"));
+				Search.endpoint = req.queryParams("endpoint");
+				Search.endpointuri= req.queryParams("epuri");
+
+			} catch (Exception e2) {
+				// TODO: handle exception
+				Search.setDefault();
+//				Search.Indexgenerator(endpoint,endpointuri);
+			}
+
+			List<Result> query_result = Search.searchEndpoint(index, searchlabel, limit);
 			res.type("application/json");
 			log.info("Responding to Query");
-			if (flag == true) {
 
-				log.info("Choosing default index");
-				flag = false;
-				if (indent.toUpperCase().equals("YES")) {
-					System.out.println(JsonLdOutput.getJsonLDoutput(query_result, index, limit));
-					return JsonLdOutput.getJsonLDoutput(query_result, index, limit);
-				}
-
-				return gson.toJson(query_result);
-
-			} else {
-				if (indent.toUpperCase().equals("YES")) {
-					System.out.println(JsonLdOutput.getJsonLDoutput(query_result, index, limit));
-					return JsonLdOutput.getJsonLDoutput(query_result, index, limit);
-				} else
-
-					return gson.toJson(query_result);
+			if (indent.toUpperCase().equals("YES")) {
+				System.out.println(JsonLdOutput.getJsonLDoutput(query_result, index, limit));
+				return JsonLdOutput.getJsonLDoutput(query_result, index, limit);
 			}
+
+			return gson.toJson(query_result);
+			/*
+			 * if (flag == true) {
+			 * 
+			 * log.info("Choosing default index"); flag = false; if
+			 * (indent.toUpperCase().equals("YES")) {
+			 * System.out.println(JsonLdOutput.getJsonLDoutput(query_result,
+			 * index, limit)); return JsonLdOutput.getJsonLDoutput(query_result,
+			 * index, limit); }
+			 * 
+			 * return gson.toJson(query_result);
+			 * 
+			 * } else { if (indent.toUpperCase().equals("YES")) {
+			 * System.out.println(JsonLdOutput.getJsonLDoutput(query_result,
+			 * index, limit)); return JsonLdOutput.getJsonLDoutput(query_result,
+			 * index, limit); } else
+			 * 
+			 * return gson.toJson(query_result); }
+			 */
 		});
 
 	}
