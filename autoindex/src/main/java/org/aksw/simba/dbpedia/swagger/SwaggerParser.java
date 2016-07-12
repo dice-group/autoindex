@@ -28,9 +28,7 @@ public class SwaggerParser {
 		beanConfig.setScan(true);
 		beanConfig.scanAndRead();
 		Swagger swagger = beanConfig.getSwagger();
-
 		Reader reader = new Reader(swagger);
-
 		Set<Class<?>> apiClasses = reflections.getTypesAnnotatedWith(Api.class);
 		return reader.read(apiClasses);
 	}

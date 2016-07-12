@@ -13,7 +13,6 @@ public class Result {
 	}
 
 	public Result(String string, String string2) {
-		// TODO Auto-generated constructor stub
 		this.setUrl(url);
 		this.setLabel(label);
 	}
@@ -41,6 +40,5 @@ public class Result {
 	public void setPagerank(Double pagerank) {
 		this.pagerank = pagerank;
 	}
-
 
 }

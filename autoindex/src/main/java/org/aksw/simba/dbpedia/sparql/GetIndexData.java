@@ -5,7 +5,6 @@ import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.query.ResultSetFactory;
 
 public class GetIndexData {
 	public static ResultSet getallclasses(String endpoint) {
@@ -22,18 +21,11 @@ public class GetIndexData {
 						+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
 						+ "PREFIX type: <http://dbpedia.org/class/yago/>\n"
 						+ "PREFIX prop: <http://dbpedia.org/property/>\n"
-						+ "PREFIX vrank:<http://purl.org/voc/vrank#>\n"
-
-						+ "SELECT DISTINCT ?type ?label ?v \n" + "WHERE {\n" + "?type a owl:Class .\n"
+						+ "PREFIX vrank:<http://purl.org/voc/vrank#>\n" + "SELECT DISTINCT ?type ?label ?v \n"
+						+ "WHERE {\n" + "?type a owl:Class .\n"
 						+ "?type rdfs:label ?label .\n?type vrank:hasRank/vrank:rankValue ?v. \n" + "}\n");
-
-		// String endpoint = "DBpedia";
 		System.out.println(sparql_query);
-
 		QueryExecution exec = QueryExecutionFactory.sparqlService(endpoint, sparql_query.asQuery());
-
-		// ResultSet results = ResultSetFactory.copyResults(exec.execSelect());
-
 		return exec.execSelect();
 	}
 
@@ -53,18 +45,13 @@ public class GetIndexData {
 						+ "PREFIX prop: <http://dbpedia.org/property/>\n"
 						+ "PREFIX vrank:<http://purl.org/voc/vrank#>\n"
 						+ "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-						+ "PREFIX dbo:<http://dbpedia.org/ontology/>\n"
-
-						// + "" + "\n"
-
-						+ "SELECT ?type ?label ?v  \n" + "FROM <http://dbpedia.org>  \n"
-						+ "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank> \n" + "WHERE {\n"
-						+ "?type a <http://www.w3.org/2002/07/owl#Thing> . \n"
+						+ "PREFIX dbo:<http://dbpedia.org/ontology/>\n" + "SELECT ?type ?label ?v  \n"
+						+ "FROM <http://dbpedia.org>  \n" + "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank> \n"
+						+ "WHERE {\n" + "?type a <http://www.w3.org/2002/07/owl#Thing> . \n"
 						+ " ?type <http://www.w3.org/2000/01/rdf-schema#label> ?label .\n "
 						+ " ?type vrank:hasRank/vrank:rankValue ?v .\n" + "}\n");
-
+		System.out.println(sparql_query);
 		QueryExecution exec = QueryExecutionFactory.sparqlService(endpoint, sparql_query.asQuery());
-
 		return exec.execSelect();
 	}
 
@@ -83,22 +70,14 @@ public class GetIndexData {
 						+ "PREFIX type: <http://dbpedia.org/class/yago/>\n"
 						+ "PREFIX prop: <http://dbpedia.org/property/>\n"
 						+ "PREFIX vrank:<http://purl.org/voc/vrank#>\n"
-
-						// + "" + "\n"
-
 						+ "SELECT DISTINCT ?type ?label  (COUNT(*)AS ?v)\n" + "WHERE {\n" + "?type a rdf:Property;\n"
 						+ "rdfs:label ?label.\n" + "}\n GROUP BY ?type ?label \n ORDER BY DESC(?v)");
 
 		System.out.println(sparql_query);
-
 		QueryExecution exec = QueryExecutionFactory.sparqlService(endpoint, sparql_query.asQuery());
-
-		ResultSet results = ResultSetFactory.copyResults(exec.execSelect());
-
-		return results;
+		return exec.execSelect();
 	}
 
-	// System.out.println(results.next().get("resource"));
 	public static void main(String[] arg) {
 
 		ResultSet results = getallclasses("http://dbpedia.org/sparql");
@@ -107,26 +86,12 @@ public class GetIndexData {
 			String url = qs.getResource("type").getURI();
 			String label = qs.getLiteral("label").getString();
 			String pagerank = qs.getLiteral("v").getString();
-
 			System.out.println(url + "  --------");
 			System.out.print(label + "  --------");
-
 			System.out.println(pagerank);
 			System.out.println("_____________________________________________");
 
 		}
-
-		/*
-		 * ResultSet results = getallinstances("http://dbpedia.org/sparql"); //
-		 * A simpler way of printing the results.
-		 * ResultSetFormatter.out(results);
-		 */
-		/*
-		 * ResultSet results = getallproperties("http://dbpedia.org/sparql"); //
-		 * A simpler way of printing the results.
-		 * ResultSetFormatter.out(results);
-		 */
-		// ResultSetFormatter.out(results);
 
 	}
 }

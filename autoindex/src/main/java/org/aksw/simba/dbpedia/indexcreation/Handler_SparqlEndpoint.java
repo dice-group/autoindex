@@ -15,28 +15,22 @@ import com.hp.hpl.jena.query.ResultSet;
 public class Handler_SparqlEndpoint {
 	private static Logger log = LoggerFactory.getLogger(Handler_SparqlEndpoint.class);
 
-	public static void generateIndex(String endpoint, String endpointUri, String typeofIndex) {
+	public void generateIndex(String endpoint, String endpointUri, String typeofIndex) {
 		try {
 			Properties prop = new Properties();
 			InputStream input = new FileInputStream("src/main/java/properties/autoindex.properties");
 			prop.load(input);
-
 			String index = prop.getProperty("folderWithIndexFiles");
-			
-			
 			switch (typeofIndex.toLowerCase()) {
 			case "class": {
-				index = index + "/" + endpoint + "/" + "index_class";
+				index = index + File.separator + endpoint + File.separator + "index_class";
 				File dir = new File(index);
-				try {	
-				if(!dir.exists()) 
-				
-					dir.mkdirs();
+				try {
+					if (!dir.exists())
+						dir.mkdirs();
 				} catch (Exception e) {
-					// TODO: handle exception
 					log.info("Error making Directory");
 				}
-
 				String baseURI = prop.getProperty("baseURI");
 				log.info("Setting Base URI to: " + baseURI);
 				ResultSet results = GetIndexData.getallclasses(endpointUri);
@@ -44,20 +38,16 @@ public class Handler_SparqlEndpoint {
 				ic.createIndex(results, index, baseURI);
 				ic.close();
 				break;
-
 			}
 			case "property": {
-				index = index + "/" + endpoint + "/" + "index_property";
+				index = index + File.separator + endpoint + File.separator + "index_property";
 				File dir = new File(index);
-
-				try {	
-					if(!dir.exists()) 
-					
+				try {
+					if (!dir.exists())
 						dir.mkdirs();
-					} catch (Exception e) {
-						// TODO: handle exception
-						log.info("Error making Directory");
-					}
+				} catch (Exception e) {
+					log.info("Error making Directory");
+				}
 				String baseURI = prop.getProperty("baseURI");
 				log.info("Setting Base URI to: " + baseURI);
 				ResultSet results = GetIndexData.getallproperties(endpointUri);
@@ -65,21 +55,16 @@ public class Handler_SparqlEndpoint {
 				ic.createIndex(results, index, baseURI);
 				ic.close();
 				break;
-
 			}
 			case "instance": {
-				index = index + "/" + endpoint + "/" + "index_instance";
+				index = index + File.separator + endpoint + File.separator + "index_instance";
 				File dir = new File(index);
-
-				try {	
-					if(!dir.exists()) 
-					
+				try {
+					if (!dir.exists())
 						dir.mkdirs();
-					} catch (Exception e) {
-						// TODO: handle exception
-						log.info("Error making Directory");
-					}
-
+				} catch (Exception e) {
+					log.info("Error making Directory");
+				}
 				String baseURI = prop.getProperty("baseURI");
 				log.info("Setting Base URI to: " + baseURI);
 				ResultSet results = GetIndexData.getallinstances(endpointUri);
@@ -87,11 +72,25 @@ public class Handler_SparqlEndpoint {
 				ic.createIndex(results, index, baseURI);
 				ic.close();
 				break;
-
 			}
 
-			default:
+			default: {
+				index = index + File.separator + endpoint + File.separator + "index_instance";
+				File dir = new File(index);
+				try {
+					if (!dir.exists())
+						dir.mkdirs();
+				} catch (Exception e) {
+					log.info("Error making Directory");
+				}
+				String baseURI = prop.getProperty("baseURI");
+				log.info("Setting Base URI to: " + baseURI);
+				ResultSet results = GetIndexData.getallinstances(endpointUri);
+				IndexCreator ic = new IndexCreator();
+				ic.createIndex(results, index, baseURI);
+				ic.close();
 				break;
+			}
 			}
 
 		} catch (IOException e) {
