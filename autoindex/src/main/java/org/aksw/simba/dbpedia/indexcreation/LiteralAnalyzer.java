@@ -1,6 +1,5 @@
 package org.aksw.simba.dbpedia.indexcreation;
 
-
 import java.io.Reader;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -14,12 +13,6 @@ public class LiteralAnalyzer extends Analyzer {
 
 	private final Version matchVersion;
 
-	/**
-	 * Creates a new {@link SimpleAnalyzer}
-	 * 
-	 * @param matchVersion
-	 *            Lucene version to match See {@link <a href="#version">above</a>}
-	 */
 	public LiteralAnalyzer(Version matchVersion) {
 		this.matchVersion = matchVersion;
 	}

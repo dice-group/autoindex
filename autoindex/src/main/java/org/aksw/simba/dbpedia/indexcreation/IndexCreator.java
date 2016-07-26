@@ -1,9 +1,13 @@
 package org.aksw.simba.dbpedia.indexcreation;
 
 import java.io.File;
+import com.hp.hpl.jena.graph.Node;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
@@ -18,37 +22,67 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.MMapDirectory;
 import org.apache.lucene.util.Version;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 
 public class IndexCreator {
-	private static org.slf4j.Logger log = LoggerFactory.getLogger(IndexCreator.class);
+	private static Logger log = LoggerFactory.getLogger(IndexCreator.class);
 
+	@SuppressWarnings("deprecation")
 	public static final Version LUCENE_VERSION = Version.LUCENE_44;
 
 	private Analyzer urlAnalyzer;
 	private Analyzer literalAnalyzer;
-
 	private DirectoryReader ireader;
 	private IndexWriter iwriter;
 	private MMapDirectory directory;
 
+	@SuppressWarnings("deprecation")
+	public void createTextIndex(ResultSet results, String idxDirectory, String baseURI) {
+		try {
+			urlAnalyzer = new SimpleAnalyzer(LUCENE_VERSION);
+			literalAnalyzer = new LiteralAnalyzer(LUCENE_VERSION);
+			Map<String, Analyzer> mapping = new HashMap<String, Analyzer>();
+			mapping.put("url", urlAnalyzer);
+			mapping.put("label", literalAnalyzer);
+			PerFieldAnalyzerWrapper perFieldAnalyzer = new PerFieldAnalyzerWrapper(urlAnalyzer, mapping);
+			File indexDirectory = new File(idxDirectory);
+			indexDirectory.mkdir();
+			directory = new MMapDirectory(indexDirectory);
+			IndexWriterConfig config = new IndexWriterConfig(LUCENE_VERSION, perFieldAnalyzer);
+			iwriter = new IndexWriter(directory, config);
+			iwriter.commit();
+			while (results.hasNext()) {
+				QuerySolution row = results.next();
+				String url = row.getResource("type").getURI();
+				String label = row.getLiteral("label").getString();
+				Document doc = new Document();
+				doc.add(new StringField("url", url, Store.YES));
+				doc.add(new TextField("label", label, Store.YES));
+				iwriter.addDocument(doc);
+			}
+			iwriter.commit();
+			iwriter.close();
+			ireader = DirectoryReader.open(directory);
+		} catch (Exception e) {
+			log.error("Error while creating TripleIndex.", e);
+		}
+	}
 
-
+	@SuppressWarnings("deprecation")
 	public void createIndex(ResultSet results, String idxDirectory, String baseURI) {
 		try {
 			urlAnalyzer = new SimpleAnalyzer(LUCENE_VERSION);
 			literalAnalyzer = new LiteralAnalyzer(LUCENE_VERSION);
-
 			Map<String, Analyzer> mapping = new HashMap<String, Analyzer>();
 			mapping.put("url", urlAnalyzer);
 			mapping.put("label", literalAnalyzer);
 			mapping.put("pagerank", urlAnalyzer);
 			mapping.put("pagerank_sort", urlAnalyzer);
 			PerFieldAnalyzerWrapper perFieldAnalyzer = new PerFieldAnalyzerWrapper(urlAnalyzer, mapping);
-
 			File indexDirectory = new File(idxDirectory);
 			indexDirectory.mkdir();
 			directory = new MMapDirectory(indexDirectory);
@@ -67,9 +101,7 @@ public class IndexCreator {
 				doc.add(new FloatDocValuesField("pagerank_sort", Float.parseFloat(pagerank)));
 				iwriter.addDocument(doc);
 			}
-
 			iwriter.commit();
-
 			iwriter.close();
 			ireader = DirectoryReader.open(directory);
 		} catch (Exception e) {
@@ -77,20 +109,37 @@ public class IndexCreator {
 		}
 	}
 
-//	private void addDocumentToIndex(IndexWriter iwriter, String subject, String predicate, String object, boolean isUri)
-//			throws IOException {
-//		Document doc = new Document();
-//		log.debug(subject + " " + predicate + " " + object);
-//		doc.add(new StringField(TripleIndex.FIELD_NAME_SUBJECT, subject, Store.YES));
-//		doc.add(new StringField(TripleIndex.FIELD_NAME_PREDICATE, predicate, Store.YES));
-//		if (isUri) {
-//			doc.add(new StringField(TripleIndex.FIELD_NAME_OBJECT_URI, object, Store.YES));
-//		} else {
-//			doc.add(new TextField(TripleIndex.FIELD_NAME_OBJECT_LITERAL, object, Store.YES));
-//		}
-//		iwriter.addDocument(doc);
-//	}
-//
+	@SuppressWarnings("deprecation")
+	public void createDumpIndex(Set<Node> results, String idxDirectory, String baseURI) {
+		try {
+			urlAnalyzer = new SimpleAnalyzer(LUCENE_VERSION);
+			literalAnalyzer = new LiteralAnalyzer(LUCENE_VERSION);
+			Map<String, Analyzer> mapping = new HashMap<String, Analyzer>();
+			mapping.put("url", urlAnalyzer);
+			mapping.put("label", literalAnalyzer);
+			PerFieldAnalyzerWrapper perFieldAnalyzer = new PerFieldAnalyzerWrapper(urlAnalyzer, mapping);
+			File indexDirectory = new File(idxDirectory);
+			indexDirectory.mkdir();
+			directory = new MMapDirectory(indexDirectory);
+			IndexWriterConfig config = new IndexWriterConfig(LUCENE_VERSION, perFieldAnalyzer);
+			iwriter = new IndexWriter(directory, config);
+			iwriter.commit();
+			for (Node row : results) {
+				String url = row.getURI();
+				String label = row.getLocalName();
+				Document doc = new Document();
+				doc.add(new StringField("url", url, Store.YES));
+				doc.add(new StringField("label", label, Store.YES));
+				iwriter.addDocument(doc);
+			}
+			iwriter.commit();
+			iwriter.close();
+			ireader = DirectoryReader.open(directory);
+		} catch (Exception e) {
+			log.error("Error while creating Index.", e);
+		}
+	}
+
 	public void close() throws IOException {
 		if (ireader != null) {
 			ireader.close();
@@ -99,18 +148,5 @@ public class IndexCreator {
 			directory.close();
 		}
 	}
-//
-//	private class OnlineStatementHandler extends RDFHandlerBase {
-//		@Override
-//		public void handleStatement(Statement st) {
-//			String subject = st.getSubject().stringValue();
-//			String predicate = st.getPredicate().stringValue();
-//			String object = st.getObject().stringValue();
-//			try {
-//				addDocumentToIndex(iwriter, subject, predicate, object, st.getObject() instanceof URI);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-	
+
 }
