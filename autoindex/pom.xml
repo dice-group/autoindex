@@ -7,18 +7,15 @@
 	<packaging>jar</packaging>
 	<name>autoindex</name>
 	<url>http://maven.apache.org</url>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
 			<artifactId>json-simple</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.sparkjava</groupId>
 			<artifactId>spark-core</artifactId>
@@ -33,11 +30,6 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.21</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.jsonld-java</groupId>
-			<artifactId>jsonld-java</artifactId>
-			<version>0.8.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -94,7 +86,6 @@
 			<type>pom</type>
 			<version>2.13.0</version>
 		</dependency>
-
 		<!-- ~~~~~~~~~~~~~~~~~~~ SPARQL ~~~~~~~~~~~~~~~~~~~~~~ -->
 		<dependency>
 			<groupId>org.openrdf.sesame</groupId>
@@ -142,23 +133,18 @@
 			<artifactId>lucene-spellchecker</artifactId>
 			<version>3.6.2</version>
 		</dependency>
-
-
-
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.6.2</version>
 		</dependency>
 		<!-- ~~~~~~~~~~~~~~~~~~~ End Lucene for Indexing ~~~~~~~~~~~~~~~~~~~~~~ -->
-
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
 			<version>2.7.3</version>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
 		<testSourceDirectory>${project.basedir}/src/test</testSourceDirectory>

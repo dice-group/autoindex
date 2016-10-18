@@ -1,23 +1,26 @@
-	package org.aksw.simba.dbpedia.indexcreation;
+package org.aksw.simba.searcher.indexcreation;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.Set;
-import com.hp.hpl.jena.graph.Node;
 
-import org.aksw.simba.dbpedia.rdfdumpreader.RdfDumpReader;
+import org.aksw.simba.searcher.rdfdumpreader.RdfDumpReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.hp.hpl.jena.graph.Node;
+
+//Check comment
 public class Handler_RdfDump {
 	private static Logger log = LoggerFactory.getLogger(Handler_RdfDump.class);
 
 	public static void generateDumpIndex() {
 		try {
 			Properties prop = new Properties();
-			InputStream input = new FileInputStream("src/main/java/properties/autoindex.properties");
+			InputStream input = new FileInputStream(
+					"src/main/java/properties/autoindex.properties");
 			prop.load(input);
 			String index = prop.getProperty("index_dump");
 			log.info("The index will be here: " + index);
@@ -28,7 +31,9 @@ public class Handler_RdfDump {
 			ic.createDumpIndex(results, index, baseURI);
 			ic.close();
 		} catch (IOException e) {
-			log.error("Error while creating index. Maybe the index is corrupt now.", e);
+			log.error(
+					"Error while creating index. Maybe the index is corrupt now.",
+					e);
 		}
 
 	}

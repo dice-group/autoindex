@@ -1,4 +1,4 @@
-package org.aksw.simba.dbpedia.rdfdumpreader;
+package org.aksw.simba.searcher.rdfdumpreader;
 
 import java.util.HashSet;
 import java.util.Set;

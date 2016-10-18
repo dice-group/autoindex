@@ -1,4 +1,4 @@
-package org.aksw.simba.dbpedia.search;
+package org.aksw.simba.searcher.search;
 
 public class Result {
 	private String url;

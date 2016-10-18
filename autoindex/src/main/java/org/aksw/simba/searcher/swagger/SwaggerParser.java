@@ -1,4 +1,4 @@
-package org.aksw.simba.dbpedia.swagger;
+package org.aksw.simba.searcher.swagger;
 
 import java.util.Set;
 

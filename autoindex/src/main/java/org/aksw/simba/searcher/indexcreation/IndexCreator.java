@@ -1,4 +1,4 @@
-package org.aksw.simba.dbpedia.indexcreation;
+package org.aksw.simba.searcher.indexcreation;
 
 import java.io.File;
 import com.hp.hpl.jena.graph.Node;

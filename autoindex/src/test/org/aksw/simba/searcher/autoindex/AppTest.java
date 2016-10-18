@@ -1,4 +1,4 @@
-package org.aksw.simba.dbpedia.autoindex;
+package org.aksw.simba.searcher.autoindex;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
