@@ -1,42 +1,45 @@
 package org.aksw.simba.searcher.search;
 
-import static spark.Spark.port;
 import static spark.Spark.get;
+import static spark.Spark.port;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
-import java.net.URLDecoder;
-import org.apache.lucene.store.NIOFSDirectory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
 import org.aksw.simba.searcher.indexcreation.Handler_SparqlEndpoint;
 import org.aksw.simba.searcher.output.JsonLdOutput;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.TopFieldDocs;
-import org.apache.lucene.search.PhraseQuery;
-import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.PhraseQuery;
+import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.SortedNumericSortField;
+import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.TopFieldDocs;
+import org.apache.lucene.store.NIOFSDirectory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class Search {
 	private static Logger log = LoggerFactory.getLogger(Search.class);
@@ -183,6 +186,7 @@ public class Search {
 			e.printStackTrace();
 		}
 		Collections.sort(resultlist, new Comparator<Result>() {
+			@Override
 			public int compare(Result a, Result b) {
 				return a.getPagerank().compareTo(b.getPagerank());
 			}
@@ -241,7 +245,7 @@ public class Search {
 					}
 
 					List<Result> query_result = searcher.searchEndpoint(
-							searcher.index, searcher.searchlabel,
+								searcher.index, searcher.searchlabel,
 							searcher.limit, searcher.endpoint);
 					res.type("application/json");
 					log.info("Responding to Query");
