@@ -1,35 +1,70 @@
-package org.aksw.simba.searcher.rdfdumpreader ;
+package org.aksw.simba.searcher.rdfdumpreader;
 
-import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Set;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
+import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.system.StreamRDF;
+import org.apache.jena.riot.system.StreamRDFLib;
+
+import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.Triple;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.sparql.core.Quad;
 import com.hp.hpl.jena.util.FileManager;
 
+public class RdfDumpReader {
+	static Set<Resource> listofResources;
 
-public class RdfDumpReader extends Object {
+	public static Set<Node> getResource() {
+		FileManager.get().addLocatorClassLoader(RdfDumpReader.class.getClassLoader());
+		StreamRDFLib lib = new StreamRDFLib();
 
-    /**
-        NOTE that the file is loaded from the class-path and so requires that
-        the data-directory, as well as the directory containing the compiled
-        class, must be added to the class-path when running this and
-        subsequent examples.
-    */
-    static final String inputFileName  = "/Users/Kunal/Downloads/RDF-Model-Syntax_1.0/ms_4.1_1.rdf";
+		final Set<Node> list = new HashSet<Node>();
+		StreamRDF destination = new StreamRDF() {
 
-    public static void main (String args[]) {
-        // create an empty model
-        Model model = ModelFactory.createDefaultModel();
+			@Override
+			public void triple(Triple triple) {
+				// TODO Auto-generated method stub
+				if (!triple.getSubject().isBlank() &&list.size()<=10)
+					list.add(triple.getSubject());
+			}
 
-        InputStream in = FileManager.get().open( inputFileName );
-        if (in == null) {
-            throw new IllegalArgumentException( "File: " + inputFileName + " not found");
-        }
+			@Override
+			public void start() {
+				// TODO Auto-generated method stub
+			}
 
-        // read the RDF/XML file
-        model.read(in, "");
+			@Override
+			public void quad(Quad quad) {
+				// TODO Auto-generated method stub
+			}
 
-        // write it to standard out
-        model.write(System.out);
-    }
+			@Override
+			public void prefix(String prefix, String iri) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void finish() {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void base(String base) {
+				// TODO Auto-generated method stub
+			}
+		};
+		RDFDataMgr.parse(destination, "/Users/Kunal/Downloads/pagerank_wd_normalized.ttl");
+		return list;
+	}
+
+	public static void main(String[] args) {
+		Set<Node> inputStream = getResource();
+		for (Node triple : inputStream) {
+			System.out.println(triple.getURI());
+		}
+
+	}
+
 }
