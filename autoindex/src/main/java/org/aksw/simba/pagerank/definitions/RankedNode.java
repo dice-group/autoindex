@@ -2,15 +2,15 @@ package org.aksw.simba.pagerank.definitions;
 
 import com.hp.hpl.jena.graph.Node;
 
-public class RankedNodes {
+public class RankedNode {
 
-	public RankedNodes(Node resource) {
+	public RankedNode(Node resource) {
 		super();
 		this.resource = resource;
 		this.rank = 0.0;
 	}
 
-	public RankedNodes(Node resource, double rank) {
+	public RankedNode(Node resource, double rank) {
 		super();
 		this.resource = resource;
 		this.rank = rank;
@@ -35,5 +35,14 @@ public class RankedNodes {
 	Node resource;
 
 	double rank;
+	double numberOfTriples;
+
+	public double getNumberOfTriples() {
+		return numberOfTriples;
+	}
+
+	public void setNumberOfTriples(double numberOfTriples) {
+		this.numberOfTriples = numberOfTriples;
+	}
 
 }

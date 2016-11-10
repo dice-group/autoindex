@@ -4,8 +4,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.aksw.simba.pagerank.definitions.RankedNodes;
-import org.aksw.simba.pagerank.definitions.RankedTriples;
+import org.aksw.simba.pagerank.definitions.RankedNode;
+import org.aksw.simba.pagerank.definitions.RankedTriple;
 
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -18,18 +18,17 @@ public class ProcessedInput {
 	int numberofTriples;
 	int numberofLiterals;
 	int numberofResources;
-	List<RankedNodes> listOfResources;
-	List<RankedTriples> listOfTriples;
+	List<RankedNode> listOfResources;
+	List<RankedTriple> listOfTriples;
 
 	Model model;
 
-	/*
-	 * public static void main(String[] args) { String inputFileName =
-	 * "/Users/Kunal/Downloads/ekaw-2012-complete.rdf"; new
-	 * ProcessedInput(inputFileName);
-	 *
-	 * }
-	 */
+	public static void main(String[] args) {
+		String inputFileName = "/Users/Kunal/Downloads/ekaw-2012-complete.rdf";
+		new ProcessedInput(inputFileName);
+
+	}
+
 	public int getNumberofTriples() {
 		return numberofTriples;
 	}
@@ -64,9 +63,25 @@ public class ProcessedInput {
 		}
 		// read the RDF/XML file
 		model.read(in, "");
-		this.listOfResources = new ArrayList<RankedNodes>();
-		this.listOfTriples = new ArrayList<RankedTriples>();
+		this.listOfResources = new ArrayList<RankedNode>();
+		this.listOfTriples = new ArrayList<RankedTriple>();
 		calculateDimensions(model);
+	}
+
+	public List<RankedNode> getListOfResources() {
+		return listOfResources;
+	}
+
+	public void setListOfResources(List<RankedNode> listOfResources) {
+		this.listOfResources = listOfResources;
+	}
+
+	public List<RankedTriple> getListOfTriples() {
+		return listOfTriples;
+	}
+
+	public void setListOfTriples(List<RankedTriple> listOfTriples) {
+		this.listOfTriples = listOfTriples;
 	}
 
 	public void calculateDimensions(Model model) {
@@ -78,32 +93,24 @@ public class ProcessedInput {
 			while (iter.hasNext()) {
 
 				Triple a = iter.next().asTriple();
+				listOfResources.add(new RankedNode(a.getSubject()));
+				listOfResources.add(new RankedNode(a.getPredicate()));
+				listOfResources.add(new RankedNode(a.getObject()));
 
-				/*
-				 * System.out.println(a.getSubject().toString());
-				 * System.out.println("__________________________________");
-				 *
-				 * System.out.println(a.getPredicate().toString());
-				 * System.out.println("__________________________________");
-				 *
-				 * System.out.println(a.getObject().toString());
-				 * System.out.println("__________________________________");
-				 * System.out.println("__________________________________");
-				 * System.out.println("__________________________________");
-				 */
 				if (a.getObject().isLiteral()) {
 
 					numberofLiterals++;
 
 				}
-				numberofTriples++;
-
+				listOfTriples.add(new RankedTriple(a.getSubject(), a
+						.getPredicate(), a.getObject()));
 			}
 		} finally {
 			if (iter != null)
 				iter.close();
 		}
-		numberofResources = numberofTriples * 3;
+		numberofTriples = listOfTriples.size();
+		numberofResources = listOfResources.size();
 		System.out.println("Number of literals " + numberofLiterals);
 		System.out.println("Number of Triples " + numberofTriples);
 
