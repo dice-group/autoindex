@@ -81,7 +81,7 @@ public class PageRankComputation {
 
 				{
 					triples2Nodes.put(listofTriples.indexOf(r),
-							listofNodes.indexOf(r), 1 / 3);
+							listofNodes.indexOf(c), 1 / 3);
 				}
 
 			}
