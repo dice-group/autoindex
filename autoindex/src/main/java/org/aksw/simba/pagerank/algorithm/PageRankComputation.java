@@ -52,22 +52,20 @@ public class PageRankComputation {
 		this.initializeProbabilityDistributionMatrix();
 		DoubleMatrix initialDistributionMatrix = DoubleMatrix.zeros(
 				input.getNumberofTriples() + 1, input.getNumberofTriples() + 1);
-		DoubleMatrix zeroMatrix = DoubleMatrix.zeros(
-				input.getNumberofTriples() + 1, input.getNumberofTriples() + 1);
 		DoubleMatrix identityMatrix = DoubleMatrix.eye(input
 				.getNumberofTriples() + 1);
 		DoubleMatrix pMatrixTriplesTranspose = pMatrixTriples.transpose();
 
-		while ((initialDistributionMatrix.eq(pDistributionMatrix)) == zeroMatrix) {
+		while ( initialDistributionMatrix.eq(pDistributionMatrix).min() == 1 ) {
 
 			initialDistributionMatrix = pDistributionMatrix;
 			pDistributionMatrix = (pMatrixTriplesTranspose.muli(dampingFactor))
 					.mul(initialDistributionMatrix).add(
-							identityMatrix.muli(dampingFactor));
+						identityMatrix.muli(dampingFactor));
 
 		}
 
-		pDistributionMatrix.print();
+		//pDistributionMatrix.print();
 
 	}
 

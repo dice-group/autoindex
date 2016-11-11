@@ -5,7 +5,6 @@ import com.hp.hpl.jena.graph.Node;
 public class RankedNode {
 
 	public RankedNode(Node resource) {
-		super();
 		this.resource = resource;
 		this.rank = 0.0;
 	}

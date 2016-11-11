@@ -93,9 +93,14 @@ public class ProcessedInput {
 			while (iter.hasNext()) {
 
 				Triple a = iter.next().asTriple();
-				listOfResources.add(new RankedNode(a.getSubject()));
-				listOfResources.add(new RankedNode(a.getPredicate()));
-				listOfResources.add(new RankedNode(a.getObject()));
+				if (!listOfResources.contains(a.getSubject()))
+					listOfResources.add(new RankedNode(a.getSubject()));
+
+				if (!listOfResources.contains(a.getPredicate()))
+					listOfResources.add(new RankedNode(a.getPredicate()));
+
+				if (!listOfResources.contains(a.getObject()))
+					listOfResources.add(new RankedNode(a.getObject()));
 
 				if (a.getObject().isLiteral()) {
 
