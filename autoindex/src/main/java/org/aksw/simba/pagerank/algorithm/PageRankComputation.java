@@ -72,20 +72,18 @@ public class PageRankComputation {
 	public void createTriples2NodesMatrix(List<RankedTriple> listofTriples,
 			List<RankedNode> listofNodes) {
 
-		for (RankedNode c : listofNodes)
-
-		{
-			for (RankedTriple r : listofTriples) {
-				if (c.equals(r.getSubject()) || (c.equals(r.getPredicate()))
-						|| (c.equals(r.getObject())))
-
-				{
-					triples2Nodes.put(listofTriples.indexOf(r),
-							listofNodes.indexOf(c), 1 / 3);
-				}
-
+		for (RankedTriple r : listofTriples) {
+			  int index = listofNodes.indexOf(r.getSubject());
+			  if (index == -1) {
+			    index = listofNodes.indexOf(r.getPredicate());
+			  }
+			  if (index == -1) {
+			    index = listofNodes.indexOf(r.getObject());
+			  }
+			  if (index != -1) {
+			    triples2Nodes.put(listofTriples.indexOf(r), index, 1 / 3);
+			  }
 			}
-		}
 	}
 
 	public void calculateTriplesofNodes(List<RankedTriple> listofTriples,
@@ -123,7 +121,7 @@ public class PageRankComputation {
 
 				{
 					nodes2Triples.put(listofTriples.indexOf(r),
-							listofNodes.indexOf(r), 1 / c.getNumberOfTriples());
+							listofNodes.indexOf(c), 1 / c.getNumberOfTriples());
 				}
 
 			}
