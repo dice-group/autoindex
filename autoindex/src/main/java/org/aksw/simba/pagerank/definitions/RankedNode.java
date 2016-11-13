@@ -4,6 +4,18 @@ import com.hp.hpl.jena.graph.Node;
 
 public class RankedNode {
 
+	@Override
+	public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+
+        return true;
+    }
+
 	public RankedNode(Node resource) {
 		this.resource = resource;
 		this.rank = 0.0;

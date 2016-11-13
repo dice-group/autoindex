@@ -9,7 +9,7 @@ import org.jblas.DoubleMatrix;
 
 public class PageRankComputation {
 	ProcessedInput input = new ProcessedInput(
-			"/Users/Kunal/Downloads/ekaw-2012-complete.rdf");
+			"ekaw-2012-complete.ttl");
 	DoubleMatrix triples2Nodes;
 	DoubleMatrix nodes2Triples;
 	DoubleMatrix pMatrixTriples;
@@ -65,7 +65,7 @@ public class PageRankComputation {
 
 		}
 
-		// pDistributionMatrix.print();
+//		 pDistributionMatrix.print();
 
 	}
 
@@ -81,7 +81,9 @@ public class PageRankComputation {
 				index = listofNodes.indexOf(r.getObject());
 			}
 			if (index != -1) {
-				triples2Nodes.put(listofTriples.indexOf(r), index, 1 / 3);
+				System.out.println(listofTriples.indexOf(r) +"  "+ index+"  "+ 1.0 / 3.0);
+
+				triples2Nodes.put(listofTriples.indexOf(r), index, 1.0 / 3.0);
 			}
 		}
 	}
@@ -89,6 +91,8 @@ public class PageRankComputation {
 	public void calculateTriplesofNodes(List<RankedTriple> listofTriples,
 			List<RankedNode> listofNodes) {
 		int triplecount = 0;
+		//System.out.println(listofNodes);
+
 		for (RankedNode c : listofNodes)
 
 		{

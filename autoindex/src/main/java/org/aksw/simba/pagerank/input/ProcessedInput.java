@@ -58,7 +58,7 @@ public class ProcessedInput {
 					+ " not found");
 		}
 		// read the RDF/XML file
-		model.read(in, "");
+		model.read(in, null,"TTL");
 		this.listOfResources = new ArrayList<RankedNode>();
 		this.listOfTriples = new ArrayList<RankedTriple>();
 		calculateDimensions(model);
