@@ -31,9 +31,7 @@ public class PageRankComputation {
 				input.getNumberofTriples() + 1);
 		this.pMatrixTriples = DoubleMatrix.zeros(
 				input.getNumberofTriples() + 1, input.getNumberofTriples() + 1);
-		this.pMatrixTriples = DoubleMatrix.zeros(
-				input.getNumberofTriples() + 1, input.getNumberofTriples() + 1);
-		this.pDistributionMatrix=  DoubleMatrix.zeros(
+		this.pDistributionMatrix = DoubleMatrix.zeros(
 				input.getNumberofTriples() + 1, input.getNumberofTriples() + 1);
 		this.pDistributionInitialVal = input.getNumberofResources()
 				/ (input.getNumberofTriples() * (input.getNumberofResources() + input
@@ -45,27 +43,29 @@ public class PageRankComputation {
 	public void computePR() {
 		this.createTriples2NodesMatrix(input.getListOfTriples(),
 				input.getListOfResources());
-		this.createTriples2NodesMatrix(input.getListOfTriples(),
+		this.createNode2TripleMatrix(input.getListOfTriples(),
 				input.getListOfResources());
 		this.computeProbabilityTripleMatrix();
 
 		this.initializeProbabilityDistributionMatrix();
+		this.triples2Nodes.print();
 		DoubleMatrix initialDistributionMatrix = DoubleMatrix.zeros(
 				input.getNumberofTriples() + 1, input.getNumberofTriples() + 1);
 		DoubleMatrix identityMatrix = DoubleMatrix.eye(input
 				.getNumberofTriples() + 1);
 		DoubleMatrix pMatrixTriplesTranspose = pMatrixTriples.transpose();
+		int counter = 0;
 
-		while ( initialDistributionMatrix.eq(pDistributionMatrix).min() == 1 ) {
-
+		while (counter == 10) {
+			counter++;
 			initialDistributionMatrix = pDistributionMatrix;
 			pDistributionMatrix = (pMatrixTriplesTranspose.muli(dampingFactor))
-					.mul(initialDistributionMatrix).add(
-						identityMatrix.muli(dampingFactor));
+					.mmul(initialDistributionMatrix.add(identityMatrix
+							.muli(dampingFactor)));
 
 		}
 
-		//pDistributionMatrix.print();
+		// pDistributionMatrix.print();
 
 	}
 
@@ -73,17 +73,17 @@ public class PageRankComputation {
 			List<RankedNode> listofNodes) {
 
 		for (RankedTriple r : listofTriples) {
-			  int index = listofNodes.indexOf(r.getSubject());
-			  if (index == -1) {
-			    index = listofNodes.indexOf(r.getPredicate());
-			  }
-			  if (index == -1) {
-			    index = listofNodes.indexOf(r.getObject());
-			  }
-			  if (index != -1) {
-			    triples2Nodes.put(listofTriples.indexOf(r), index, 1 / 3);
-			  }
+			int index = listofNodes.indexOf(r.getSubject());
+			if (index == -1) {
+				index = listofNodes.indexOf(r.getPredicate());
 			}
+			if (index == -1) {
+				index = listofNodes.indexOf(r.getObject());
+			}
+			if (index != -1) {
+				triples2Nodes.put(listofTriples.indexOf(r), index, 1 / 3);
+			}
+		}
 	}
 
 	public void calculateTriplesofNodes(List<RankedTriple> listofTriples,
@@ -129,7 +129,8 @@ public class PageRankComputation {
 	}
 
 	public void computeProbabilityTripleMatrix() {
-		pMatrixTriples = triples2Nodes.mul(nodes2Triples);
+		pMatrixTriples = triples2Nodes.mmul(nodes2Triples);
+
 	}
 
 	public void initializeProbabilityDistributionMatrix() {

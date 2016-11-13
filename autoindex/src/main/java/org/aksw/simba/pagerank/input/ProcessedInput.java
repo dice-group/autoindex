@@ -23,11 +23,7 @@ public class ProcessedInput {
 
 	Model model;
 
-	public static void main(String[] args) {
-		String inputFileName = "/Users/Kunal/Downloads/ekaw-2012-complete.rdf";
-		new ProcessedInput(inputFileName);
 
-	}
 
 	public int getNumberofTriples() {
 		return numberofTriples;
