@@ -40,11 +40,12 @@ public class PageRankComputation {
 	}
 
 	public void computePR() {
-		this.createTriples2triples(input.getListOfTriples(), input.getListOfResources());
+		this.createTriples2Triples(input.getListOfTriples(), input.getListOfResources());
 		this.createTriples2NodesMatrix(input.getListOfTriples(), input.getListOfResources());
 		this.createNode2TripleMatrix(input.getListOfTriples(), input.getListOfResources());
 		this.computeProbabilityTripleMatrix();
-		log.debug(this.triples2Nodes.mmul(this.nodes2Triples).toString("%.1f", "\n{", "}", " ", ";\n "));
+		log.debug("pMatrixTriples:");
+		log.debug(this.pMatrixTriples.toString("%.1f", "\n{", "}", " ", ";\n "));
 
 		this.initializeProbabilityDistributionMatrix();
 		// this.triples2Nodes.print();
@@ -89,7 +90,7 @@ public class PageRankComputation {
 		log.debug(triples2Nodes.toString("%.1f", "\n{", "}", " ", ";\n "));
 	}
 	
-	public void createTriples2triples(List<RankedTriple> listofTriples, List<RankedNode> listofNodes) {
+	public void createTriples2Triples(List<RankedTriple> listofTriples, List<RankedNode> listofNodes) {
 		
 		this.calculateTriplesofNodes(listofTriples, listofNodes);
 
@@ -107,33 +108,27 @@ public class PageRankComputation {
 						int index = listofNodes.indexOf(new RankedNode(subject2));
 						double counter = listofNodes.get(index).getNumberOfTriples();
 						twohop_propability += 1.0/(3.0*counter);
-						System.out.println(counter);
 						}
 					if (object1.equals(object2)){
 						int index = listofNodes.indexOf(new RankedNode(object2));
 						double counter = listofNodes.get(index).getNumberOfTriples();
-						twohop_propability += 1.0/(3.0*counter);
-						System.out.println(counter);
-		
+						twohop_propability += 1.0/(3.0*counter);		
 		
 					}
 					if (subject1.equals(object2)){
 						int index = listofNodes.indexOf(new RankedNode(subject2));
 						double counter = listofNodes.get(index).getNumberOfTriples();
 						twohop_propability += 1.0/(3.0*counter);
-						System.out.println(counter);		
 					}
 					if (subject2.equals(object1)){
 						int index = listofNodes.indexOf(new RankedNode(object1));
 						double counter = listofNodes.get(index).getNumberOfTriples();
 						twohop_propability += 1.0/(3.0*counter);
-						System.out.println(counter);
 					}
 					if (predicate1.equals(predicate2)){
 						int index = listofNodes.indexOf(new RankedNode(predicate2));
 						double counter = listofNodes.get(index).getNumberOfTriples();
 						twohop_propability += 1.0/(3.0*counter);
-						System.out.println(counter);
 					}
 					triples2triples.put(listofTriples.indexOf(r1), listofTriples.indexOf(r2), twohop_propability);
 						}
