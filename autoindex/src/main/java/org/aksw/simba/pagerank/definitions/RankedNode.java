@@ -3,18 +3,28 @@ package org.aksw.simba.pagerank.definitions;
 import com.hp.hpl.jena.graph.Node;
 
 public class RankedNode {
-
 	@Override
 	public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+		if (this.hashCode() == obj.hashCode()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-        return true;
-    }
+	@Override
+	public int hashCode() {
+		Node resource = this.getResource();
+		if (resource.isURI()) {
+			return resource.getURI().hashCode();
+		} else if (resource.isLiteral()) {
+			return resource.getLiteral().hashCode();
+		} else if (resource.isBlank()) {
+			return resource.getBlankNodeId().hashCode();
+		} else {
+			return this.hashCode();
+		}
+	}
 
 	public RankedNode(Node resource) {
 		this.resource = resource;

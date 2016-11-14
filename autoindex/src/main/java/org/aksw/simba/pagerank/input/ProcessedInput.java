@@ -23,8 +23,6 @@ public class ProcessedInput {
 
 	Model model;
 
-
-
 	public int getNumberofTriples() {
 		return numberofTriples;
 	}
@@ -54,11 +52,10 @@ public class ProcessedInput {
 		this.model = ModelFactory.createDefaultModel();
 		InputStream in = FileManager.get().open(inputFileName);
 		if (in == null) {
-			throw new IllegalArgumentException("File: " + inputFileName
-					+ " not found");
+			throw new IllegalArgumentException("File: " + inputFileName + " not found");
 		}
 		// read the RDF/XML file
-		model.read(in, null,"TTL");
+		model.read(in, null, "TTL");
 		this.listOfResources = new ArrayList<RankedNode>();
 		this.listOfTriples = new ArrayList<RankedTriple>();
 		calculateDimensions(model);
@@ -89,22 +86,25 @@ public class ProcessedInput {
 			while (iter.hasNext()) {
 
 				Triple a = iter.next().asTriple();
-				if (!listOfResources.contains(a.getSubject()))
-					listOfResources.add(new RankedNode(a.getSubject()));
+				RankedNode subj = new RankedNode(a.getSubject());
+				RankedNode pred = new RankedNode(a.getPredicate());
+				RankedNode obj = new RankedNode(a.getObject());
 
-				if (!listOfResources.contains(a.getPredicate()))
-					listOfResources.add(new RankedNode(a.getPredicate()));
+				if (!listOfResources.contains(subj)) {
+					listOfResources.add(subj);
+				}
 
-				if (!listOfResources.contains(a.getObject()))
-					listOfResources.add(new RankedNode(a.getObject()));
+				if (!listOfResources.contains(pred))
+					listOfResources.add(pred);
+
+				if (!listOfResources.contains(obj))
+					listOfResources.add(obj);
 
 				if (a.getObject().isLiteral()) {
-
 					numberofLiterals++;
-
 				}
-				listOfTriples.add(new RankedTriple(a.getSubject(), a
-						.getPredicate(), a.getObject()));
+
+				listOfTriples.add(new RankedTriple(a.getSubject(), a.getPredicate(), a.getObject()));
 			}
 		} finally {
 			if (iter != null)
