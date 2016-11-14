@@ -16,4 +16,5 @@ bin/
 # Project-based exclusions
 **/.clover/
 log.out
+lubm.ttl
 ekaw-2012-complete.rdf
