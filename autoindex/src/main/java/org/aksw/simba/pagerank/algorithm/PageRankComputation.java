@@ -14,6 +14,7 @@ import com.hp.hpl.jena.graph.Node;
 public class PageRankComputation {
 	Logger log = LoggerFactory.getLogger(PageRankComputation.class);
 	ProcessedInput input = new ProcessedInput("example.ttl");
+	DoubleMatrix triples2triples;
 	DoubleMatrix triples2Nodes;
 	DoubleMatrix nodes2Triples;
 	DoubleMatrix pMatrixTriples;
@@ -28,6 +29,7 @@ public class PageRankComputation {
 
 	public PageRankComputation() {
 
+		this.triples2triples = DoubleMatrix.zeros(input.getNumberofTriples() + 1, input.getNumberofTriples() + 1);
 		this.triples2Nodes = DoubleMatrix.zeros(input.getNumberofTriples() + 1, input.getNumberofResources() + 1);
 		this.nodes2Triples = DoubleMatrix.zeros(input.getNumberofResources() + 1, input.getNumberofTriples() + 1);
 		this.pMatrixTriples = DoubleMatrix.zeros(input.getNumberofTriples() + 1, input.getNumberofTriples() + 1);
@@ -38,9 +40,11 @@ public class PageRankComputation {
 	}
 
 	public void computePR() {
+		this.createTriples2triples(input.getListOfTriples(), input.getListOfResources());
 		this.createTriples2NodesMatrix(input.getListOfTriples(), input.getListOfResources());
 		this.createNode2TripleMatrix(input.getListOfTriples(), input.getListOfResources());
 		this.computeProbabilityTripleMatrix();
+		log.debug(this.triples2Nodes.mmul(this.nodes2Triples).toString("%.1f", "\n{", "}", " ", ";\n "));
 
 		this.initializeProbabilityDistributionMatrix();
 		// this.triples2Nodes.print();
@@ -59,6 +63,9 @@ public class PageRankComputation {
 
 		//TODO output the ranking vector instead of pDistributionMatrix
 		log.debug(pDistributionMatrix.toString("%.1f", "\n{", "}", " ", ";\n "));
+		//This is the ranking vector up to a scaling factor
+		DoubleMatrix init = DoubleMatrix.ones(input.getNumberofTriples() + 1);
+		log.debug(pDistributionMatrix.mmul(init).toString("%.1f", "\n{", "}", " ", ";\n "));
 
 	}
 
@@ -80,6 +87,59 @@ public class PageRankComputation {
 		}
 		log.debug("Triples2Nodes:");
 		log.debug(triples2Nodes.toString("%.1f", "\n{", "}", " ", ";\n "));
+	}
+	
+	public void createTriples2triples(List<RankedTriple> listofTriples, List<RankedNode> listofNodes) {
+		
+		this.calculateTriplesofNodes(listofTriples, listofNodes);
+
+		for (RankedTriple r1 : listofTriples) {
+				for (RankedTriple r2: listofTriples){
+					Node subject1 = r1.getSubject();
+					Node predicate1 = r1.getPredicate();
+					Node object1 = r1.getObject();
+					Node subject2 = r2.getSubject();
+					Node predicate2 = r2.getPredicate();
+					Node object2 = r2.getObject();
+					double twohop_propability = 0.0;
+					
+					if (subject1.equals(subject2)){
+						int index = listofNodes.indexOf(new RankedNode(subject2));
+						double counter = listofNodes.get(index).getNumberOfTriples();
+						twohop_propability += 1.0/(3.0*counter);
+						System.out.println(counter);
+						}
+					if (object1.equals(object2)){
+						int index = listofNodes.indexOf(new RankedNode(object2));
+						double counter = listofNodes.get(index).getNumberOfTriples();
+						twohop_propability += 1.0/(3.0*counter);
+						System.out.println(counter);
+		
+		
+					}
+					if (subject1.equals(object2)){
+						int index = listofNodes.indexOf(new RankedNode(subject2));
+						double counter = listofNodes.get(index).getNumberOfTriples();
+						twohop_propability += 1.0/(3.0*counter);
+						System.out.println(counter);		
+					}
+					if (subject2.equals(object1)){
+						int index = listofNodes.indexOf(new RankedNode(object1));
+						double counter = listofNodes.get(index).getNumberOfTriples();
+						twohop_propability += 1.0/(3.0*counter);
+						System.out.println(counter);
+					}
+					if (predicate1.equals(predicate2)){
+						int index = listofNodes.indexOf(new RankedNode(predicate2));
+						double counter = listofNodes.get(index).getNumberOfTriples();
+						twohop_propability += 1.0/(3.0*counter);
+						System.out.println(counter);
+					}
+					triples2triples.put(listofTriples.indexOf(r1), listofTriples.indexOf(r2), twohop_propability);
+						}
+				}
+		log.debug("Triples2Triples:");
+		log.debug(triples2triples.toString("%.1f", "\n{", "}", " ", ";\n "));
 	}
 
 	public void calculateTriplesofNodes(List<RankedTriple> listofTriples, List<RankedNode> listofNodes) {
