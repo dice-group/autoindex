@@ -13,7 +13,7 @@ import com.hp.hpl.jena.graph.Node;
 
 public class PageRankComputation {
 	Logger log = LoggerFactory.getLogger(PageRankComputation.class);
-	ProcessedInput input = new ProcessedInput("example.ttl");
+	ProcessedInput input = new ProcessedInput("lubm.ttl");
 	DoubleMatrix triples2triples;
 	DoubleMatrix triples2Nodes;
 	DoubleMatrix nodes2Triples;
@@ -41,16 +41,17 @@ public class PageRankComputation {
 
 	public void computePR() {
 		this.createTriples2Triples(input.getListOfTriples(), input.getListOfResources());
-		this.createTriples2NodesMatrix(input.getListOfTriples(), input.getListOfResources());
-		this.createNode2TripleMatrix(input.getListOfTriples(), input.getListOfResources());
-		this.computeProbabilityTripleMatrix();
+		System.out.println("DONE");
+		//this.createTriples2NodesMatrix(input.getListOfTriples(), input.getListOfResources());
+		//this.createNode2TripleMatrix(input.getListOfTriples(), input.getListOfResources());
+		//this.computeProbabilityTripleMatrix();
 		log.debug("pMatrixTriples:");
 		log.debug(this.pMatrixTriples.toString("%.1f", "\n{", "}", " ", ";\n "));
 
 		this.initializeProbabilityDistributionMatrix();
 		DoubleMatrix next = DoubleMatrix.ones(input.getNumberofTriples() + 1).mul(1.0/input.getNumberofTriples());
 		DoubleMatrix identityMatrix = DoubleMatrix.ones(input.getNumberofTriples() + 1);
-		DoubleMatrix pMatrixTriplesT = pMatrixTriples.transpose();
+		DoubleMatrix pMatrixTriplesT = triples2triples.transpose();
 		double epsilon = 0.001;
 		double distance = 1;
 		DoubleMatrix previous = DoubleMatrix.zeros(input.getNumberofTriples()+1);
