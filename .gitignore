@@ -1,3 +1,19 @@
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# Eclipse 
+*.class
 .classpath
-autoindex/.classpath
+.project
+target
+.settings
+target/
+bin/
+
+#IntelliJ
+.idea/*
+
+# Project-based exclusions
+**/.clover/
+log.out
 ekaw-2012-complete.rdf
