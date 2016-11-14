@@ -54,10 +54,10 @@ public class PageRankComputation {
 		DoubleMatrix pMatrixTriplesTranspose = pMatrixTriples.transpose();
 		double epsilon = 0.0000001;
 		double distance = 1;
-		//TODO it runs and terminates but please check math 
+		//TODO it runs and terminates but please check math
 		do {
 			initialDistributionMatrix = pDistributionMatrix;
-			pDistributionMatrix = (pMatrixTriplesTranspose.muli(dampingFactor)).mmul(initialDistributionMatrix.add(identityMatrix.muli(dampingFactor)));
+			pDistributionMatrix = (pMatrixTriplesTranspose.muli(dampingFactor)).mmul(initialDistributionMatrix.add(identityMatrix.muli(1-dampingFactor)));
 			distance = initialDistributionMatrix.distance2(pDistributionMatrix);
 			log.debug("Distance: " + distance);
 		} while (distance > epsilon);
@@ -89,9 +89,9 @@ public class PageRankComputation {
 		log.debug("Triples2Nodes:");
 		log.debug(triples2Nodes.toString("%.1f", "\n{", "}", " ", ";\n "));
 	}
-	
+
 	public void createTriples2Triples(List<RankedTriple> listofTriples, List<RankedNode> listofNodes) {
-		
+
 		this.calculateTriplesofNodes(listofTriples, listofNodes);
 
 		for (RankedTriple r1 : listofTriples) {
@@ -103,7 +103,7 @@ public class PageRankComputation {
 					Node predicate2 = r2.getPredicate();
 					Node object2 = r2.getObject();
 					double twohop_propability = 0.0;
-					
+
 					if (subject1.equals(subject2)){
 						int index = listofNodes.indexOf(new RankedNode(subject2));
 						double counter = listofNodes.get(index).getNumberOfTriples();
@@ -112,8 +112,8 @@ public class PageRankComputation {
 					if (object1.equals(object2)){
 						int index = listofNodes.indexOf(new RankedNode(object2));
 						double counter = listofNodes.get(index).getNumberOfTriples();
-						twohop_propability += 1.0/(3.0*counter);		
-		
+						twohop_propability += 1.0/(3.0*counter);
+
 					}
 					if (subject1.equals(object2)){
 						int index = listofNodes.indexOf(new RankedNode(subject2));
