@@ -9,6 +9,7 @@ target
 .settings
 target/
 bin/
+index/
 
 #IntelliJ
 .idea/*
