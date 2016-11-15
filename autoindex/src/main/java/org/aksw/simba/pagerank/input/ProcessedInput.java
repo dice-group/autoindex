@@ -2,7 +2,9 @@ package org.aksw.simba.pagerank.input;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.aksw.simba.pagerank.definitions.RankedNode;
 import org.aksw.simba.pagerank.definitions.RankedTriple;
@@ -20,6 +22,8 @@ public class ProcessedInput {
 	int numberofResources;
 	List<RankedNode> listOfResources;
 	List<RankedTriple> listOfTriples;
+	Map<String, Integer> nodesToIndex;
+	Map<Integer, Integer> triplesToIndex;
 
 	Model model;
 
@@ -52,12 +56,16 @@ public class ProcessedInput {
 		this.model = ModelFactory.createDefaultModel();
 		InputStream in = FileManager.get().open(inputFileName);
 		if (in == null) {
-			throw new IllegalArgumentException("File: " + inputFileName + " not found");
+			throw new IllegalArgumentException("File: " + inputFileName
+					+ " not found");
 		}
 		// read the RDF/XML file
 		model.read(in, null, "TTL");
 		this.listOfResources = new ArrayList<RankedNode>();
 		this.listOfTriples = new ArrayList<RankedTriple>();
+		this.nodesToIndex = new HashMap<String, Integer>();
+		this.triplesToIndex = new HashMap<Integer, Integer>();
+
 		calculateDimensions(model);
 	}
 
@@ -81,6 +89,7 @@ public class ProcessedInput {
 		// create an empty model
 		numberofLiterals = 0;
 		numberofTriples = 0;
+		numberofResources = 0;
 		StmtIterator iter = model.listStatements();
 		try {
 			while (iter.hasNext()) {
@@ -92,31 +101,61 @@ public class ProcessedInput {
 
 				if (!listOfResources.contains(subj)) {
 					listOfResources.add(subj);
+					nodesToIndex.put(subj.getResource().getURI(),
+							numberofResources);
+					numberofResources++;
 				}
 
-				if (!listOfResources.contains(pred))
+				if (!listOfResources.contains(pred)) {
 					listOfResources.add(pred);
+					nodesToIndex.put(pred.getResource().getURI(),
+							numberofResources);
+					numberofResources++;
+				}
 
-				if (!listOfResources.contains(obj))
-					listOfResources.add(obj);
-
+				if (!listOfResources.contains(obj)) {
+					if (obj.getResource().isURI()) {
+						listOfResources.add(obj);
+						nodesToIndex.put(obj.getResource().getURI(),
+								numberofResources);
+						numberofResources++;
+					}
+				}
 				if (a.getObject().isLiteral()) {
 					numberofLiterals++;
 				}
 
-				listOfTriples.add(new RankedTriple(a.getSubject(), a.getPredicate(), a.getObject()));
+				RankedTriple x = new RankedTriple(a.getSubject(),
+						a.getPredicate(), a.getObject());
+				listOfTriples.add(x);
+				triplesToIndex.put(x.hashCode(), numberofTriples);
+				numberofTriples++;
 			}
 		} finally {
 			if (iter != null)
 				iter.close();
 		}
-		numberofTriples = listOfTriples.size();
-		numberofResources = listOfResources.size();
 		System.out.println("Number of literals " + numberofLiterals);
 		System.out.println("Number of Triples " + numberofTriples);
 
 		System.out.println("Number of resources " + numberofResources);
 
+	}
+
+	public Map<String, Integer> getNodesToIndex() {
+		return nodesToIndex;
+	}
+
+	public void setNodesToIndex(Map<String, Integer> nodesToIndex) {
+		this.nodesToIndex = nodesToIndex;
+	}
+
+	public Map<Integer, Integer> getTriplesToIndex() {
+		return triplesToIndex;
+	}
+
+	public void setTriplesToIndex(Map<Integer, Integer> triplesToIndex) {
+		this.triplesToIndex = triplesToIndex;
 	}
 
 	public int getNumberofResources() {
