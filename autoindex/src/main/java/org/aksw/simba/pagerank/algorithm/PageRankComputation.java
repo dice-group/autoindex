@@ -15,10 +15,8 @@ import com.hp.hpl.jena.graph.Node;
 
 public class PageRankComputation {
 	Logger log = LoggerFactory.getLogger(PageRankComputation.class);
-	ProcessedInput input = new ProcessedInput("ekaw-2012-complete.ttl");
+	ProcessedInput input = new ProcessedInput("example.ttl");
 	DoubleMatrix triples2triples;
-	DoubleMatrix triples2Nodes;
-	DoubleMatrix nodes2Triples;
 	DoubleMatrix pMatrixTriples;
 	double dampingFactor;
 	double pDistributionInitialVal;
@@ -32,62 +30,45 @@ public class PageRankComputation {
 
 	public PageRankComputation() {
 
-		this.triples2triples = DoubleMatrix.zeros(
-				input.getNumberofTriples() + 1, input.getNumberofTriples() + 1);
-		this.triples2Nodes = DoubleMatrix.zeros(input.getNumberofTriples() + 1,
-				input.getNumberofResources() + 1);
-		this.nodes2Triples = DoubleMatrix.zeros(
-				input.getNumberofResources() + 1,
-				input.getNumberofTriples() + 1);
-		this.pMatrixTriples = DoubleMatrix.zeros(
-				input.getNumberofTriples() + 1, input.getNumberofTriples() + 1);
-		this.pDistributionMatrix = DoubleMatrix.zeros(
-				input.getNumberofTriples() + 1, input.getNumberofTriples() + 1);
-		this.pDistributionInitialVal = ((double) input.getNumberofResources())
-				/ (input.getNumberofTriples() * (input.getNumberofResources() + input
-						.getNumberofTriples()));
+		this.triples2triples = DoubleMatrix.zeros(input.getNumberofTriples() + 1, input.getNumberofTriples() + 1);
+		this.pMatrixTriples = DoubleMatrix.zeros(input.getNumberofTriples() + 1, input.getNumberofTriples() + 1);
+		this.pDistributionMatrix = DoubleMatrix.zeros(input.getNumberofTriples() + 1, input.getNumberofTriples() + 1);
+		this.pDistributionInitialVal = ((double) input.getNumberofResources()) / (input.getNumberofTriples() * (input.getNumberofResources() + input.getNumberofTriples()));
 		this.dampingFactor = 1;
 		this.nodeToTripleCount = new HashMap<String, Integer>();
 
 	}
 
 	public void computePR() {
-		this.createTriples2Triples(input.getListOfTriples(),
-				input.getListOfResources(), input.getNodesToIndex(),
-				input.getTriplesToIndex());
+		this.createTriples2Triples(input.getListOfTriples(), input.getListOfResources(), input.getNodesToIndex(), input.getTriplesToIndex());
 		System.out.println("DONE");
-		// this.createTriples2NodesMatrix(input.getListOfTriples(),
-		// input.getListOfResources());
-		// this.createNode2TripleMatrix(input.getListOfTriples(),
-		// input.getListOfResources());
-		// this.computeProbabilityTripleMatrix();
 		log.debug("pMatrixTriples:");
 		log.debug(this.pMatrixTriples.toString("%.2f", "\n{", "}", " ", ";\n "));
 
 		this.initializeProbabilityDistributionMatrix();
-		DoubleMatrix next = DoubleMatrix.ones(input.getNumberofTriples() + 1)
-				.mul(1.0 / input.getNumberofTriples());
-		DoubleMatrix identityMatrix = DoubleMatrix.ones(input
-				.getNumberofTriples() + 1);
+		DoubleMatrix next = DoubleMatrix.ones(input.getNumberofTriples() + 1).mul(1.0 / input.getNumberofTriples());
+		DoubleMatrix identityMatrix = DoubleMatrix.ones(input.getNumberofTriples() + 1);
 		DoubleMatrix pMatrixTriplesT = triples2triples.transpose();
 		double epsilon = 0.001;
 		double distance = 1;
-		DoubleMatrix previous = DoubleMatrix
-				.zeros(input.getNumberofTriples() + 1);
-		// TODO it runs and terminates but please check math
+		DoubleMatrix previous = DoubleMatrix.zeros(input.getNumberofTriples() + 1);
 		do {
 			previous = next;
-			next = ((pMatrixTriplesT.mul(dampingFactor)).mmul(previous))
-					.add(identityMatrix.mul(1 - dampingFactor));
+			next = ((pMatrixTriplesT.mul(dampingFactor)).mmul(previous)).add(identityMatrix.mul(1 - dampingFactor));
 			distance = next.distance2(previous);
 			// log.debug("Distance: " + distance);
 		} while (distance > epsilon);
 
+<<<<<<< HEAD
 		// TODO output the ranking vector instead of pDistributionMatrix
 		log.debug(next.toString("%.2f", "\n{", "}", " ", ";\n "));
+=======
+>>>>>>> f79ac044a0118f2e5c11e0482a18a8fb0825593b
 		// This is the ranking vector up to a scaling factor
+		log.debug(next.toString("%.1f", "\n{", "}", " ", ";\n "));
 	}
 
+<<<<<<< HEAD
 	public void createTriples2NodesMatrix(List<RankedTriple> listofTriples,
 			List<RankedNode> listofNodes, Map<String, Integer> nodesToIndex,
 			Map<Integer, Integer> triplesToIndex) {
@@ -116,6 +97,9 @@ public class PageRankComputation {
 	public void createTriples2Triples(List<RankedTriple> listofTriples,
 			List<RankedNode> listofNodes, Map<String, Integer> nodesToIndex,
 			Map<Integer, Integer> triplesToIndex) {
+=======
+	public void createTriples2Triples(List<RankedTriple> listofTriples, List<RankedNode> listofNodes, Map<String, Integer> nodesToIndex, Map<Integer, Integer> triplesToIndex) {
+>>>>>>> f79ac044a0118f2e5c11e0482a18a8fb0825593b
 
 		this.calculateTriplesofNodes(listofTriples, listofNodes);
 
@@ -130,42 +114,35 @@ public class PageRankComputation {
 				double twohop_propability = 0.0;
 
 				if (subject1.equals(subject2)) {
-					double counter = this.nodeToTripleCount.get(subject2
-							.getURI());
+					double counter = this.nodeToTripleCount.get(subject1.getURI());
 					twohop_propability += 1.0 / (3.0 * counter);
 				}
 				if (object1.equals(object2)) {
-					double counter = this.nodeToTripleCount.get(subject2
-							.getURI());
+					double counter = this.nodeToTripleCount.get(object1.getURI());
 					twohop_propability += 1.0 / (3.0 * counter);
 
 				}
 				if (subject1.equals(object2)) {
-					double counter = this.nodeToTripleCount.get(subject2
-							.getURI());
+					double counter = this.nodeToTripleCount.get(subject1.getURI());
 					twohop_propability += 1.0 / (3.0 * counter);
 				}
 				if (subject2.equals(object1)) {
-					double counter = this.nodeToTripleCount.get(subject2
-							.getURI());
+					double counter = this.nodeToTripleCount.get(subject2.getURI());
 					twohop_propability += 1.0 / (3.0 * counter);
 				}
 				if (predicate1.equals(predicate2)) {
 
-					double counter = this.nodeToTripleCount.get(subject2
-							.getURI());
+					double counter = this.nodeToTripleCount.get(predicate1.getURI());
 					twohop_propability += 1.0 / (3.0 * counter);
 				}
-				triples2triples.put(triplesToIndex.get(r1.hashCode()),
-						triplesToIndex.get(r2.hashCode()), twohop_propability);
+				triples2triples.put(triplesToIndex.get(r1.hashCode()), triplesToIndex.get(r2.hashCode()), twohop_propability);
 			}
 		}
 		log.debug("Triples2Triples:");
 		log.debug(triples2triples.toString("%.2f", "\n{", "}", " ", ";\n "));
 	}
 
-	public void calculateTriplesofNodes(List<RankedTriple> listofTriples,
-			List<RankedNode> listofNodes) {
+	public void calculateTriplesofNodes(List<RankedTriple> listofTriples, List<RankedNode> listofNodes) {
 		int triplecount = 0;
 		for (RankedNode c : listofNodes) {
 			triplecount = 0;
@@ -174,50 +151,22 @@ public class PageRankComputation {
 				RankedNode predicate = new RankedNode(r.getPredicate());
 				RankedNode object = new RankedNode(r.getObject());
 
-				if (c.equals(subject) || c.equals(predicate)
-						|| c.equals(object)) {
+				if (c.equals(subject) || c.equals(predicate) || c.equals(object)) {
 					triplecount++;
 				}
 			}
-			log.debug("c: " + c.getResource() + " => triplecount: "
-					+ triplecount);
+			log.debug("c: " + c.getResource() + " => triplecount: " + triplecount);
 			c.setNumberOfTriples(triplecount);
 			if (!c.getResource().isLiteral())
-				this.nodeToTripleCount.put(c.getResource().getURI(),
-						triplecount);
+				this.nodeToTripleCount.put(c.getResource().getURI(), triplecount);
 		}
-	}
-
-	public void createNode2TripleMatrix(List<RankedTriple> listofTriples,
-			List<RankedNode> listofNodes, Map<String, Integer> nodesToIndex,
-			Map<Integer, Integer> triplesToIndex) {
-
-		this.calculateTriplesofNodes(listofTriples, listofNodes);
-
-		for (RankedTriple r : listofTriples) {
-			RankedNode subject = new RankedNode(r.getSubject());
-			RankedNode predicate = new RankedNode(r.getPredicate());
-			RankedNode object = new RankedNode(r.getObject());
-
-			int indexOfsub = nodesToIndex.get(subject.getResource().getURI());
-			int indexOfpred = nodesToIndex
-					.get(predicate.getResource().getURI());
-			int indexOfobj = nodesToIndex.get(object.getResource().getURI());
-			int indexOfTriple = triplesToIndex.get(r.hashCode());
-			nodes2Triples.put(indexOfsub, indexOfTriple, 1.0d / listofNodes
-					.get(indexOfsub).getNumberOfTriples());
-			nodes2Triples.put(indexOfpred, indexOfTriple, 1.0d / listofNodes
-					.get(indexOfpred).getNumberOfTriples());
-			nodes2Triples.put(indexOfobj, indexOfTriple, 1.0d / listofNodes
-					.get(indexOfobj).getNumberOfTriples());
-		}
+<<<<<<< HEAD
 		log.debug("nodes2Triples:");
 		log.debug(nodes2Triples.toString("%.2f", "\n{", "}", " ", ";\n "));
+=======
+>>>>>>> f79ac044a0118f2e5c11e0482a18a8fb0825593b
 	}
 
-	public void computeProbabilityTripleMatrix() {
-		pMatrixTriples = triples2Nodes.mmul(nodes2Triples);
-	}
 
 	public void initializeProbabilityDistributionMatrix() {
 		int row = input.getNumberofTriples();
