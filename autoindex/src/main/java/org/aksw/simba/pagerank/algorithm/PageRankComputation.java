@@ -62,7 +62,7 @@ public class PageRankComputation {
 		// input.getListOfResources());
 		// this.computeProbabilityTripleMatrix();
 		log.debug("pMatrixTriples:");
-		log.debug(this.pMatrixTriples.toString("%.1f", "\n{", "}", " ", ";\n "));
+		log.debug(this.pMatrixTriples.toString("%.2f", "\n{", "}", " ", ";\n "));
 
 		this.initializeProbabilityDistributionMatrix();
 		DoubleMatrix next = DoubleMatrix.ones(input.getNumberofTriples() + 1)
@@ -80,11 +80,11 @@ public class PageRankComputation {
 			next = ((pMatrixTriplesT.mul(dampingFactor)).mmul(previous))
 					.add(identityMatrix.mul(1 - dampingFactor));
 			distance = next.distance2(previous);
-			log.debug("Distance: " + distance);
+			// log.debug("Distance: " + distance);
 		} while (distance > epsilon);
 
 		// TODO output the ranking vector instead of pDistributionMatrix
-		log.debug(next.toString("%.1f", "\n{", "}", " ", ";\n "));
+		log.debug(next.toString("%.2f", "\n{", "}", " ", ";\n "));
 		// This is the ranking vector up to a scaling factor
 	}
 
@@ -110,7 +110,7 @@ public class PageRankComputation {
 					1.0 / 3.0);
 		}
 		log.debug("Triples2Nodes:");
-		log.debug(triples2Nodes.toString("%.1f", "\n{", "}", " ", ";\n "));
+		log.debug(triples2Nodes.toString("%.2f", "\n{", "}", " ", ";\n "));
 	}
 
 	public void createTriples2Triples(List<RankedTriple> listofTriples,
@@ -161,7 +161,7 @@ public class PageRankComputation {
 			}
 		}
 		log.debug("Triples2Triples:");
-		log.debug(triples2triples.toString("%.1f", "\n{", "}", " ", ";\n "));
+		log.debug(triples2triples.toString("%.2f", "\n{", "}", " ", ";\n "));
 	}
 
 	public void calculateTriplesofNodes(List<RankedTriple> listofTriples,
@@ -212,7 +212,7 @@ public class PageRankComputation {
 					.get(indexOfobj).getNumberOfTriples());
 		}
 		log.debug("nodes2Triples:");
-		log.debug(nodes2Triples.toString("%.1f", "\n{", "}", " ", ";\n "));
+		log.debug(nodes2Triples.toString("%.2f", "\n{", "}", " ", ";\n "));
 	}
 
 	public void computeProbabilityTripleMatrix() {
