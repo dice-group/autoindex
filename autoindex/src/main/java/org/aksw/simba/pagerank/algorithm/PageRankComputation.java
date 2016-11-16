@@ -15,7 +15,7 @@ import com.hp.hpl.jena.graph.Node;
 
 public class PageRankComputation {
 	Logger log = LoggerFactory.getLogger(PageRankComputation.class);
-	ProcessedInput input = new ProcessedInput("ekaw-2012-complete.ttl");
+	ProcessedInput input = new ProcessedInput("example.ttl");
 	DoubleMatrix triples2triples;
 	DoubleMatrix pMatrixTriples;
 	double dampingFactor;
@@ -78,16 +78,16 @@ public class PageRankComputation {
 				double twohop_propability = 0.0;
 
 				if (subject1.equals(subject2)) {
-					double counter = this.nodeToTripleCount.get(subject2.getURI());
+					double counter = this.nodeToTripleCount.get(subject1.getURI());
 					twohop_propability += 1.0 / (3.0 * counter);
 				}
 				if (object1.equals(object2)) {
-					double counter = this.nodeToTripleCount.get(subject2.getURI());
+					double counter = this.nodeToTripleCount.get(object1.getURI());
 					twohop_propability += 1.0 / (3.0 * counter);
 
 				}
 				if (subject1.equals(object2)) {
-					double counter = this.nodeToTripleCount.get(subject2.getURI());
+					double counter = this.nodeToTripleCount.get(subject1.getURI());
 					twohop_propability += 1.0 / (3.0 * counter);
 				}
 				if (subject2.equals(object1)) {
@@ -96,7 +96,7 @@ public class PageRankComputation {
 				}
 				if (predicate1.equals(predicate2)) {
 
-					double counter = this.nodeToTripleCount.get(subject2.getURI());
+					double counter = this.nodeToTripleCount.get(predicate1.getURI());
 					twohop_propability += 1.0 / (3.0 * counter);
 				}
 				triples2triples.put(triplesToIndex.get(r1.hashCode()), triplesToIndex.get(r2.hashCode()), twohop_propability);
