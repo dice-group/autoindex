@@ -22,6 +22,8 @@ public class PageRankComputation {
 	double pDistributionInitialVal;
 	DoubleMatrix pDistributionMatrix;
 	Map<String, Integer> nodeToTripleCount;
+	DoubleMatrix triples2Nodes;
+	DoubleMatrix nodes2Triples;
 
 	public static void main(String[] args) {
 		PageRankComputation p = new PageRankComputation();
@@ -59,19 +61,15 @@ public class PageRankComputation {
 			// log.debug("Distance: " + distance);
 		} while (distance > epsilon);
 
-<<<<<<< HEAD
+
 		// TODO output the ranking vector instead of pDistributionMatrix
 		log.debug(next.toString("%.2f", "\n{", "}", " ", ";\n "));
-=======
->>>>>>> f79ac044a0118f2e5c11e0482a18a8fb0825593b
-		// This is the ranking vector up to a scaling factor
-		log.debug(next.toString("%.1f", "\n{", "}", " ", ";\n "));
-	}
 
-<<<<<<< HEAD
+	}
 	public void createTriples2NodesMatrix(List<RankedTriple> listofTriples,
 			List<RankedNode> listofNodes, Map<String, Integer> nodesToIndex,
 			Map<Integer, Integer> triplesToIndex) {
+
 
 		for (RankedTriple r : listofTriples) {
 			int index = -1;
@@ -97,9 +95,7 @@ public class PageRankComputation {
 	public void createTriples2Triples(List<RankedTriple> listofTriples,
 			List<RankedNode> listofNodes, Map<String, Integer> nodesToIndex,
 			Map<Integer, Integer> triplesToIndex) {
-=======
-	public void createTriples2Triples(List<RankedTriple> listofTriples, List<RankedNode> listofNodes, Map<String, Integer> nodesToIndex, Map<Integer, Integer> triplesToIndex) {
->>>>>>> f79ac044a0118f2e5c11e0482a18a8fb0825593b
+
 
 		this.calculateTriplesofNodes(listofTriples, listofNodes);
 
@@ -160,11 +156,11 @@ public class PageRankComputation {
 			if (!c.getResource().isLiteral())
 				this.nodeToTripleCount.put(c.getResource().getURI(), triplecount);
 		}
-<<<<<<< HEAD
+
 		log.debug("nodes2Triples:");
+
 		log.debug(nodes2Triples.toString("%.2f", "\n{", "}", " ", ";\n "));
-=======
->>>>>>> f79ac044a0118f2e5c11e0482a18a8fb0825593b
+
 	}
 
 
