@@ -162,7 +162,7 @@
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.2.1</version>
 				<configuration>
-					<mainClass>org.aksw.simba.dbpedia.search.Search</mainClass>
+					<mainClass>org.aksw.simba.searcher.search.Search</mainClass>
 				</configuration>
 			</plugin>
 			<plugin>
