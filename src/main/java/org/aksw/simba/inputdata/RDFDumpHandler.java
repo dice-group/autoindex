@@ -1,8 +1,12 @@
 package org.aksw.simba.inputdata;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.aksw.simba.dataformat.Result;
+import org.aksw.simba.output.JsonSearalizer;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.system.StreamRDF;
 import org.apache.jena.riot.system.StreamRDFLib;
@@ -14,10 +18,10 @@ import com.hp.hpl.jena.sparql.core.Quad;
 import com.hp.hpl.jena.util.FileManager;
 
 public class RDFDumpHandler {
-
+	// TODO: CHANGE THE PAGERANK AND HANDLING OF TRIPLES
 	static Set<Resource> listofResources;
 
-	public static Set<Node> getResource() {
+	public static Set<Node> getResource(String dumpLocation) {
 		FileManager.get().addLocatorClassLoader(
 				RDFDumpHandler.class.getClassLoader());
 		StreamRDFLib lib = new StreamRDFLib();
@@ -57,16 +61,27 @@ public class RDFDumpHandler {
 				// TODO Auto-generated method stub
 			}
 		};
-		RDFDataMgr.parse(destination, "ekaw-2012-complete.rdf");
+		RDFDataMgr.parse(destination, dumpLocation);
 		return list;
 	}
 
-	public static void main(String[] args) {
-		Set<Node> inputStream = getResource();
+	public String getInputData(String dumpLocation) {
+		Set<Node> inputStream = getResource(dumpLocation);
+		List<Result> resultset = new ArrayList<Result>();
 		for (Node triple : inputStream) {
-			System.out.println(triple.getURI());
+			if (triple.isURI())
+				resultset.add(new Result(triple.getURI(), triple.getLocalName()
+						.toString(), 0.0));
+
 		}
 
+		JsonSearalizer ser = new JsonSearalizer();
+		return ser.getJsonOutput(resultset);
+	}
+
+	public static void main(String[] args) {
+		RDFDumpHandler rdf = new RDFDumpHandler();
+		System.out.println(rdf.getInputData("ekaw-2012-complete.rdf"));
 	}
 
 }
