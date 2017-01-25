@@ -4,16 +4,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.aksw.simba.Initializer.initializer;
 import org.aksw.simba.dataformat.ListUtility;
 import org.aksw.simba.dataformat.ResultDataStruct;
 import org.aksw.simba.importer.neo4j;
 import org.aksw.simba.index.ESIndexer;
+import org.aksw.simba.inputdata.SparqlEndpointHandler;
 import org.aksw.simba.ngram.NGramModel;
 import org.aksw.simba.propagator.propagator;
 import org.aksw.simba.serverproperties.pathvariables;
 import org.aksw.simba.urimapper.Mapper;
+import org.elasticsearch.search.SearchHit;
 import org.neo4j.graphdb.GraphDatabaseService;
 
 public class UITest {
@@ -36,16 +39,28 @@ public class UITest {
 
 	public static void main(String[] args) throws IOException {
 		ESIndexer esnode = new ESIndexer();
+		SparqlEndpointHandler spr = new SparqlEndpointHandler();
+		spr.generateInputData(spr.getBaseUri());
 		esnode.startCluster("DBpediacluster");
 		try {
 			esnode.rdfcluster("Input Data" + File.separator + "Instances"
 					+ File.separator + "allInstances-nif.ttl", "instance");
+			esnode.rdfcluster("Input Data" + File.separator + "Class"
+					+ File.separator + "allclass-nif.ttl", "class");
+			esnode.rdfcluster("Input Data" + File.separator + "Properties"
+					+ File.separator + "allProperties-nif.ttl", "properties");
 		} catch (FileNotFoundException e) {
 
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		SearchHit[] results = esnode.transportclient("8000kilometre",
+				"instance");
+		for (SearchHit hit : results) {
+			Map<String, Object> result = hit.getSource();
+			System.out.println(result.values());
 		}
 		String Query = "Bristol City FC gender";
 		NGramModel ngrams = new NGramModel();

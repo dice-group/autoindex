@@ -145,7 +145,11 @@ public class SparqlEndpointHandler {
 
 	public static void main(String[] args) {
 		SparqlEndpointHandler spr = new SparqlEndpointHandler();
-		spr.generateInputData(BASE_URI);
+		spr.generateInputData(spr.getBaseUri());
 
+	}
+
+	public String getBaseUri() {
+		return BASE_URI;
 	}
 }

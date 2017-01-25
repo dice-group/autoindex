@@ -1,0 +1,359 @@
+2017-01-25 13:45:12.174+0000 INFO  [org.neo4j]: You are using an unsupported version of the Java runtime. Please use Oracle(R) Java(TM) Runtime Environment 7 or OpenJDK(TM) 7.
+2017-01-25 13:45:12.696+0000 INFO  [org.neo4j]: No locking implementation specified, defaulting to 'community'
+2017-01-25 13:45:12.922+0000 INFO  [org.neo4j]: --- INITIALIZED diagnostics START ---
+2017-01-25 13:45:12.926+0000 INFO  [org.neo4j]: Neo4j Kernel properties:
+    store_dir=data/database
+    ephemeral=false
+2017-01-25 13:45:12.935+0000 INFO  [org.neo4j]: Diagnostics providers:
+    org.neo4j.kernel.configuration.Config
+    org.neo4j.kernel.info.DiagnosticsManager
+    SYSTEM_MEMORY
+    JAVA_MEMORY
+    OPERATING_SYSTEM
+    JAVA_VIRTUAL_MACHINE
+    CLASSPATH
+    LIBRARY_PATH
+    SYSTEM_PROPERTIES
+    NETWORK
+2017-01-25 13:45:12.935+0000 INFO  [org.neo4j]: System memory information:
+    Total Physical memory: 8.00 GB
+    Free Physical memory: 20.79 MB
+    Committed virtual memory: 5.88 GB
+    Total swap space: 2.00 GB
+    Free swap space: 1.38 GB
+2017-01-25 13:45:12.940+0000 INFO  [org.neo4j]: JVM memory information:
+    Free  memory: 541.37 MB
+    Total memory: 701.50 MB
+    Max   memory: 1.78 GB
+    Garbage Collector: PS Scavenge: [PS Eden Space, PS Survivor Space]
+    Garbage Collector: PS MarkSweep: [PS Eden Space, PS Survivor Space, PS Old Gen]
+    Memory Pool: Code Cache (Non-heap memory): committed=10.88 MB, used=10.75 MB, max=240.00 MB, threshold=0.00 B
+    Memory Pool: Metaspace (Non-heap memory): committed=37.79 MB, used=37.24 MB, max=-1.00 B, threshold=0.00 B
+    Memory Pool: Compressed Class Space (Non-heap memory): committed=5.04 MB, used=4.91 MB, max=1.00 GB, threshold=0.00 B
+    Memory Pool: PS Eden Space (Heap memory): committed=596.00 MB, used=146.07 MB, max=612.00 MB, threshold=?
+    Memory Pool: PS Survivor Space (Heap memory): committed=35.00 MB, used=0.00 B, max=35.00 MB, threshold=?
+    Memory Pool: PS Old Gen (Heap memory): committed=70.50 MB, used=14.07 MB, max=1.33 GB, threshold=0.00 B
+2017-01-25 13:45:12.942+0000 INFO  [org.neo4j]: Operating system information:
+    Operating System: Mac OS X; version: 10.12.2; arch: x86_64; cpus: 4
+    Max number of file descriptors: 10240
+    Number of open file descriptors: 627
+    Process id: 50525@eduroam-200-75.wlan.uni-bonn.de
+    Byte order: LITTLE_ENDIAN
+    Local timezone: Europe/Zurich
+2017-01-25 13:45:12.946+0000 INFO  [org.neo4j]: JVM information:
+    VM Name: Java HotSpot(TM) 64-Bit Server VM
+    VM Vendor: Oracle Corporation
+    VM Version: 25.91-b14
+    JIT compiler: HotSpot 64-Bit Tiered Compilers
+    VM Arguments: [-Dfile.encoding=UTF-8]
+2017-01-25 13:45:12.946+0000 INFO  [org.neo4j]: Java classpath:
+     [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/charsets.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/eclipse/jetty/jetty-io/9.3.2.v20150730/jetty-io-9.3.2.v20150730.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/codehaus/woodstox/stax2-api/3.1.4/stax2-api-3.1.4.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-repository-api/2.7.0-beta1/sesame-repository-api-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-sail-nativerdf/2.7.0-beta1/sesame-sail-nativerdf-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/apache/lucene/lucene-memory/3.6.2/lucene-memory-3.6.2.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/neo4j/neo4j-consistency-check/2.2.1/neo4j-consistency-check-2.2.1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-queryalgebra-model/2.7.0-beta1/sesame-queryalgebra-model-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/apache/lucene/lucene-queries/3.6.2/lucene-queries-3.6.2.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/apache/thrift/libthrift/0.9.2/libthrift-0.9.2.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/apache/lucene/lucene-analyzers/3.6.2/lucene-analyzers-3.6.2.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/com/googlecode/concurrentlinkedhashmap/concurrentlinkedhashmap-lru/1.4/concurrentlinkedhashmap-lru-1.4.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-rio-languages/4.0.0-M1/sesame-rio-languages-4.0.0-M1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-joda/2.4.5/jackson-datatype-joda-2.4.5.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-repository-sail/2.7.0-beta1/sesame-repository-sail-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/javax/ws/rs/javax.ws.rs-api/2.0.1/javax.ws.rs-api-2.0.1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/eclipse/jetty/jetty-server/9.3.2.v20150730/jetty-server-9.3.2.v20150730.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.7.3/jackson-annotations-2.7.3.jar
+     [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/sunrsasign.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/xerces/xercesImpl/2.11.0/xercesImpl-2.11.0.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/neo4j/neo4j-cypher-compiler-1.9/2.0.4/neo4j-cypher-compiler-1.9-2.0.4.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/io/swagger/swagger-jaxrs/1.5.8/swagger-jaxrs-1.5.8.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/apache/jena/jena-arq/2.13.0/jena-arq-2.13.0.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-rio-turtle/4.0.0-M1/sesame-rio-turtle-4.0.0-M1.jar
+     [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/resources.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/eclipse/jetty/jetty-webapp/9.3.2.v20150730/jetty-webapp-9.3.2.v20150730.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/eclipse/jetty/jetty-xml/9.3.2.v20150730/jetty-xml-9.3.2.v20150730.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-repository-event/2.7.0-beta1/sesame-repository-event-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-rio-trig/2.7.0-beta1/sesame-rio-trig-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/net/sf/opencsv/opencsv/2.3/opencsv-2.3.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/com/jayway/jsonpath/json-path/2.2.0/json-path-2.2.0.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-http-protocol/2.7.0-beta1/sesame-http-protocol-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/commons-validator/commons-validator/1.4.0/commons-validator-1.4.0.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/elasticsearch/elasticsearch/0.20.6/elasticsearch-0.20.6.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/neo4j/neo4j-primitive-collections/2.2.1/neo4j-primitive-collections-2.2.1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-queryresultio-binary/2.7.0-beta1/sesame-queryresultio-binary-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-repository-sparql/2.7.0-beta1/sesame-repository-sparql-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/javassist/javassist/3.19.0-GA/javassist-3.19.0-GA.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-repository-manager/2.7.0-beta1/sesame-repository-manager-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-rio-rdfxml/2.7.0-beta1/sesame-rio-rdfxml-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/neo4j/neo4j-jmx/2.2.1/neo4j-jmx-2.2.1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-queryresultio-sparqljson/2.7.0-beta1/sesame-queryresultio-sparqljson-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/apache/lucene/lucene-core/3.6.2/lucene-core-3.6.2.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/commons-dbcp/commons-dbcp/1.3/commons-dbcp-1.3.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.4.5/jackson-dataformat-yaml-2.4.5.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-repository-dataset/2.7.0-beta1/sesame-repository-dataset-2.7.0-beta1.jar
+     [loader.1] file:/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/ext/jfxrt.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1.jar
+     [loader.1] file:/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/ext/sunpkcs11.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-queryparser-serql/2.7.0-beta1/sesame-queryparser-serql-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-queryresultio-sparqlxml/2.7.0-beta1/sesame-queryresultio-sparqlxml-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/apache/httpcomponents/httpclient-cache/4.2.6/httpclient-cache-4.2.6.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/commons-beanutils/commons-beanutils/1.8.3/commons-beanutils-1.8.3.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/eclipse/jetty/websocket/websocket-common/9.3.2.v20150730/websocket-common-9.3.2.v20150730.jar
+     [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/jsse.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/apache/commons/commons-lang3/3.2.1/commons-lang3-3.2.1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/scala-lang/scala-reflect/2.10.5/scala-reflect-2.10.5.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.4.5/jackson-core-2.4.5.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/neo4j/neo4j-unsafe/2.2.1/neo4j-unsafe-2.2.1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/com/github/jsonld-java/jsonld-java/0.5.1/jsonld-java-0.5.1.jar
+     [loader.1] file:/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/ext/localedata.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/log4j/log4j/1.2.17/log4j-1.2.17.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-queryparser-sparql/2.7.0-beta1/sesame-queryparser-sparql-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/apache/jena/jena-iri/1.1.2/jena-iri-1.1.2.jar
+     [loader.1] file:/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/ext/sunjce_provider.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/parboiled/parboiled-core/1.1.7/parboiled-core-1.1.7.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/apache/jena/jena-tdb/1.1.2/jena-tdb-1.1.2.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-rio-ntriples/2.7.0-beta1/sesame-rio-ntriples-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/io/swagger/swagger-core/1.5.8/swagger-core-1.5.8.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/neo4j/neo4j-graph-algo/2.2.1/neo4j-graph-algo-2.2.1.jar
+     [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/rt.jar
+     [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/jfr.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/apache/httpcomponents/httpclient/4.2.6/httpclient-4.2.6.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/json/json/20160212/json-20160212.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/net/minidev/accessors-smart/1.1/accessors-smart-1.1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/io/swagger/swagger-models/1.5.8/swagger-models-1.5.8.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/com/sparkjava/spark-core/2.3/spark-core-2.3.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/neo4j/neo4j-graph-matching/2.2.1/neo4j-graph-matching-2.2.1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/apache/httpcomponents/httpcore/4.2.5/httpcore-4.2.5.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-util/4.0.0-M1/sesame-util-4.0.0-M1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/eclipse/jetty/websocket/websocket-servlet/9.3.2.v20150730/websocket-servlet-9.3.2.v20150730.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/yaml/snakeyaml/1.12/snakeyaml-1.12.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/eclipse/jetty/jetty-security/9.3.2.v20150730/jetty-security-9.3.2.v20150730.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-xml/2.4.5/jackson-dataformat-xml-2.4.5.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/com/fasterxml/jackson/jaxrs/jackson-jaxrs-json-provider/2.4.5/jackson-jaxrs-json-provider-2.4.5.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/reflections/reflections/0.9.10/reflections-0.9.10.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/com/google/code/gson/gson/2.6.2/gson-2.6.2.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/commons-io/commons-io/2.4/commons-io-2.4.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/eclipse/jetty/jetty-util/9.3.2.v20150730/jetty-util-9.3.2.v20150730.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/scala-lang/scala-library/2.10.5/scala-library-2.10.5.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/neo4j/neo4j-kernel/2.2.1/neo4j-kernel-2.2.1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/neo4j/neo4j-udc/2.2.1/neo4j-udc-2.2.1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/commons-pool/commons-pool/1.5.4/commons-pool-1.5.4.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/neo4j/neo4j-cypher-compiler-2.1/2.1.7/neo4j-cypher-compiler-2.1-2.1.7.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/slf4j/jcl-over-slf4j/1.7.6/jcl-over-slf4j-1.7.6.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/neo4j/neo4j/2.2.1/neo4j-2.2.1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-queryalgebra-evaluation/2.7.0-beta1/sesame-queryalgebra-evaluation-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/eclipse/jetty/websocket/websocket-client/9.3.2.v20150730/websocket-client-9.3.2.v20150730.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-rio-trix/2.7.0-beta1/sesame-rio-trix-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-rio-nquads/2.7.0-beta1/sesame-rio-nquads-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/apache/jena/jena-core/2.13.0/jena-core-2.13.0.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/eclipse/jetty/jetty-http/9.3.2.v20150730/jetty-http-9.3.2.v20150730.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-repository-contextaware/2.7.0-beta1/sesame-repository-contextaware-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/eclipse/jetty/websocket/websocket-api/9.3.2.v20150730/websocket-api-9.3.2.v20150730.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/neo4j/neo4j-cypher/2.2.1/neo4j-cypher-2.2.1.jar
+     [loader.1] file:/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/ext/sunec.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-query/2.7.0-beta1/sesame-query-2.7.0-beta1.jar
+     [loader.1] file:/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/ext/cldrdata.jar
+     [classpath + loader.0] file:/Users/Kunal/workspace/autoindex/target/classes/
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-http-client/2.7.0-beta1/sesame-http-client-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/parboiled/parboiled-scala_2.10/1.1.7/parboiled-scala_2.10-1.1.7.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-rio-n3/2.7.0-beta1/sesame-rio-n3-2.7.0-beta1.jar
+     [loader.1] file:/System/Library/Java/Extensions/MRJToolkit.jar
+     [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/jce.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/neo4j/neo4j-csv/2.2.1/neo4j-csv-2.2.1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-queryresultio-api/2.7.0-beta1/sesame-queryresultio-api-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/neo4j/neo4j-cypher-compiler-2.2/2.2.1/neo4j-cypher-compiler-2.2-2.2.1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/neo4j/neo4j-io/2.2.1/neo4j-io-2.2.1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.4.5/jackson-databind-2.4.5.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/commons-codec/commons-codec/1.4/commons-codec-1.4.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/com/sparkjava/spark-template-freemarker/2.3/spark-template-freemarker-2.3.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/freemarker/freemarker/2.3.19/freemarker-2.3.19.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/net/minidev/json-smart/2.2.1/json-smart-2.2.1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-model/4.0.0-M1/sesame-model-4.0.0-M1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/com/fasterxml/jackson/jaxrs/jackson-jaxrs-base/2.4.5/jackson-jaxrs-base-2.4.5.jar
+     [loader.1] file:/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/ext/zipfs.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-queryresultio-text/2.7.0-beta1/sesame-queryresultio-text-2.7.0-beta1.jar
+     [loader.1] file:/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/ext/jaccess.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/eclipse/jetty/websocket/websocket-server/9.3.2.v20150730/websocket-server-9.3.2.v20150730.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/neo4j/neo4j-lucene-index/2.2.1/neo4j-lucene-index-2.2.1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-sail-api/2.7.0-beta1/sesame-sail-api-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/xml-apis/xml-apis/1.4.01/xml-apis-1.4.01.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/neo4j/neo4j-cypher-compiler-2.0/2.0.4/neo4j-cypher-compiler-2.0-2.0.4.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/com/google/guava/guava/18.0/guava-18.0.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-rio-api/4.0.0-M1/sesame-rio-api-4.0.0-M1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-queryparser-api/2.7.0-beta1/sesame-queryparser-api-2.7.0-beta1.jar
+     [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/classes
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/commons-digester/commons-digester/1.8/commons-digester-1.8.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-rio-datatypes/4.0.0-M1/sesame-rio-datatypes-4.0.0-M1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-repository-http/2.7.0-beta1/sesame-repository-http-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/io/swagger/swagger-annotations/1.5.8/swagger-annotations-1.5.8.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/com/google/code/findbugs/annotations/2.0.1/annotations-2.0.1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-sail-memory/2.7.0-beta1/sesame-sail-memory-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-rio-binary/2.7.0-beta1/sesame-rio-binary-2.7.0-beta1.jar
+     [loader.1] file:/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/ext/dnsns.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-sail-rdbms/2.7.0-beta1/sesame-sail-rdbms-2.7.0-beta1.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/eclipse/jetty/jetty-servlet/9.3.2.v20150730/jetty-servlet-9.3.2.v20150730.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/slf4j/slf4j-log4j12/1.7.21/slf4j-log4j12-1.7.21.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/joda-time/joda-time/2.2/joda-time-2.2.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/jblas/jblas/1.2.4/jblas-1.2.4.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/ow2/asm/asm/5.0.3/asm-5.0.3.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/com/fasterxml/jackson/module/jackson-module-jaxb-annotations/2.4.5/jackson-module-jaxb-annotations-2.4.5.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/apache/lucene/lucene-highlighter/3.6.2/lucene-highlighter-3.6.2.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/apache/commons/commons-csv/1.0/commons-csv-1.0.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-runtime/2.7.0-beta1/sesame-runtime-2.7.0-beta1.jar
+     [loader.1] file:/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib/ext/nashorn.jar
+     [classpath + loader.0] file:/Users/Kunal/.m2/repository/org/openrdf/sesame/sesame-sail-inferencer/2.7.0-beta1/sesame-sail-inferencer-2.7.0-beta1.jar
+2017-01-25 13:45:12.955+0000 INFO  [org.neo4j]: Library path:
+    /Users/Kunal/Library/Java/Extensions
+    /Library/Java/Extensions
+    /Network/Library/Java/Extensions
+    /System/Library/Java/Extensions
+    /usr/lib/java
+    /Users/Kunal/workspace/autoindex
+2017-01-25 13:45:12.955+0000 INFO  [org.neo4j]: System.properties:
+    sun.boot.library.path = /Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib
+    user.country.format = DE
+    gopherProxySet = false
+    path.separator = :
+    file.encoding.pkg = sun.io
+    user.country = US
+    sun.java.launcher = SUN_STANDARD
+    sun.os.patch.level = unknown
+    user.dir = /Users/Kunal/workspace/autoindex
+    sun.jnu.encoding = UTF-8
+    sun.nio.ch.bugLevel = 
+    sun.management.compiler = HotSpot 64-Bit Tiered Compilers
+    user.home = /Users/Kunal
+    user.timezone = Europe/Zurich
+    file.encoding = UTF-8
+    user.name = Kunal
+    sun.java.command = org.aksw.simba.output.UITest
+    sun.arch.data.model = 64
+    user.language = en
+    awt.toolkit = sun.lwawt.macosx.LWCToolkit
+    file.separator = /
+    sun.io.unicode.encoding = UnicodeBig
+    sun.cpu.endian = little
+    sun.cpu.isalist = 
+2017-01-25 13:45:12.955+0000 INFO  [org.neo4j]: Network information:
+    Interface utun0:
+        address: fe80:0:0:0:9144:227c:3b76:143d%utun0
+    Interface awdl0:
+        address: fe80:0:0:0:b090:3eff:fec3:472a%awdl0
+    Interface en0:
+        address: fe80:0:0:0:18d8:d57d:d87c:4cc4%en0
+        address: 131.220.200.75
+    Interface lo0:
+        address: fe80:0:0:0:0:0:0:1%lo0
+        address: 0:0:0:0:0:0:0:1
+        address: 127.0.0.1
+2017-01-25 13:45:12.956+0000 INFO  [org.neo4j]: --- INITIALIZED diagnostics END ---
+2017-01-25 13:45:13.150+0000 INFO  [org.neo4j]: Creating new db @ data/database/neostore
+2017-01-25 13:45:13.659+0000 INFO  [org.neo4j]: No lucene scan store index found, this might just be first use. Preparing to rebuild.
+2017-01-25 13:45:13.680+0000 INFO  [org.neo4j]: No lucene scan store index found, this might just be first use. Preparing to rebuild.
+2017-01-25 13:45:13.687+0000 INFO  [org.neo4j]: Opened logical log [data/database/neostore.transaction.db.0] version=0, lastTxId=1 (clean)
+2017-01-25 13:45:13.696+0000 INFO  [org.neo4j]: Missing counts store, rebuilding it.
+2017-01-25 13:45:13.891+0000 INFO  [org.neo4j]: Rebuilding lucene scan store, this may take a while
+2017-01-25 13:45:13.896+0000 INFO  [org.neo4j]: Lucene scan store rebuilt (roughly -1 nodes)
+2017-01-25 13:45:13.905+0000 INFO  [org.neo4j]: Kernel health set to OK
+2017-01-25 13:45:15.218+0000 INFO  [org.neo4j]: --- STARTED diagnostics for KernelDiagnostics:Versions START ---
+2017-01-25 13:45:15.218+0000 INFO  [org.neo4j]: Graph Database: org.neo4j.kernel.EmbeddedGraphDatabase StoreId{creationTime=1485351913150, randomId=-6702310386800968288, storeVersion=14969031248344582, upgradeTime=1485351913150, upgradeId=1}
+2017-01-25 13:45:15.218+0000 INFO  [org.neo4j]: Kernel version: Neo4j - Graph Database Kernel (neo4j-kernel), version: 2.2.1
+2017-01-25 13:45:15.218+0000 INFO  [org.neo4j]: Neo4j component versions:
+2017-01-25 13:45:15.222+0000 INFO  [org.neo4j]:   Neo4j - Cypher Compiler 1.9 (neo4j-cypher-compiler-1.9), version: 2.0.4; revision: 2.0.4:2.0-maint:130/4a7d10bc274a5d26a180bbe9df25100e8a694748
+2017-01-25 13:45:15.222+0000 INFO  [org.neo4j]:   Neo4j - Cypher Compiler 2.2 (neo4j-cypher-compiler-2.2), version: 2.2.1; revision: 2.2.1:2.2:904/c23258e99edbfff137bea0d83af56c79a46bca31
+2017-01-25 13:45:15.222+0000 INFO  [org.neo4j]:   Neo4j - Consistency Checker (neo4j-consistency-check), version: 2.2.1; revision: 2.2.1:2.2:904/c23258e99edbfff137bea0d83af56c79a46bca31
+2017-01-25 13:45:15.222+0000 INFO  [org.neo4j]:   Neo4j - Graph Database Kernel (neo4j-kernel), version: 2.2.1; revision: 2.2.1:2.2:904/c23258e99edbfff137bea0d83af56c79a46bca31
+2017-01-25 13:45:15.222+0000 INFO  [org.neo4j]:   Neo4j - Cypher Compiler 2.1 (neo4j-cypher-compiler-2.1), version: 2.1.7; revision: 2.1.7:2.1-maint:649/ed233fc1087f4549d1956b8ec4a504fe2f13a446
+2017-01-25 13:45:15.223+0000 INFO  [org.neo4j]:   Neo4j - Community (neo4j), version: 2.2.1; revision: 2.2.1:2.2:904/c23258e99edbfff137bea0d83af56c79a46bca31
+2017-01-25 13:45:15.223+0000 INFO  [org.neo4j]:   neo4j-udc, version: 2.2.1; revision: 2.2.1:2.2:904/c23258e99edbfff137bea0d83af56c79a46bca31
+2017-01-25 13:45:15.223+0000 INFO  [org.neo4j]:   Neo4j - Lucene Index (neo4j-lucene-index), version: 2.2.1; revision: 2.2.1:2.2:904/c23258e99edbfff137bea0d83af56c79a46bca31
+2017-01-25 13:45:15.223+0000 INFO  [org.neo4j]:   Neo4j - Cypher Compiler 2.0 (neo4j-cypher-compiler-2.0), version: 2.0.4; revision: 2.0.4:2.0-maint:130/4a7d10bc274a5d26a180bbe9df25100e8a694748
+2017-01-25 13:45:15.223+0000 INFO  [org.neo4j]:   Neo4j - Graph Matching (neo4j-graph-matching), version: 2.2.1; revision: 2.2.1:2.2:904/c23258e99edbfff137bea0d83af56c79a46bca31
+2017-01-25 13:45:15.223+0000 INFO  [org.neo4j]:   Neo4j - JMX support (neo4j-jmx), version: 2.2.1; revision: 2.2.1:2.2:904/c23258e99edbfff137bea0d83af56c79a46bca31
+2017-01-25 13:45:15.223+0000 INFO  [org.neo4j]:   Neo4j - Cypher (neo4j-cypher), version: 2.2.1; revision: 2.2.1:2.2:904/c23258e99edbfff137bea0d83af56c79a46bca31
+2017-01-25 13:45:15.223+0000 INFO  [org.neo4j]:   Neo4j - Graph Algorithms (neo4j-graph-algo), version: 2.2.1; revision: 2.2.1:2.2:904/c23258e99edbfff137bea0d83af56c79a46bca31
+2017-01-25 13:45:15.223+0000 INFO  [org.neo4j]: --- STARTED diagnostics for KernelDiagnostics:Versions END ---
+2017-01-25 13:45:15.224+0000 INFO  [org.neo4j]: --- STARTED diagnostics for NEO_STORE_VERSIONS START ---
+2017-01-25 13:45:15.225+0000 INFO  [org.neo4j]: Store versions:
+    Store versions:
+      NeoStore v0.A.5
+      SchemaStore v0.A.5
+      NodeStore v0.A.5
+      RelationshipStore v0.A.5
+      RelationshipTypeStore v0.A.5
+      LabelTokenStore v0.A.5
+      PropertyStore v0.A.5
+      PropertyIndexStore v0.A.5
+      StringPropertyStore v0.A.5
+      ArrayPropertyStore v0.A.5
+      RelationshipGroupStore v0.A.5
+2017-01-25 13:45:15.225+0000 INFO  [org.neo4j]: --- STARTED diagnostics for NEO_STORE_VERSIONS END ---
+2017-01-25 13:45:15.225+0000 INFO  [org.neo4j]: --- STARTED diagnostics for NEO_STORE_ID_USAGE START ---
+2017-01-25 13:45:15.225+0000 INFO  [org.neo4j]: Id usage:
+    Id usage:
+      SchemaStore: used=1 high=0
+      NodeStore: used=0 high=-1
+      RelationshipStore: used=0 high=-1
+      RelationshipTypeStore: used=0 high=-1
+      LabelTokenStore: used=0 high=-1
+      PropertyStore: used=0 high=-1
+      PropertyIndexStore: used=0 high=-1
+      StringPropertyStore: used=1 high=0
+      ArrayPropertyStore: used=1 high=0
+      RelationshipGroupStore: used=1 high=0
+2017-01-25 13:45:15.226+0000 INFO  [org.neo4j]: --- STARTED diagnostics for NEO_STORE_ID_USAGE END ---
+2017-01-25 13:45:15.226+0000 INFO  [org.neo4j]: --- STARTED diagnostics for KernelDiagnostics:StoreFiles START ---
+2017-01-25 13:45:15.227+0000 INFO  [org.neo4j]: Disk space on partition (Total / Free / Free %): 499418034176 / 405166456832 / 81
+Storage files: (filename : modification date - size)
+      index:
+      - Total: 2017-01-25T14:45:13+0100 - 0.00 B
+      lock: 2017-01-25T14:45:13+0100 - 0.00 B
+      messages.log: 2017-01-25T14:45:15+0100 - 29.62 kB
+      neostore: 2017-01-25T14:45:13+0100 - 99.00 B
+      neostore.counts.db.a: 2017-01-25T14:45:13+0100 - 114.00 B
+      neostore.id: 2017-01-25T14:45:13+0100 - 9.00 B
+      neostore.labeltokenstore.db: 2017-01-25T14:45:13+0100 - 0.00 B
+      neostore.labeltokenstore.db.id: 2017-01-25T14:45:13+0100 - 9.00 B
+      neostore.labeltokenstore.db.names: 2017-01-25T14:45:13+0100 - 38.00 B
+      neostore.labeltokenstore.db.names.id: 2017-01-25T14:45:13+0100 - 9.00 B
+      neostore.nodestore.db: 2017-01-25T14:45:13+0100 - 0.00 B
+      neostore.nodestore.db.id: 2017-01-25T14:45:13+0100 - 9.00 B
+      neostore.nodestore.db.labels: 2017-01-25T14:45:13+0100 - 68.00 B
+      neostore.nodestore.db.labels.id: 2017-01-25T14:45:13+0100 - 9.00 B
+      neostore.propertystore.db: 2017-01-25T14:45:13+0100 - 0.00 B
+      neostore.propertystore.db.arrays: 2017-01-25T14:45:13+0100 - 128.00 B
+      neostore.propertystore.db.arrays.id: 2017-01-25T14:45:13+0100 - 9.00 B
+      neostore.propertystore.db.id: 2017-01-25T14:45:13+0100 - 9.00 B
+      neostore.propertystore.db.index: 2017-01-25T14:45:13+0100 - 0.00 B
+      neostore.propertystore.db.index.id: 2017-01-25T14:45:13+0100 - 9.00 B
+      neostore.propertystore.db.index.keys: 2017-01-25T14:45:13+0100 - 38.00 B
+      neostore.propertystore.db.index.keys.id: 2017-01-25T14:45:13+0100 - 9.00 B
+      neostore.propertystore.db.strings: 2017-01-25T14:45:13+0100 - 128.00 B
+      neostore.propertystore.db.strings.id: 2017-01-25T14:45:13+0100 - 9.00 B
+      neostore.relationshipgroupstore.db: 2017-01-25T14:45:13+0100 - 25.00 B
+      neostore.relationshipgroupstore.db.id: 2017-01-25T14:45:13+0100 - 9.00 B
+      neostore.relationshipstore.db: 2017-01-25T14:45:13+0100 - 0.00 B
+      neostore.relationshipstore.db.id: 2017-01-25T14:45:13+0100 - 9.00 B
+      neostore.relationshiptypestore.db: 2017-01-25T14:45:13+0100 - 0.00 B
+      neostore.relationshiptypestore.db.id: 2017-01-25T14:45:13+0100 - 9.00 B
+      neostore.relationshiptypestore.db.names: 2017-01-25T14:45:13+0100 - 38.00 B
+      neostore.relationshiptypestore.db.names.id: 2017-01-25T14:45:13+0100 - 9.00 B
+      neostore.schemastore.db: 2017-01-25T14:45:13+0100 - 64.00 B
+      neostore.schemastore.db.id: 2017-01-25T14:45:13+0100 - 9.00 B
+      neostore.transaction.db.0: 2017-01-25T14:45:13+0100 - 16.00 B
+      schema:
+        label:
+          lucene:
+            write.lock: 2017-01-25T14:45:13+0100 - 0.00 B
+          - Total: 2017-01-25T14:45:13+0100 - 0.00 B
+        - Total: 2017-01-25T14:45:13+0100 - 0.00 B
+      - Total: 2017-01-25T14:45:13+0100 - 0.00 B
+      store_lock: 2017-01-25T14:45:13+0100 - 0.00 B
