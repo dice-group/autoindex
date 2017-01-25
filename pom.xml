@@ -16,6 +16,12 @@
 			<artifactId>json-simple</artifactId>
 			<version>1.1.1</version>
 		</dependency>
+		<!-- Graph database -->
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j</artifactId>
+			<version>2.2.1</version>
+		</dependency>
 		<dependency>
 			<groupId>com.sparkjava</groupId>
 			<artifactId>spark-core</artifactId>
@@ -119,7 +125,7 @@
 			<version>18.0</version>
 		</dependency>
 		<!-- ~~~~~~~~~~~~~~~~~~~ End Cache for TripleIndex ~~~~~~~~~~~~~~~~~~~~~~ -->
-		
+
 
 		<dependency>
 			<groupId>com.sparkjava</groupId>
