@@ -12,8 +12,10 @@ bin/
 index/
 Input Data/
 
-#IntelliJ
-.idea/*
+data/
+log.out
+data/DBpediacluster
+*.ttl
 
 # Project-based exclusions
 **/.clover/
