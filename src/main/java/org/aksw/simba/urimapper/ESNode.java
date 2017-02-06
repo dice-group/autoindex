@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.apache.jena.graph.Triple;
+import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.system.StreamRDF;
+import org.apache.jena.riot.system.StreamRDFBase;
 import org.elasticsearch.action.bulk.BulkProcessor;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -22,15 +26,12 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.ByteSizeUnit;
 import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeValidationException;
 import org.elasticsearch.search.SearchHit;
-import org.openrdf.model.Statement;
-import org.openrdf.rio.RDFParser;
-import org.openrdf.rio.helpers.AbstractRDFHandler;
-import org.openrdf.rio.turtle.TurtleParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,32 +41,28 @@ public class ESNode implements IndexerInterface {
 	private Client client;
 	// this may lead to corruption in multi thread environment
 	private String indexname;
-	private String baseURI;
 	private BulkProcessor bulkProcessor;
 
 	public void startCluster(String clustername) {
 		// /* Initialization of cluster */
-		 Settings settings = Settings.builder()
-				 .put("index.analysis.analyzer.my_ngram_analyzer.type", "custom")
-                 .put("index.analysis.analyzer.my_ngram_analyzer.tokenizer", "my_ngram_tokenizer")
-                 .put("index.analysis.tokenizer.my_ngram_tokenizer.type", "nGram")
-                 .put("index.analysis.tokenizer.my_ngram_tokenizer.min_gram", "1")
-                 .put("index.analysis.tokenizer.my_ngram_tokenizer.max_gram", "10")
-                 .putArray("index.analysis.tokenizer.my_ngram_tokenizer.token_chars", new String[0]).build();
-		
-		 try {
-		 this.node = new Node(settings).start();
-		 } catch (NodeValidationException e) {
-		 // TODO Auto-generated catch block
-		 e.printStackTrace();
-		 }
+		Settings settings = Settings.builder()
+		                            .put("index.analysis.analyzer.my_ngram_analyzer.type", "custom")
+		                            .put("index.analysis.analyzer.my_ngram_analyzer.tokenizer", "my_ngram_tokenizer")
+		                            .put("index.analysis.tokenizer.my_ngram_tokenizer.type", "nGram")
+		                            .put("index.analysis.tokenizer.my_ngram_tokenizer.min_gram", "1")
+		                            .put("index.analysis.tokenizer.my_ngram_tokenizer.max_gram", "10")
+		                            .putArray("index.analysis.tokenizer.my_ngram_tokenizer.token_chars", new String[0])
+		                            .build();
 
+		try {
+			this.node = new Node(settings).start();
+		} catch (NodeValidationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		/* Starting the central server */
 		this.client = this.node.client();
-
-		/* Base URI for Parsing */
-		this.baseURI = "http://dbpedia.org";
 
 		// ONLY WORKS in LOCAL indizes
 		// if (!(new File(clustername).exists())) {
@@ -106,38 +103,34 @@ public class ESNode implements IndexerInterface {
 
 		/* Parsing turtlefile */
 		log.info("Start parsing: " + labelspath);
-		RDFParser parser = new TurtleParser();
-		OnlineStatementHandler osh = new OnlineStatementHandler();
-		parser.setRDFHandler(osh);
-		parser.parse(new FileReader(labelspath), baseURI);
-		log.info("Finished parsing: " + labelspath);
+
+		StreamRDF destination = new TripleToIndex();
+		RDFDataMgr.parse(destination, labelspath);
+
 		// }
 	}
 
-	private void addToIndex(String subject, String objectString) throws IOException {
-		/* Indexing the data in the central server */
-		bulkProcessor.add(new IndexRequest(indexname, "mappings").source(jsonBuilder().startObject()
-		                                                                              .field("uri", subject)
-		                                                                              .field("label", objectString)
-		                                                                              .endObject()));
+	class TripleToIndex extends StreamRDFBase {
+		@Override
+		public void triple(Triple triple) {
+			addToIndex(triple.getSubject()
+			                 .getURI(), triple.getObject()
+			                                  .getURI());
+		}
 	}
 
-	private class OnlineStatementHandler extends AbstractRDFHandler {
-		@SuppressWarnings("unused")
-		public void handleStatement(Statement st) {
-			String subject = st.getSubject()
-			                   .stringValue();
-			String predicate = st.getPredicate()
-			                     .stringValue();
-			String object = st.getObject()
-			                  .stringValue();
-			try {
-				addToIndex(subject, object);
-			} catch (IOException e) {
-				log.error("Could not parse triple: " + st.toString(), e);
-			}
-		}
+	private void addToIndex(String subject, String objectString) {
+		/* Indexing the data in the central server */
+		try {
+			XContentBuilder endObject = jsonBuilder().startObject()
+			                         .field("uri", subject)
+			                         .field("label", objectString)
+			                         .endObject();
+			bulkProcessor.add(new IndexRequest(indexname, "mappings").source(endObject));
 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void datatypeindex(String filepath, String indexname) throws FileNotFoundException, IOException {

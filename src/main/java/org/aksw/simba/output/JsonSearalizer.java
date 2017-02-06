@@ -12,8 +12,8 @@ public class JsonSearalizer {
 	String json;
 
 	public JsonSearalizer() {
-		// TODO Auto-generated constructor stub
-		gson = new GsonBuilder().setPrettyPrinting().create();
+		gson = new GsonBuilder().setPrettyPrinting()
+		                        .create();
 		json = null;
 	}
 

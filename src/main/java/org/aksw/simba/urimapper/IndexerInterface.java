@@ -10,7 +10,8 @@ public interface IndexerInterface {
 	public void startCluster(String clustername);
 
 	/*
-	 * Methods for indexing needs to be declared in the implementing class Because of their varying nature
+	 * Methods for indexing needs to be declared in the implementing class
+	 * Because of their varying nature
 	 */
 	public SearchHit[] transportclient(String query, String path);
 
