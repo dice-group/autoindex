@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.aksw.simba.dataformat.MapperDataStruct;
 import org.aksw.simba.dataformat.NGramStruct;
-import org.aksw.simba.index.ESInterface;
 
 public class Mapper implements MapperInterface {
 	private final Map<Integer, MapperDataStruct> mappings = new HashMap<Integer, MapperDataStruct>();
@@ -18,7 +17,7 @@ public class Mapper implements MapperInterface {
 	}
 
 	@Override
-	public void BuildMappings(ESInterface node, List<NGramStruct> ngramlist) {
+	public void BuildMappings(IndexerInterface node, List<NGramStruct> ngramlist) {
 
 		List<String> tempURIs;
 		List<String> tempLabels;

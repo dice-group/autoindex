@@ -7,7 +7,6 @@ import java.util.Map;
 import org.aksw.simba.Initializer.EnergyFactory;
 import org.aksw.simba.Initializer.EnergyFunction;
 import org.aksw.simba.dataformat.NGramStruct;
-import org.aksw.simba.index.ESInterface;
 import org.elasticsearch.search.SearchHit;
 
 public class QuerySearch {
@@ -18,11 +17,11 @@ public class QuerySearch {
 	private final EnergyFunction EnergyCalc = Energy
 			.getEnergyFunction("LevDist");
 
-	public QuerySearch(ESInterface node, NGramStruct ngram) {
+	public QuerySearch(IndexerInterface node, NGramStruct ngram) {
 		buildquery(node, ngram);
 	}
 
-	private void buildquery(ESInterface node, NGramStruct ngram) {
+	private void buildquery(IndexerInterface node, NGramStruct ngram) {
 		SearchInLemonCluster(node, ngram.getLabel(), "instance");
 		SearchInRDFCluster(node, ngram.getLabel(), "instance");
 
@@ -31,7 +30,7 @@ public class QuerySearch {
 		}
 	}
 
-	private void SearchInLemonCluster(ESInterface node, String label,
+	private void SearchInLemonCluster(IndexerInterface node, String label,
 			String index) {
 		SearchHit[] results = node.transportclient(label, index);
 		for (SearchHit hit : results) {
@@ -44,7 +43,7 @@ public class QuerySearch {
 		}
 	}
 
-	private void SearchInRDFCluster(ESInterface node, String label, String index) {
+	private void SearchInRDFCluster(IndexerInterface node, String label, String index) {
 		SearchHit[] results = node.transportclient(label, index);
 		for (SearchHit hit : results) {
 			Map<String, Object> result = hit.getSource();
@@ -58,7 +57,7 @@ public class QuerySearch {
 		}
 	}
 
-	public void DatatypeNormalize(ESInterface node, String label) {
+	public void DatatypeNormalize(IndexerInterface node, String label) {
 		String NumberString = extractNumber(label);
 		if (label.contains(NumberString + " ")) {
 			label = label.replace(NumberString + " ", "");
