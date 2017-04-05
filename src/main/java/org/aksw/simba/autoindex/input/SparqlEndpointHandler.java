@@ -1,4 +1,4 @@
-package org.aksw.simba.inputdata;
+package org.aksw.simba.autoindex.input;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -42,7 +42,7 @@ public class SparqlEndpointHandler {
 		try {
 			this.generateInputFile("Input Data" + File.separator + "Class"
 					+ File.separator + "allclass-nif.ttl",
-					rout.asModel(exec.execSelect()));
+					rout.toModel(exec.execSelect()));
 		} catch (FileNotFoundException e) {
 			LOGGER.error("Cannot find Class file!!!");
 			e.printStackTrace();
@@ -72,7 +72,7 @@ public class SparqlEndpointHandler {
 		try {
 			this.generateInputFile("Input Data" + File.separator + "Instances"
 					+ File.separator + "allInstances-nif.ttl",
-					rout.asModel(exec.execSelect()));
+					rout.toModel(exec.execSelect()));
 		} catch (FileNotFoundException e) {
 			LOGGER.error("Cannot find Instance file!!!");
 			e.printStackTrace();
@@ -98,7 +98,7 @@ public class SparqlEndpointHandler {
 		try {
 			this.generateInputFile("Input Data" + File.separator + "Properties"
 					+ File.separator + "allProperties-nif.ttl",
-					rout.asModel(exec.execSelect()));
+					rout.toModel(exec.execSelect()));
 		} catch (FileNotFoundException e) {
 			LOGGER.error("Cannot find Properties file!!!");
 			e.printStackTrace();

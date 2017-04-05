@@ -1,12 +1,12 @@
-package org.aksw.simba.inputdata;
+package org.aksw.simba.autoindex.input;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.aksw.simba.dataformat.Result;
-import org.aksw.simba.output.JsonSearalizer;
+import org.aksw.simba.autoindex.es.model.Entity;
+import org.apache.jena.atlas.lib.Tuple;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.system.StreamRDF;
 import org.apache.jena.riot.system.StreamRDFLib;
@@ -25,24 +25,16 @@ public class RDFDumpHandler {
 		FileManager.get().addLocatorClassLoader(
 				RDFDumpHandler.class.getClassLoader());
 		StreamRDFLib lib = new StreamRDFLib();
-
 		final Set<Node> list = new HashSet<Node>();
 		StreamRDF destination = new StreamRDF() {
-
 			@Override
 			public void triple(Triple triple) {
 				// TODO Auto-generated method stub
 				if (!triple.getSubject().isBlank() && list.size() <= 10)
 					list.add(triple.getSubject());
 			}
-
 			@Override
 			public void start() {
-				// TODO Auto-generated method stub
-			}
-
-			@Override
-			public void quad(Quad quad) {
 				// TODO Auto-generated method stub
 			}
 
@@ -60,6 +52,17 @@ public class RDFDumpHandler {
 			public void base(String base) {
 				// TODO Auto-generated method stub
 			}
+
+			@Override
+			public void quad(Quad arg0) {
+				// TODO Auto-generated method stub
+
+			}
+			@Override
+			public void tuple(Tuple<Node> arg0) {
+				// TODO Auto-generated method stub
+
+			}
 		};
 		RDFDataMgr.parse(destination, dumpLocation);
 		return list;
@@ -67,16 +70,17 @@ public class RDFDumpHandler {
 
 	public String getInputData(String dumpLocation) {
 		Set<Node> inputStream = getResource(dumpLocation);
-		List<Result> resultset = new ArrayList<Result>();
+		List<Entity> resultset = new ArrayList<Entity>();
 		for (Node triple : inputStream) {
 			if (triple.isURI())
-				resultset.add(new Result(triple.getURI(), triple.getLocalName()
+				resultset.add(new Entity(triple.getURI(), triple.getLocalName()
 						.toString(), 0.0));
 
 		}
 
-		JsonSearalizer ser = new JsonSearalizer();
-		return ser.getJsonOutput(resultset);
+		// JsonSearalizer ser = new JsonSearalizer();
+		return null;
+		// ser.getJsonOutput(resultset);
 	}
 
 	public static void main(String[] args) {
