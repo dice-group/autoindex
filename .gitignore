@@ -13,8 +13,7 @@ index/
 Input Data/
 
 data/
-log.out
-data/DBpediacluster
+
 *.ttl
 
 # Project-based exclusions
