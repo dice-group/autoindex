@@ -1,4 +1,4 @@
-package org.aksw.simba.autoindex.input;
+/*package org.aksw.simba.autoindex.input;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -89,3 +89,4 @@ public class RDFDumpHandler {
 	}
 
 }
+*/

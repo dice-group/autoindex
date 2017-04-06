@@ -1,11 +1,9 @@
 package org.aksw.simba.autoindex.es.model;
 
-import java.util.Arrays;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-@Document(indexName = "blog", type = "results")
+@Document(indexName = "entity", type = "entity")
 public class Entity {
 	@Id
 	private String url;
@@ -13,7 +11,6 @@ public class Entity {
 	private Double pagerank;
 
 	public Entity(String url, String label, Double pagerank) {
-		super();
 		this.setUrl(url);
 		this.setLabel(label);
 		this.setPagerank(pagerank);
@@ -48,11 +45,7 @@ public class Entity {
 		this.pagerank = pagerank;
 	}
 
-	@Override
-	public String toJson() {
-		return "Article{" + "url='" + url + '\'' + ", label='" + label + '\''
-				+ ", authors=" + authors + ", tags=" + Arrays.toString(tags)
-				+ '}';
+	public Entity() {
 	}
 
 }

@@ -1,18 +1,16 @@
 package org.aksw.simba.autoindex.input;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.util.ArrayList;
 
+import org.aksw.simba.autoindex.es.model.Entity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.query.ParameterizedSparqlString;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.sparql.resultset.RDFOutput;
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
 
 public class SparqlEndpointHandler {
 	// TODO: Optimize queries
@@ -21,8 +19,7 @@ public class SparqlEndpointHandler {
 
 	private static final String BASE_URI = "http://dbpedia.org/sparql";
 
-	public void getAllClasses(String endpoint) {
-		LOGGER.info("Getting all Classes ");
+	public ResultSet getallclasses(String endpoint) {
 		ParameterizedSparqlString sparql_query = new ParameterizedSparqlString(
 				"PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
 						+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
@@ -34,23 +31,13 @@ public class SparqlEndpointHandler {
 						+ "?type a owl:Class .\n"
 						+ "?type rdfs:label ?label .\n?type vrank:hasRank/vrank:rankValue ?v. \n"
 						+ "}\n");
-
+		System.out.println(sparql_query);
 		QueryExecution exec = QueryExecutionFactory.sparqlService(endpoint,
 				sparql_query.asQuery());
-		RDFOutput rout = new RDFOutput();
-
-		try {
-			this.generateInputFile("Input Data" + File.separator + "Class"
-					+ File.separator + "allclass-nif.ttl",
-					rout.toModel(exec.execSelect()));
-		} catch (FileNotFoundException e) {
-			LOGGER.error("Cannot find Class file!!!");
-			e.printStackTrace();
-		}
+		return exec.execSelect();
 	}
 
-	public void getallInstances(String endpoint) {
-		LOGGER.info("Getting all Instances ");
+	public ResultSet getallinstances(String endpoint) {
 		ParameterizedSparqlString sparql_query = new ParameterizedSparqlString(
 				"PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
 						+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
@@ -64,24 +51,13 @@ public class SparqlEndpointHandler {
 						+ "?type a <http://www.w3.org/2002/07/owl#Thing> . \n"
 						+ " ?type <http://www.w3.org/2000/01/rdf-schema#label> ?label .\n "
 						+ " ?type vrank:hasRank/vrank:rankValue ?v .\n" + "}\n");
-
+		System.out.println(sparql_query);
 		QueryExecution exec = QueryExecutionFactory.sparqlService(endpoint,
 				sparql_query.asQuery());
-		RDFOutput rout = new RDFOutput();
-
-		try {
-			this.generateInputFile("Input Data" + File.separator + "Instances"
-					+ File.separator + "allInstances-nif.ttl",
-					rout.toModel(exec.execSelect()));
-		} catch (FileNotFoundException e) {
-			LOGGER.error("Cannot find Instance file!!!");
-			e.printStackTrace();
-		}
-
+		return exec.execSelect();
 	}
 
-	public void getAllProperties(String endpoint) {
-		LOGGER.info("Getting all Properties ");
+	public ResultSet getallproperties(String endpoint) {
 		ParameterizedSparqlString sparql_query = new ParameterizedSparqlString(
 				"PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
 						+ "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
@@ -92,61 +68,24 @@ public class SparqlEndpointHandler {
 						+ "WHERE {\n" + "?type a rdf:Property;\n"
 						+ "rdfs:label ?label.\n"
 						+ "}\n GROUP BY ?type ?label \n ORDER BY DESC(?v)");
+
+		System.out.println(sparql_query);
 		QueryExecution exec = QueryExecutionFactory.sparqlService(endpoint,
 				sparql_query.asQuery());
-		RDFOutput rout = new RDFOutput();
-		try {
-			this.generateInputFile("Input Data" + File.separator + "Properties"
-					+ File.separator + "allProperties-nif.ttl",
-					rout.toModel(exec.execSelect()));
-		} catch (FileNotFoundException e) {
-			LOGGER.error("Cannot find Properties file!!!");
-			e.printStackTrace();
-		}
-
+		return exec.execSelect();
 	}
 
-	public void generateInputFile(String path, Model nifModel)
-			throws FileNotFoundException {
-		File resultfile = new File(path);
-		if (!resultfile.exists()) {
-			resultfile.getParentFile().mkdirs();
-			try {
-				resultfile.createNewFile();
-			} catch (IOException e) {
-				LOGGER.error("Cannot create new file");
-				e.printStackTrace();
-			}
+	public ArrayList<Entity> getResults() {
+		ResultSet results = this.getallinstances("http://dbpedia.org/sparql");
+		ArrayList<Entity> entity_list = new ArrayList<Entity>();
+		while (results.hasNext()) {
+			QuerySolution qs = results.next();
+			entity_list.add(new Entity(qs.getResource("type").getURI(), qs
+					.getLiteral("label").getString(), Double.parseDouble(qs
+					.getLiteral("v").getString())));
+
 		}
-		FileOutputStream fout = new FileOutputStream(resultfile);
-		try {
-			fout.flush();
-		} catch (IOException e) {
-			LOGGER.error("Cannot Flush the stream");
-			e.printStackTrace();
-		}
-		nifModel.write(fout, "TTL");
-		try {
-			fout.close();
-		} catch (IOException e) {
-			LOGGER.error("Cannot Close the stream");
-			e.printStackTrace();
-		}
-		LOGGER.info("Final Input files generated");
-	}
-
-	public void generateInputData(String endpointUrl) {
-
-		LOGGER.info("Connecting to endpoint " + endpointUrl);
-		this.getAllClasses(endpointUrl);
-		this.getallInstances(endpointUrl);
-		this.getAllProperties(endpointUrl);
-	}
-
-	public static void main(String[] args) {
-		SparqlEndpointHandler spr = new SparqlEndpointHandler();
-		spr.generateInputData(spr.getBaseUri());
-
+		return entity_list;
 	}
 
 	public String getBaseUri() {

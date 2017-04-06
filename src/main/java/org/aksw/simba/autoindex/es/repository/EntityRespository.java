@@ -1,17 +1,14 @@
 package org.aksw.simba.autoindex.es.repository;
 
-import org.aksw.simba.autoindex.es.model.Entity;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
-@Repository
+import org.aksw.simba.autoindex.es.model.Entity;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+
 public interface EntityRespository extends
 		ElasticsearchRepository<Entity, String> {
 
-	Page<Entity> findByUrl(String url, Pageable pageable);
+	List<Entity> findByUrl(String url);
 
-	Page<Entity> findByLabel(String label,
-			Pageable pageable);
+	List<Entity> findByLabel(String label);
 }
