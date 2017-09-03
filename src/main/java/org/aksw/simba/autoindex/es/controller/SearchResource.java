@@ -1,4 +1,4 @@
-package org.aksw.simba.autoindex.es.resource;
+package org.aksw.simba.autoindex.es.controller;
 
 import java.util.ArrayList;
 import java.util.List;
