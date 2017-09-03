@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/rest/search")
-public class SearchResource {
+public class SearchResourceController {
 
 	@Autowired
 	EntityRespository entityRepo;
