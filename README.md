@@ -19,7 +19,8 @@ Maven is the only pre-requisite for  . The instructions to install maven can be 
    `java -jar target/autoindex-0.0.1-SNAPSHOT.jar`
 
 4. Use Postman or Curl command to access the rest api 
-  
+
+5. Add sparql endpoint in [SparqlEnpointHandler class](https://github.com/dice-group/autoindex/blob/master/src/main/java/org/aksw/simba/autoindex/input/SparqlEndpointHandler.java#L20). Default is `http://dbpedia.org/sparql` .
 ### Queries
 1. Get all the resources :
 
