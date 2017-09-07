@@ -27,7 +27,6 @@ public class ESConfig {
 		System.out.println("Temp directory: " + tmpDir.getAbsolutePath());
 		Settings.Builder elasticsearchSettings = Settings.settingsBuilder()
 				.put("http.enabled", "true")
-				// 1
 				.put("index.number_of_shards", "1")
 				.put("path.data", new File(tmpDir, "data").getAbsolutePath()) // 2
 				.put("path.logs", new File(tmpDir, "logs").getAbsolutePath()) // 2

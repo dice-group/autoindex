@@ -1,10 +1,13 @@
-$('#').click(function() {
-    // get the contents of the link that was clicked
-    var linkText = $(this).text();
-
-    // replace the contents of the div with the link text
-    $('#content-container').html(linkText);
-
-    // cancel the default action of the link by returning false
-    return false;
-});
+function progressbarmove() {
+  var elem = document.getElementById("myBar");   
+  var width = 0.5;
+  var id = setInterval(frame, 100);
+  function frame() {
+    if (width >= 100) {
+      clearInterval(id);
+    } else {
+      width++; 
+      elem.style.width = width + '%'; 
+    }
+  }
+}

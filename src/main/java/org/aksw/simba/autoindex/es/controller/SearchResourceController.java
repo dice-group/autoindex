@@ -24,7 +24,7 @@ public class SearchResourceController {
 	}
 
 	@GetMapping(value = "/label/{label}")
-	public List<Entity> searchSalary(@PathVariable final String label) {
+	public List<Entity> searchLabel(@PathVariable final String label) {
 		return entityRepo.findByLabel(label);
 	}
 

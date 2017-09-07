@@ -26,6 +26,7 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
 	integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
 	crossorigin="anonymous"></script>
+<script src="app/js/interaction.js"></script>
 
 
 <!-- Custom styles for this template -->
@@ -102,15 +103,22 @@
 			<div class="row">
 				<div class="col-lg-8 mx-auto">
 					<h2>Indexing Progress</h2>
+
 					<div class="progress">
-						<div
+						<div id="myBar"
 							class="progress-bar progress-bar-striped progress-bar-animated"
 							role="progressbar" aria-valuenow="75" aria-valuemin="0"
-							aria-valuemax="100" style="width: 75%"></div>
+							aria-valuemax="100"></div>
 					</div>
 				</div>
 			</div>
+			<button type="button" class="btn btn-outline-info"
+				onclick="progressbarmove()">See Progress</button>
+
+
+
 		</div>
+
 	</section>
 
 	<section id="contact">
@@ -142,6 +150,7 @@
 
 	<!-- Custom JavaScript for this theme -->
 	<script src="app/js/scrolling-nav.js"></script>
+
 
 </body>
 
