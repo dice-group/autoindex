@@ -113,16 +113,23 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-8 col-lg-offset-2">
-					<form name="sentMessage" id="queryEngine" novalidate>
-						<div class="row control-group">
-							<div class="radio">
-								<label><input type="radio" name="optradio">Query By Label
-									</label>
-							</div>
-							<div class="radio">
-								<label><input type="radio" name="optradio">
-									Query By URL</label>
-							</div>
+					<div class="alert alert-warning" role="alert">
+						<strong>Important: </strong> If you have not indexed your own
+						endpoint you will query http://dbpedia.org/sparql
+					</div>
+					<form name="qureyForm" id="queryEngine" novalidate>
+						<label> Type of Query</label>
+						<div class="form-check form-check-inline">
+							<label class="form-check-label"> <input
+								class="form-check-input" type="radio" name="inlineRadioOptions"
+								id="inlineRadio1" value="label"> Query By Label
+							</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<label class="form-check-label"> <input
+								class="form-check-input" type="radio" name="inlineRadioOptions"
+								id="inlineRadio2" value="url"> Query By URL
+							</label>
 						</div>
 						<div class="row control-group">
 							<div
