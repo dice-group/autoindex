@@ -1,4 +1,4 @@
-package org.aksw.simba.autoindex.es.controller;
+package org.aksw.simba.autoindex.es.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
