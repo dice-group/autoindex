@@ -22,8 +22,7 @@ public class Loader {
 	@Autowired
 	EntityRespository esrepo;
 
-	@PostConstruct
-	@Transactional
+	
 	public void loadAll() {
 		SparqlEndpointHandler sh = new SparqlEndpointHandler();
 		operations.putMapping(Entity.class);
@@ -32,7 +31,9 @@ public class Loader {
 		System.out.printf("Loading Completed");
 
 	}
-
+	
+	@PostConstruct
+	@Transactional
 	private List<Entity> getData() {
 		List<Entity> entities = new ArrayList<Entity>();
 		entities.add(new Entity("http://dbpedia.org/resource/Antibiotics ",
