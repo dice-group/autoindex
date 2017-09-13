@@ -23,6 +23,14 @@ public class SearchResourceController {
 		return "home";
 	}
 
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String index() {
+		return "index";
+	}
+	@RequestMapping(value = "/query", method = RequestMethod.GET)
+	public String query() {
+		return "query";
+	}
 	@Autowired
 	EntityRespository entityRepo;
 

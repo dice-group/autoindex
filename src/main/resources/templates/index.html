@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
 
 <link rel="stylesheet" media="all"
@@ -29,7 +29,7 @@
 
 <!-- Custom styles for this template -->
 <link href="../static/css/main.css" rel="stylesheet"
-	th:href="@{/css/main.css}" media="all"/>
+	th:href="@{/css/main.css}" media="all" />
 <title>AutoIndex</title>
 </head>
 <body>
@@ -38,7 +38,7 @@
 	<!-- Navigation -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
 		<div class="container">
-			<a class="navbar-brand" href="home.html">AutoIndex</a>
+			<a class="navbar-brand" th:href="@{/home}">AutoIndex</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarResponsive" aria-controls="navbarResponsive"
 				aria-expanded="false" aria-label="Toggle navigation">
@@ -47,8 +47,8 @@
 			<div class="collapse navbar-collapse" id="navbarResponsive">
 				<ul class="navbar-nav ml-auto">
 
-				
-					<li class="nav-item"><a class="nav-link" href="query.html">Query</a>
+
+					<li class="nav-item"><a class="nav-link" th:href="@{/query}">>Query</a>
 					</li>
 
 				</ul>
@@ -65,7 +65,7 @@
 						<div class="form-group">
 							<label class="intro" for="exampleInput">Endpoint Url</label> <input
 								type="email" class="form-control" id="endpoint"
-								aria-describedby="emailHelp" placeholder="Enter URL"> <small
+								aria-describedby="emailHelp" placeholder="Enter URL" /> <small
 								id="emailHelp" class="form-text text-muted">The URL
 								should be a valid working Endpoint </small>
 						</div>
