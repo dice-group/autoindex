@@ -1,8 +1,5 @@
 package org.aksw.simba.autoindex.es.load;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.PostConstruct;
 
 import org.aksw.simba.autoindex.es.model.Entity;
@@ -22,7 +19,8 @@ public class Loader {
 	@Autowired
 	EntityRespository esrepo;
 
-	
+	@PostConstruct
+	@Transactional
 	public void loadAll() {
 		SparqlEndpointHandler sh = new SparqlEndpointHandler();
 		operations.putMapping(Entity.class);
@@ -31,18 +29,5 @@ public class Loader {
 		System.out.printf("Loading Completed");
 
 	}
-	
-	@PostConstruct
-	@Transactional
-	private List<Entity> getData() {
-		List<Entity> entities = new ArrayList<Entity>();
-		entities.add(new Entity("http://dbpedia.org/resource/Antibiotics ",
-				"Antibiotic", 186.916));
-		entities.add(new Entity(
-				"http://dbpedia.org/resource/Anti-ballistic_missile ",
-				"Anti-Ballistic Missile", 2.0));
-		entities.add(new Entity("http://dbpedia.org/resource/Anthropology ",
-				"Antropologie", 201.737));
-		return entities;
-	}
+
 }

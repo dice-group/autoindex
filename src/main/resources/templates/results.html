@@ -1,10 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<script src="../static/js/interaction.js"
-	th:href="@{/js/interaction.js}">
-	
-</script>
+
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport"
@@ -39,13 +36,11 @@
 <title>AutoIndex</title>
 </head>
 <body>
-	<script th:inline="javascript">
-	document.getElementById("json").innerHTML = JSON.stringify((${entities}), undefined, 2);
-</script>
+	
 	<!-- Navigation -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
 		<div class="container">
-			<a class="navbar-brand" th:href="@{/home}">Query</a>
+			<a class="navbar-brand" th:href="@{/home}">Home</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarResponsive" aria-controls="navbarResponsive"
 				aria-expanded="false" aria-label="Toggle navigation">
@@ -53,6 +48,8 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarResponsive">
 				<ul class="navbar-nav ml-auto">
+					<li class="nav-item"><a class="nav-link" th:href="@{/query}">>Query</a>
+					</li>
 					<li class="nav-item"><a class="nav-link" th:href="@{/index}">Index
 							Endpoint</a></li>
 				</ul>
@@ -62,12 +59,8 @@
 	<section>
 		<div class="container">
 			<div class="row">
-
 				<h1 class="mt-5">Results</h1>
-
-				<samp id="json" th:text="${entities}"></samp>
-
-
+				<samp class="output" th:text="${entities}"></samp>
 			</div>
 		</div>
 

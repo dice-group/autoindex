@@ -3,6 +3,9 @@ package org.aksw.simba.autoindex.es.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+
 import org.aksw.simba.autoindex.es.model.Entity;
 import org.aksw.simba.autoindex.es.repository.EntityRespository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,15 +38,24 @@ public class SearchResourceController {
 	@Autowired
 	EntityRespository entityRepo;
 
+	/*
+	 * @RequestMapping(value = "/query/url", method = RequestMethod.POST) public
+	 * String searchName(Model model, HttpServletRequest request) {
+	 * model.addAttribute("entities", new
+	 * Gson().toJson(entityRepo.findByUrl(request.getParameter("urlQuery"))));
+	 * return "results"; }
+	 */
+
 	@RequestMapping(value = "/query/url/{text}")
-	public List<Entity> searchName(@PathVariable final String text) {
-		return entityRepo.findByUrl(text);
+	public String searchName(Model model, @PathVariable final String text) {
+		model.addAttribute("entities", new Gson().toJson(entityRepo.findByUrl(text)));
+		return "results";
 	}
 
-	@RequestMapping(value = "/query/label/{label}", method = RequestMethod.GET)
-	public String searchLabel(Model model, @PathVariable final String label) {
-		model.addAttribute("resources", entityRepo.findByLabel(label));
-		return "results :: resultsList";
+	@RequestMapping(value = "/query/label", method = RequestMethod.POST)
+	public String searchLabel(Model model, HttpServletRequest request) {
+		model.addAttribute("entities", new Gson().toJson(entityRepo.findByLabel(request.getParameter("labelQuery"))));
+		return "results";
 	}
 
 	@RequestMapping(value = "/query/all", method = RequestMethod.GET)
@@ -51,7 +63,6 @@ public class SearchResourceController {
 		List<Entity> entityList = new ArrayList<>();
 		Iterable<Entity> entities = entityRepo.findAll();
 		entities.forEach(entityList::add);
-
 		model.addAttribute("entities", new Gson().toJson(entityList));
 		return "results";
 	}

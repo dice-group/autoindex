@@ -1,11 +1,11 @@
 body {
-  background: url('../img/background.jpg') no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  background-size: cover;
-  -o-background-size: cover;
+	background: url('../img/background.jpg') no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+	-o-background-size: cover;
 }
 
-.form-group, .intro, .mt-5 {
-    color: white;
+.output, .form-group, .intro, .mt-5 {
+	color: white;
 }
