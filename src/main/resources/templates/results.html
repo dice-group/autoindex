@@ -1,6 +1,11 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+<script src="../static/js/interaction.js"
+	th:href="@{/js/interaction.js}">
+	
+</script>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -31,14 +36,12 @@
 <link href="../static/css/main.css" rel="stylesheet"
 	th:href="@{/css/main.css}" media="all" />
 
-
-	
-
 <title>AutoIndex</title>
 </head>
 <body>
-
-
+	<script th:inline="javascript">
+	document.getElementById("json").innerHTML = JSON.stringify((${entities}), undefined, 2);
+</script>
 	<!-- Navigation -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
 		<div class="container">
@@ -56,40 +59,19 @@
 			</div>
 		</div>
 	</nav>
-	<!-- Page Content -->
 	<section>
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-6">
-					<h1 class="mt-5">Query Endpoint</h1>
-					<p class="intro">If you have not indexed any endpoint you can
-						query http://dbpedia.org/sparql</p>
 
-					<form>
-						<div class="form-group">
-							<label class="intro" for="searchQuery"> </label> <input
-								type="text" class="form-control" id="searchQuery" 
-								aria-describedby="emailHelp" placeholder="Enter Query" th:text="${term}"
-								required="required" name="searchQuery" /> <small id="helpText"
-								class="form-text text-muted"> Enter your query term /
-								URL and click on the corresponding button</small>
-						</div>
+				<h1 class="mt-5">Results</h1>
 
-						<button id="searchButtonLabel" type="submit"
-							class="btn btn-success" onclick="retrieveResults()">Search
-							By Label</button>
-						<button type="submit" class="btn btn-success">Search By
-							URL</button>
+				<samp id="json" th:text="${entities}"></samp>
 
-						<button type="submit" class="btn btn-info"
-							><a th:href="@{/query/all}">Get All Resource</a></button>
-					</form>
-				</div>
+
 			</div>
 		</div>
-	</section>
 
-	
+	</section>
 
 
 

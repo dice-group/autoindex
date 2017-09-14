@@ -8,12 +8,11 @@ import org.aksw.simba.autoindex.es.repository.EntityRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+
+import com.google.gson.Gson;
 
 @Controller
 public class SearchResourceController {
@@ -27,28 +26,33 @@ public class SearchResourceController {
 	public String index() {
 		return "index";
 	}
+
 	@RequestMapping(value = "/query", method = RequestMethod.GET)
 	public String query() {
 		return "query";
 	}
+
 	@Autowired
 	EntityRespository entityRepo;
 
-	@GetMapping(value = "/search/url/{text}")
+	@RequestMapping(value = "/query/url/{text}")
 	public List<Entity> searchName(@PathVariable final String text) {
 		return entityRepo.findByUrl(text);
 	}
 
-	@GetMapping(value = "/search/label/{label}")
-	public List<Entity> searchLabel(@PathVariable final String label) {
-		return entityRepo.findByLabel(label);
+	@RequestMapping(value = "/query/label/{label}", method = RequestMethod.GET)
+	public String searchLabel(Model model, @PathVariable final String label) {
+		model.addAttribute("resources", entityRepo.findByLabel(label));
+		return "results :: resultsList";
 	}
 
-	@GetMapping(value = "/search/all")
-	public List<Entity> searchAll() {
+	@RequestMapping(value = "/query/all", method = RequestMethod.GET)
+	public String searchAll(Model model) {
 		List<Entity> entityList = new ArrayList<>();
 		Iterable<Entity> entities = entityRepo.findAll();
 		entities.forEach(entityList::add);
-		return entityList;
+
+		model.addAttribute("entities", new Gson().toJson(entityList));
+		return "results";
 	}
 }
