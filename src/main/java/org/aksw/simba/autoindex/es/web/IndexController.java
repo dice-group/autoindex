@@ -10,15 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexController {
 	@Autowired
 	private ElasticsearchTemplate elasticsearchTemplate;
-
+	
 	@RequestMapping(value = "index/create")
 	public void indexCreate() {
 		elasticsearchTemplate.createIndex(Entity.class);
-
 		elasticsearchTemplate.putMapping(Entity.class);
 		elasticsearchTemplate.refresh(Entity.class);
-
-		System.out.println("--------------es/create---------done");
 	}
 
 	@RequestMapping(value = "index/delete")
