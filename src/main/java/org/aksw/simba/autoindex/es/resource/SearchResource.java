@@ -8,7 +8,7 @@ import org.aksw.simba.autoindex.es.repository.EntityRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
-import static org.elasticsearch.index.query.QueryBuilders.regexpQuery;
+import static org.elasticsearch.index.query.QueryBuilders.wildcardQuery;
 import static org.elasticsearch.index.query.QueryBuilders.prefixQuery;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +24,7 @@ public class SearchResource {
 
 	@GetMapping(value = "/url/{text}")
 	public List<Entity> searchUrl(@PathVariable final String text) {
-		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(regexpQuery("url", "http:.*" + text))
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(wildcardQuery("url", "https://*" + text))
 				.build();
 
 		return entityRepo.search(searchQuery).getContent();
