@@ -2,6 +2,22 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.aksw.simba.dbpedia.autoindex</groupId>
+	
+	
+ <repositories>
+        <repository>
+	    <id>maven.aksw.snapshots</id>
+	    <name>University Leipzig, AKSW Maven2 Repository</name>
+	    <url>http://maven.aksw.org/archiva/repository/snapshots</url>
+	</repository>
+</repositories>
+
+
+
+
+
+
+
 	<artifactId>autoindex</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
@@ -24,6 +40,10 @@
 		<jena-arq.version>2.10.0</jena-arq.version>
 	</properties>
 	<dependencies>
+	
+	
+	
+	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
@@ -50,12 +70,9 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.jena</groupId>
-			<artifactId>jena-core</artifactId>
-			<version>${jena.version}</version>
-			<type>jar</type>
-		</dependency>
+		
+		
+		
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>bootstrap</artifactId>
@@ -81,13 +98,18 @@
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-arq -->
+	
+		
+		
 		<dependency>
-			<groupId>org.apache.jena</groupId>
-			<artifactId>jena-arq</artifactId>
-			<version>${jena-arq.version}</version>
+			<groupId>org.aksw.jena-sparql-api</groupId>
+			<artifactId>jena-sparql-api-core</artifactId>
+			<version>3.4.0-1</version>
 		</dependency>
-	</dependencies>
+		</dependencies>
+	
+	
+	
 	<build>
 		<plugins>
 			<plugin>

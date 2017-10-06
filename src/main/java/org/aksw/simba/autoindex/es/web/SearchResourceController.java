@@ -3,7 +3,6 @@ package org.aksw.simba.autoindex.es.web;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 
 import org.aksw.simba.autoindex.es.model.Entity;

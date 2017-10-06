@@ -25,7 +25,7 @@ public class Loader {
 		SparqlEndpointHandler sh = new SparqlEndpointHandler();
 		operations.putMapping(Entity.class);
 		System.out.println("Loading Data");
-		esrepo.save(sh.getResults());
+//		esrepo.save(sh.getResults());
 		System.out.printf("Loading Completed");
 
 	}
