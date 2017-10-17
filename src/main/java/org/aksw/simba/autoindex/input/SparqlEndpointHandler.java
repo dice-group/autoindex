@@ -20,33 +20,43 @@ public class SparqlEndpointHandler {
     private static final Logger LOGGER = LoggerFactory
             .getLogger(SparqlEndpointHandler.class);
 
-    private static final String BASE_URI = "http://dbpedia.org/sparql";
+    private  final String BASE_URI = "http://dbpedia.org/sparql";
+
+	private  String lang ="en";
   
-    public static QueryExecutionFactory makeQuery() {
+    public  String getLang() {
+		return lang;
+	}
+
+	public  void setLang(String lang) {
+		this.lang = lang;
+	}
+
+	public  QueryExecutionFactory makeQuery() {
     	QueryExecutionFactory qef = new QueryExecutionFactoryHttp("http://dbpedia.org/sparql", "http://dbpedia.org");
-    	qef = new QueryExecutionFactoryPaginated(qef, 100);
+    	qef = new QueryExecutionFactoryPaginated(qef, 1000);
     	return qef;
   }
 
-    public static ResultSet getallclasses(String endpoint) {
-        ParameterizedSparqlString sparql_query = new ParameterizedSparqlString(
+    public  ResultSet getallclasses(String endpoint) {
+		ParameterizedSparqlString sparql_query = new ParameterizedSparqlString(
                 "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
                 + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
                 + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
                 + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-                + "PREFIX vrank:<http://purl.org/voc/vrank#>\n"
-                + "SELECT DISTINCT ?type ?label ?v \n"
+                + "SELECT DISTINCT ?type ?label  \n"
                 + "WHERE {\n"
                 + "?type a owl:Class .\n"
-                + "?type rdfs:label ?label .\n?type vrank:hasRank/vrank:rankValue ?v. \n"
-                + "} Limit 500\n");
+                + "?type rdfs:label ?label . FILTER ( lang(?label) = \""+lang +"\") \n"
+                + "} Limit 3 \n");
+        System.out.println(sparql_query);
         QueryExecutionFactory qef = makeQuery();
 		QueryExecution qe = qef.createQueryExecution(sparql_query.asQuery());
-        return qe.execSelect();
+		return qe.execSelect();
     }
 
     @SuppressWarnings("resource")
-	public static ResultSet getallinstances(String endpoint) {
+	public  ResultSet getallinstances(String endpoint) {
         ParameterizedSparqlString sparql_query = new ParameterizedSparqlString(
                 "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
                 + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
@@ -59,7 +69,7 @@ public class SparqlEndpointHandler {
                 + "WHERE {\n"
                 + "?type a <http://www.w3.org/2002/07/owl#Thing> . \n"
                 + " ?type <http://www.w3.org/2000/01/rdf-schema#label> ?label .\n "
-                + " ?type vrank:hasRank/vrank:rankValue ?v .\n" + "} Limit 50000 \n");
+                + " ?type vrank:hasRank/vrank:rankValue ?v .\n" + "} Limit 3 \n");
 		
 		// Create a QueryExecution object from a query string ...
     	QueryExecutionFactory qef = makeQuery();
@@ -67,7 +77,7 @@ public class SparqlEndpointHandler {
         return qe.execSelect();
     }
 
-    public static ResultSet getallproperties(String endpoint) {
+    public  ResultSet getallproperties(String endpoint) {
         ParameterizedSparqlString sparql_query = new ParameterizedSparqlString(
                 "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
                 + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
@@ -77,7 +87,7 @@ public class SparqlEndpointHandler {
                 + "SELECT DISTINCT ?type ?label  (COUNT(*)AS ?v)\n"
                 + "WHERE {\n" + "?type a rdf:Property;\n"
                 + "rdfs:label ?label.\n"
-                + "}\n GROUP BY ?type ?label \n ORDER BY DESC(?v) Limit 500");
+                + "}\n GROUP BY ?type ?label \n ORDER BY DESC(?v) Limit 6");
 
         QueryExecutionFactory qef = makeQuery();
 		QueryExecution qe = qef.createQueryExecution(sparql_query.asQuery());
@@ -89,7 +99,7 @@ public class SparqlEndpointHandler {
 //        ArrayList<Entity> entity_list = new ArrayList<Entity>();
 //        while (results.hasNext()) {
 //        	System.out.println("*****************************************");
-//            QuerySolution qs = results.next();
+//            QustaticerySolution qs = results.next();
 //            entity_list.add(new Entity(qs.getResource("type").getURI(), qs
 //                    .getLiteral("label").getString(), Double.parseDouble(qs
 //                    .getLiteral("v").getString())));
