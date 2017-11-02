@@ -94,24 +94,24 @@ public class SparqlEndpointHandler {
         return qe.execSelect();
     }
 
-//    public ArrayList<Entity> getResults() {
-//        ResultSet results = this.getallinstances("dbpedia.org/sparql");
-//        ArrayList<Entity> entity_list = new ArrayList<Entity>();
-//        while (results.hasNext()) {
-//        	System.out.println("*****************************************");
-//            QustaticerySolution qs = results.next();
-//            entity_list.add(new Entity(qs.getResource("type").getURI(), qs
-//                    .getLiteral("label").getString(), Double.parseDouble(qs
-//                    .getLiteral("v").getString())));
-//        }
-//        System.out.println("____________________________________________");
-//        return entity_list;
-//    }
-
-//    public static void main(String[] args) {
-//        SparqlEndpointHandler test = new SparqlEndpointHandler();
-//        test.getallclasses("http://dbpedia.org/sparql");
-//    }
+    public ArrayList<Entity> getResults() {
+        ResultSet results = this.getallinstances("dbpedia.org/sparql");
+        ArrayList<Entity> entity_list = new ArrayList<Entity>();
+        while (results.hasNext()) {
+        	System.out.println("*****************************************");
+            QuerySolution qs = results.next();
+            entity_list.add(new Entity(qs.getResource("type").getURI(), qs
+                    .getLiteral("label").getString(), Double.parseDouble(qs
+                    .getLiteral("v").getString())));
+        }
+        System.out.println("____________________________________________");
+        return entity_list;
+    }
+//
+    public static void main(String[] args) {
+        SparqlEndpointHandler test = new SparqlEndpointHandler();
+        test.getallclasses("http://dbpedia.org/sparql");
+    }
 
     public String getBaseUri() {
         return BASE_URI;

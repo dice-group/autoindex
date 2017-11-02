@@ -24,10 +24,10 @@ public class Loader {
 	public void loadAll() {
 		SparqlEndpointHandler sh = new SparqlEndpointHandler();
 		operations.putMapping(Entity.class);
-		System.out.println("Loading Data");
-//		esrepo.save(sh.getResults());
-		System.out.printf("Loading Completed");
-
+		System.out.println("*************************************************Loading Data*************************************************");
+		esrepo.save(sh.getResults());
+//		System.out.printf(sh.toString());
+		System.out.println("*************************************************Loading Completed*************************************************");
 	}
 
 }

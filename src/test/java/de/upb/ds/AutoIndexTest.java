@@ -39,9 +39,7 @@ public class AutoIndexTest extends TestCase {
 		System.out.println("Deutsch Language Results" +Joiner.on("\n").join(asText));
 		System.out.println("Total Visible Results " + asText.size());
 		Assert.assertTrue(asText.size() >1);
-
 		seh.setLang("en");
-
 		results = seh.getallclasses(endpoint);
 		assertNotNull(results);
 		asText = ResultSetFormatter.toList(results);
@@ -52,6 +50,8 @@ public class AutoIndexTest extends TestCase {
 //		System.out.println("Classes"+ResultSetFormatter.toList(results).size());
 		
 	}
+	
+	
 	public void testgetallinstances() {
 		seh.setLang("en");
 
