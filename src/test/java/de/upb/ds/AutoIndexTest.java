@@ -20,36 +20,36 @@ public class AutoIndexTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 	}
-//	public void testgetallclasses() {
-//		seh.setLang("en");
-//		ResultSet results = seh.getallclasses(endpoint);
-//		assertNotNull(results);
-//		List<QuerySolution> asText = ResultSetFormatter.toList(results);
-//		Joiner listOfResults = Joiner.on("\n");
-//		System.out.println("Classes Results" +listOfResults.join(asText));
-//		System.out.println("Total Visible Results = " + asText.size());
-//		Assert.assertTrue(asText.size() >1);
-//	}
+	public void testgetallclasses() {
+		seh.setLang("en");
+		ResultSet results = seh.getallclasses(endpoint);
+		assertNotNull(results);
+		List<QuerySolution> asText = ResultSetFormatter.toList(results);
+		Joiner listOfResults = Joiner.on("\n");
+		System.out.println("Classes Results" +listOfResults.join(asText));
+		System.out.println("Total Visible Results = " + asText.size());
+		Assert.assertTrue(asText.size() >1);
+	}
 	
-//	public void testGetAllClassMultilingual() {
-//		seh.setLang("de");
-//		ResultSet results = seh.getallclasses(endpoint);
-//		assertNotNull(results);
-//		List<QuerySolution> asText = ResultSetFormatter.toList(results);
-//		System.out.println("Deutsch Language Results" +Joiner.on("\n").join(asText));
-//		System.out.println("Total Visible Results " + asText.size());
-//		Assert.assertTrue(asText.size() >1);
-//		seh.setLang("en");
-//		results = seh.getallclasses(endpoint);
-//		assertNotNull(results);
-//		asText = ResultSetFormatter.toList(results);
-//		System.out.println("English Language Results" +Joiner.on("\n").join(asText));
-//		System.out.println("Total Visible Results " + asText.size());
-//		Assert.assertTrue(asText.size() >1);
+	public void testGetAllClassMultilingual() {
+		seh.setLang("de");
+		ResultSet results = seh.getallclasses(endpoint);
+		assertNotNull(results);
+		List<QuerySolution> asText = ResultSetFormatter.toList(results);
+		System.out.println("Deutsch Language Results" +Joiner.on("\n").join(asText));
+		System.out.println("Total Visible Results " + asText.size());
+		Assert.assertTrue(asText.size() >1);
+		seh.setLang("en");
+		results = seh.getallclasses(endpoint);
+		assertNotNull(results);
+		asText = ResultSetFormatter.toList(results);
+		System.out.println("English Language Results" +Joiner.on("\n").join(asText));
+		System.out.println("Total Visible Results " + asText.size());
+		Assert.assertTrue(asText.size() >1);
 //
 ////		System.out.println("Classes"+ResultSetFormatter.toList(results).size());
-//		
-//	}
+		
+	}
 	
 	
 	public void testgetallinstances() {
