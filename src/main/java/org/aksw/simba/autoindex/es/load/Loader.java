@@ -26,7 +26,7 @@ public class Loader {
 		operations.putMapping(Entity.class);
 		System.out.println("*************************************************Loading Data*************************************************");
 		esrepo.save(sh.getResults());
-//		System.out.printf(sh.toString());
+		System.out.println(sh.getResults());
 		System.out.println("*************************************************Loading Completed*************************************************");
 	}
 

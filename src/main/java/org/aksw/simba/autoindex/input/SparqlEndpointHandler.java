@@ -48,7 +48,7 @@ public class SparqlEndpointHandler {
                 + "WHERE {\n"
                 + "?type a owl:Class .\n"
                 + "?type rdfs:label ?label . FILTER ( lang(?label) = \""+lang +"\") \n"
-                + "} Limit 3 \n");
+                + "}\n");
         System.out.println(sparql_query);
         QueryExecutionFactory qef = makeQuery();
 		QueryExecution qe = qef.createQueryExecution(sparql_query.asQuery());
@@ -56,7 +56,15 @@ public class SparqlEndpointHandler {
     }
 
     @SuppressWarnings("resource")
-	public  ResultSet getallinstances(String endpoint) {
+	public  ResultSet getallinstances(String endpoint, int instances_limit) {
+    	String instance_limit = "";
+    	if(instances_limit == 0) {
+        	 instance_limit = "";
+    	}
+    	else {
+    		 instance_limit = "limit "+instances_limit;
+    	}
+    	
         ParameterizedSparqlString sparql_query = new ParameterizedSparqlString(
                 "PREFIX owl: <http://www.w3.org/2002/07/owl#>\n"
                 + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
@@ -69,7 +77,7 @@ public class SparqlEndpointHandler {
                 + "WHERE {\n"
                 + "?type a <http://www.w3.org/2002/07/owl#Thing> . \n"
                 + " ?type <http://www.w3.org/2000/01/rdf-schema#label> ?label .\n "
-                + " ?type vrank:hasRank/vrank:rankValue ?v .\n" + "} Limit 3 \n");
+                + " ?type vrank:hasRank/vrank:rankValue ?v .\n" + "} \n"+ instance_limit);
 		
 		// Create a QueryExecution object from a query string ...
     	QueryExecutionFactory qef = makeQuery();
@@ -87,27 +95,30 @@ public class SparqlEndpointHandler {
                 + "SELECT DISTINCT ?type ?label  (COUNT(*)AS ?v)\n"
                 + "WHERE {\n" + "?type a rdf:Property;\n"
                 + "rdfs:label ?label.\n"
-                + "}\n GROUP BY ?type ?label \n ORDER BY DESC(?v) Limit 6");
+                + "FILTER (STRSTARTS(str(?type),\"http://dbpedia.org/ontology\")&&lang(?label)=\"en\")"
+                + "}\n GROUP BY ?type ?label \n ORDER BY DESC(?v)");
 
+        System.out.println(sparql_query.toString());
         QueryExecutionFactory qef = makeQuery();
 		QueryExecution qe = qef.createQueryExecution(sparql_query.asQuery());
         return qe.execSelect();
     }
 
     public ArrayList<Entity> getResults() {
-        ResultSet results = this.getallinstances("dbpedia.org/sparql");
+    	int instances_limit = 0;
+        ResultSet results = this.getallinstances("dbpedia.org/sparql",instances_limit);
         ArrayList<Entity> entity_list = new ArrayList<Entity>();
         while (results.hasNext()) {
-        	System.out.println("*****************************************");
+//        	System.out.println("*****************In SparqlEndPointHandler************************");
             QuerySolution qs = results.next();
             entity_list.add(new Entity(qs.getResource("type").getURI(), qs
                     .getLiteral("label").getString(), Double.parseDouble(qs
                     .getLiteral("v").getString())));
         }
-        System.out.println("____________________________________________");
+//        System.out.println("____________________________________________");
         return entity_list;
     }
-//
+
     public static void main(String[] args) {
         SparqlEndpointHandler test = new SparqlEndpointHandler();
         test.getallclasses("http://dbpedia.org/sparql");
