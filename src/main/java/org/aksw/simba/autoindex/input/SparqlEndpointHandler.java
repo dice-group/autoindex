@@ -104,8 +104,8 @@ public class SparqlEndpointHandler {
         return qe.execSelect();
     }
 
-    public ArrayList<Entity> getResults() {
-    	int instances_limit = 0;
+    public ArrayList<Entity> getResults(int instances_limit) {
+    	
         ResultSet results = this.getallinstances("dbpedia.org/sparql",instances_limit);
         ArrayList<Entity> entity_list = new ArrayList<Entity>();
         while (results.hasNext()) {
