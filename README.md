@@ -28,4 +28,31 @@ Add sparql endpoint in [SparqlEnpointHandler class](https://github.com/dice-grou
 ### Queries
 Navigate to the query section and fire label queries. URI queries are facing the issue
 
+### Docker
+First install docker in your system. For ubuntu you may refer to below link. 
+[https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04]
+
+For windows users
+[https://docs.docker.com/toolbox/toolbox_install_windows/#step-1-check-your-version]
+
+Move to the parent directory of project and execute the below commands 
+1. mvn clean
+2. mvn install
+
+Now to build your image, type the below command
+```
+sudo docker build -f DockerFile -t {Name of your image} .
+```
+To run your image, type the below command
+```
+sudo docker run -p {Your port id for example 3030}:8080 -t {Name of your image}
+```
+Go to the browser and hit `http://localhost:3030/home` to see the output
+
+#### Some useful terminal commands for docker
+1. To see created images:`docker image ls`
+2. To see running containers:`docker container ps`
+3. To see all created containers:`docker container ps -a`
+
+
     
