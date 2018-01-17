@@ -1,8 +1,5 @@
 package org.aksw.simba.autoindex.es.load;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.Date;
 import javax.annotation.PostConstruct;
 
 import org.aksw.simba.autoindex.es.model.Entity;
@@ -27,21 +24,33 @@ public class Loader {
 	public void loadAll() {
 		SparqlEndpointHandler sh = new SparqlEndpointHandler();
 		operations.putMapping(Entity.class);
-		System.out.println("Loading Data");
-		esrepo.save(sh.getResults());
-		System.out.printf("Loading Completed");
+		Date d1 = new Date();
+		int instances_limit = 0;
+		System.out.println("*************************************************Loading Data*************************************************");
+		esrepo.save(sh.getResults(instances_limit));
+		System.out.println(sh.getResults(instances_limit));
+		System.out.println("*************************************************Loading Completed*************************************************");
+		Date d2 = new Date();
+		System.out.println("Records Limit = "+ instances_limit);
+		
+		getime(d1,d2);
+	}
+	
+	public void getime(Date d1, Date d2) {
 
+		long diff = d2.getTime() - d1.getTime();
+
+		long diffSeconds = diff / 1000 % 60;
+		long diffMinutes = diff / (60 * 1000) % 60;
+		long diffHours = diff / (60 * 60 * 1000) % 24;
+		long diffDays = diff / (24 * 60 * 60 * 1000);
+
+		System.out.print(diffDays + " days, ");
+		System.out.print(diffHours + " hours, ");
+		System.out.print(diffMinutes + " minutes, ");
+		System.out.print(diffSeconds + " seconds.");
 	}
 
-	private List<Entity> getData() {
-		List<Entity> entities = new ArrayList<Entity>();
-		entities.add(new Entity("http://dbpedia.org/resource/Antibiotics ",
-				"Antibiotic", 186.916));
-		entities.add(new Entity(
-				"http://dbpedia.org/resource/Anti-ballistic_missile ",
-				"Anti-Ballistic Missile", 2.0));
-		entities.add(new Entity("http://dbpedia.org/resource/Anthropology ",
-				"Antropologie", 201.737));
-		return entities;
-	}
+	
+
 }

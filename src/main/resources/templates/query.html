@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+
+<link rel="stylesheet" media="all"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+	th:href="@{/webjars/bootstrap/4.0.0-beta/css/bootstrap.min.css}" />
+
+<script src="https://code.jquery.com/jquery-3.2.1.js"
+	th:href="@{/webjars/jquery/3.2.1/jquery.min.js}">
+	
+</script>
+
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+	th:href="@{/webjars/popper.js/1.12.3/popper.min.js}">
+	
+</script>
+
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+	th:href="@{/webjars/bootstrap/4.0.0-beta/js/bootstrap.min.js}">
+	
+</script>
+
+<!-- Custom styles for this template -->
+<link href="../static/css/main.css" rel="stylesheet"
+	th:href="@{/css/main.css}" media="all" />
+
+
+
+
+<title>AutoIndex</title>
+</head>
+<body>
+
+
+	<!-- Navigation -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
+		<div class="container">
+			<a class="navbar-brand" th:href="@{/home}">AutoIndex</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarResponsive" aria-controls="navbarResponsive"
+				aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarResponsive">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item"><a class="nav-link" th:href="@{/index}">Index
+							Endpoint</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<!-- Page Content -->
+	<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6">
+					<h1 class="mt-5">Query Endpoint</h1>
+					<p class="intro">If you have not indexed any endpoint you can
+						query http://dbpedia.org/sparql</p>
+
+					<form th:action="@{/query/label}" method="post">
+						<div class="form-group">
+							<label class="intro" for="searchQuery"> </label> <input
+								type="text" class="form-control" id="labelQuery"
+								aria-describedby="emailHelp" placeholder="Enter Query"
+								required="required" name="labelQuery" /> <small id="helpText"
+								class="form-text text-muted"> Enter your query Term</small>
+						</div>
+						<button id="searchButtonLabel" type="submit"
+							class="btn btn-success">Search By Label</button>
+					</form>
+
+					<form th:action="@{/query/url}" method="post">
+						<div class="form-group">
+							<label class="intro" for="searchQuery"> </label> <input
+								type="url" class="form-control" id="urlQuery"
+								aria-describedby="emailHelp" placeholder="Enter Query"
+								required="required" name="urlQuery" /> <small id="helpText"
+								class="form-text text-muted"> Enter your query URL (does not return result)</small>
+						</div>
+						<button id="searchButtonLabel" type="submit"
+							class="btn btn-success">Search By URL</button>
+
+					</form>
+					
+				</div>
+
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+</body>
+
+</html>
