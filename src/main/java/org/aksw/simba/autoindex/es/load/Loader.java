@@ -25,7 +25,7 @@ public class Loader {
 		SparqlEndpointHandler sh = new SparqlEndpointHandler();
 		operations.putMapping(Entity.class);
 		Date d1 = new Date();
-		int instances_limit = 40000;
+		int instances_limit = 0;
 		System.out.println("*************************************************Loading Data*************************************************");
 		esrepo.save(sh.getResults(instances_limit));
 		System.out.println(sh.getResults(instances_limit));
