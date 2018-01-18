@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Autoindex
 Autoindex is a REST API that aims to index any RDF Dump or Sparql Endpoint and the query it. it is currently a work in progress.
 
@@ -35,7 +34,6 @@ Maven is the only pre-requisite for  . The instructions to install maven can be 
 
     `localhost:8080/rest/search/url/{URL}`
     
-=======
 # Autoindex
 Autoindex is a REST API that aims to index any RDF Dump or Sparql Endpoint and the query it. it is currently a work in progress.
 
@@ -91,7 +89,3 @@ Go to the browser and hit `http://localhost:3030/home` to see the output
 1. To see created images:`docker image ls`
 2. To see running containers:`docker container ps`
 3. To see all created containers:`docker container ps -a`
-
-
-    
->>>>>>> index_fixing
