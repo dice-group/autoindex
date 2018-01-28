@@ -1,4 +1,4 @@
-package org.aksw.simba.autoindex.es.web;
+/*package org.aksw.simba.autoindex.es.web;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class SearchResourceController {
 
 	@Autowired
 	EntityRespository entityRepo;
-
+*/
 	/*
 	 * @RequestMapping(value = "/query/url", method = RequestMethod.POST) public
 	 * String searchName(Model model, HttpServletRequest request) {
@@ -44,7 +44,7 @@ public class SearchResourceController {
 	 * Gson().toJson(entityRepo.findByUrl(request.getParameter("urlQuery"))));
 	 * return "results"; }
 	 */
-
+/*
 	@RequestMapping(value = "/query/url/{text}")
 	public String searchName(Model model, @PathVariable final String text) {
 		model.addAttribute("entities", new Gson().toJson(entityRepo.findByUrl(text)));
@@ -65,4 +65,4 @@ public class SearchResourceController {
 		model.addAttribute("entities", new Gson().toJson(entityList));
 		return "results";
 	}
-}
+}*/
