@@ -25,15 +25,15 @@ Maven is the only pre-requisite for  . The instructions to install maven can be 
 ### Queries
 1. Get all the resources :
 
-   `localhost:8080/rest/search/all`
+   `localhost:9091/rest/search/all`
 
 2. Get results for a label search
 
-    `localhost:8080/rest/search/label/{LABEL}`
+    `localhost:9091/rest/search/label/{LABEL}`
 
 3. Get results for a keyword search
 
-    `localhost:8080/rest/search/url/{URL}`
+    `localhost:9091/rest/search/url/{URL}`
     
 ### Change Index class
 Add sparql endpoint in [SparqlEnpointHandler class](https://github.com/dice-group/autoindex/blob/master/src/main/java/org/aksw/simba/autoindex/input/SparqlEndpointHandler.java#L20). Default is `http://dbpedia.org/sparql` .
@@ -55,7 +55,7 @@ sudo docker build -f DockerFile -t {Name of your image} .
 ```
 To run your image, type the below command
 ```
-sudo docker run -p {Your port id for example 3030}:8080 -t {Name of your image}
+sudo docker run -p {Your port id for example 3030}:9091 -t {Name of your image}
 ```
 Go to the browser and hit `http://localhost:3030/home` to see the output
 
