@@ -22,7 +22,7 @@ Maven is the only pre-requisite for  . The instructions to install maven can be 
 
 5. Add sparql endpoint in [SparqlEnpointHandler class](https://github.com/dice-group/autoindex/blob/master/src/main/java/org/aksw/simba/autoindex/input/SparqlEndpointHandler.java#L20). Default is `http://dbpedia.org/sparql` .
 
-6. (Optional) Once the Autoindex application is successfully running, the data fetched from the spark endpoints will be persisted in a elasticsearch database in the project home Directory elasticsearch/data.
+6. (Optional) Once the Autoindex application is successfully running, the data fetched from the RDF stores will be persisted in a elasticsearch database in the project home directory elasticsearch/data.
 
    If one needs to change the directory where the data will be persisted, one needs to set an enviroment variable ES_HOME_DIR to the desired directory path in step 3.
 
