@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages={"org.aksw.*"})
+//@ComponentScan(basePackages={"org.aksw.*"})
 public class SpringElasticApplication {
 
 	public static void main(String[] args) {

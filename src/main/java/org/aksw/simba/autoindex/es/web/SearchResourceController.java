@@ -1,68 +1,46 @@
-/*package org.aksw.simba.autoindex.es.web;
+package org.aksw.simba.autoindex.es.web;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.aksw.simba.autoindex.es.model.Entity;
 import org.aksw.simba.autoindex.es.repository.EntityRespository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.SearchQuery;
+import static org.elasticsearch.index.query.QueryBuilders.wildcardQuery;
+import static org.elasticsearch.index.query.QueryBuilders.prefixQuery;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.Gson;
-
-@Controller
+@RestController
+@RequestMapping("/rest/search")
 public class SearchResourceController {
-
-	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String homepage() {
-		return "home";
-	}
-
-	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public String index() {
-		return "index";
-	}
-
-	@RequestMapping(value = "/query", method = RequestMethod.GET)
-	public String query() {
-		return "query";
-	}
 
 	@Autowired
 	EntityRespository entityRepo;
-*/
-	/*
-	 * @RequestMapping(value = "/query/url", method = RequestMethod.POST) public
-	 * String searchName(Model model, HttpServletRequest request) {
-	 * model.addAttribute("entities", new
-	 * Gson().toJson(entityRepo.findByUrl(request.getParameter("urlQuery"))));
-	 * return "results"; }
-	 */
-/*
-	@RequestMapping(value = "/query/url/{text}")
-	public String searchName(Model model, @PathVariable final String text) {
-		model.addAttribute("entities", new Gson().toJson(entityRepo.findByUrl(text)));
-		return "results";
+
+	@GetMapping(value = "/url/{text}")
+	public List<Entity> searchUrl(@PathVariable final String text) {
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(wildcardQuery("url", "https://*" + text))
+				.build();
+
+		return entityRepo.search(searchQuery).getContent();
 	}
 
-	@RequestMapping(value = "/query/label", method = RequestMethod.POST)
-	public String searchLabel(Model model, HttpServletRequest request) {
-		model.addAttribute("entities", new Gson().toJson(entityRepo.findByLabel(request.getParameter("labelQuery"))));
-		return "results";
+	@GetMapping(value = "/label/{label}")
+	public List<Entity> searchLabel(@PathVariable final String label) {
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(prefixQuery("label", label)).build();
+		return entityRepo.search(searchQuery).getContent();
 	}
 
-	@RequestMapping(value = "/query/all", method = RequestMethod.GET)
-	public String searchAll(Model model) {
+	@GetMapping(value = "/all")
+	public List<Entity> searchAll() {
 		List<Entity> entityList = new ArrayList<>();
 		Iterable<Entity> entities = entityRepo.findAll();
 		entities.forEach(entityList::add);
-		model.addAttribute("entities", new Gson().toJson(entityList));
-		return "results";
+		return entityList;
 	}
-}*/
+}

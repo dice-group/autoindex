@@ -11,19 +11,17 @@ public class Entity {
 	@Id
 	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
 	private String url;
-
 	private String label;
-	private Double pagerank;
+	//private Double pagerank; //Optional for now.
 
 	public Entity(String url, String label, Double pagerank) {
-		this.setUrl(url);
-		this.setLabel(label);
-		this.setPagerank(pagerank);
+		this.url=url;
+		this.label=label;
 	}
 
 	public Entity(String url, String label) {
-		this.setUrl(url);
-		this.setLabel(label);
+		this.url=url;
+		this.label=label;
 	}
 
 	public String getUrl() {
@@ -42,15 +40,17 @@ public class Entity {
 		this.label = label;
 	}
 
-	public Double getPagerank() {
+	/*public Double getPagerank() {
 		return pagerank;
 	}
 
 	public void setPagerank(Double pagerank) {
 		this.pagerank = pagerank;
-	}
+	}*/
 
 	public Entity() {
+		this.url="";
+		this.label="";
 	}
 
 }
