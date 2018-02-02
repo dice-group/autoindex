@@ -45,7 +45,7 @@ Maven is the only pre-requisite for  . The instructions to install maven can be 
 Add sparql endpoint in [SparqlEnpointHandler class](https://github.com/dice-group/autoindex/blob/master/src/main/java/org/aksw/simba/autoindex/input/SparqlEndpointHandler.java#L20). Default is `http://dbpedia.org/sparql` .
 
 ### Docker
-First install docker in your system. For ubuntu you may refer to below link. 
+First install docker in your system. For ubuntu you may refer to below link 
 [https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04]
 
 For windows users
@@ -55,11 +55,13 @@ Move to the parent directory of project and execute the below commands
 1. mvn clean
 2. mvn install
 
-Now to build your image, type the below command
+Now to build your image, type the below command.
 ```
 sudo docker build -f DockerFile -t {Name of your image} .
 ```
-To run your image, type the below command
+To run your image, type the below command. Option ```-p``` provides mapping from host machine port 3030 to docker container port 9091. So our local host will be directed to port 3030 instead of 9091.One can use any ports. Its just an example.
+This port binding feature helps user to access webserver application at container port using the host machine port,
+from external network.
 ```
 sudo docker run -p {Your port id for example 3030}:9091 -t {Name of your image}
 ```
@@ -73,3 +75,5 @@ Go to the browser and hit `http://localhost:3030/home` to see the output
 1. To see created images:`docker image ls`
 2. To see running containers:`docker container ps`
 3. To see all created containers:`docker container ps -a`
+4. To start container:`docker start my_container`
+5. To stop container:`docker stop my_container`
