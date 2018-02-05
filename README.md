@@ -59,15 +59,15 @@ Now to build your image, type the below command.
 ```
 sudo docker build -f DockerFile -t {Name of your image} .
 ```
-To run your image, type the below command. Option ```-p``` provides mapping from host machine port 3030 to docker container port 9091. So our local host will be directed to port 3030 instead of 9091.One can use any ports. Its just an example.
+To run your image, type the below command. Option ```-p``` provides mapping from host machine port 3030 to docker container port 8080. So our local host will be directed to port 3030 instead of 8080.One can use any host machine port. Its just an example.
 This port binding feature helps user to access webserver application at container port using the host machine port,
 from external network.
 ```
-sudo docker run -p {Your port id for example 3030}:9091 -t {Name of your image}
+sudo docker run -p {Your port id for example 3030}:8080 -t {Name of your image}
 ```
 To persist the data on the host system, so next time one doesn't need to load the same data again, type the below command
 ```
-sudo docker run -v  {Directory Path of the Host System}:elasticsearch/ -p {Your port id for example 3030}:9091 -t {Name of your image}
+sudo docker run -v  {Directory Path of the Host System}:elasticsearch/ -p {Your port id for example 3030}:8080 -t {Name of your image}
 ```
 Go to the browser and hit `http://localhost:3030/home` to see the output
 
