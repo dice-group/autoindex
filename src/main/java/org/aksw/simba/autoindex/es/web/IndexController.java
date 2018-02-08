@@ -1,4 +1,4 @@
-package org.aksw.simba.autoindex.es.web;
+/*package org.aksw.simba.autoindex.es.web;
 
 import org.aksw.simba.autoindex.es.model.Entity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,3 +26,4 @@ public class IndexController {
 
 	}
 }
+*/
