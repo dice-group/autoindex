@@ -49,15 +49,18 @@ Move to the parent directory of project and execute the below commands
 1. mvn clean
 2. mvn install
 
-Now to build your image, type the below command
+Now to build your image, type the below command.
 ```
 sudo docker build -f DockerFile -t {Name of your image} .
 ```
-To run your image, type the below command
+To run your image, type the below command.
 ```
 sudo docker run -p {Your port id for example 3030}:8080 -t {Name of your image}
 ```
-Go to the browser and hit `http://localhost:3030/home` to see the output
+To pull image from the hub,type the below command in terminal.
+```
+sudo docker run dicegroup/autoindex
+```
 
 #### Some useful terminal commands for docker
 1. To see created images:`docker image ls`
