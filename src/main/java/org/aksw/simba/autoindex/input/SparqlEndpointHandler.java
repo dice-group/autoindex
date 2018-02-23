@@ -17,12 +17,12 @@ import org.slf4j.LoggerFactory;
 public class SparqlEndpointHandler {
     // TODO: Optimize queries
 
-    private static final Logger LOGGER = LoggerFactory
+    private static final Logger log = LoggerFactory
             .getLogger(SparqlEndpointHandler.class);
 
     private  final String BASE_URI = "http://dbpedia.org/sparql";
 
-	private  String lang ="en";
+	private String lang ="en";
   
     public  String getLang() {
 		return lang;
@@ -34,7 +34,7 @@ public class SparqlEndpointHandler {
 
 	public  QueryExecutionFactory makeQuery() {
     	QueryExecutionFactory qef = new QueryExecutionFactoryHttp("http://dbpedia.org/sparql", "http://dbpedia.org");
-    	qef = new QueryExecutionFactoryPaginated(qef, 1000);
+    	qef = new QueryExecutionFactoryPaginated(qef, 1);
     	return qef;
   }
 
@@ -49,7 +49,7 @@ public class SparqlEndpointHandler {
                 + "?type a owl:Class .\n"
                 + "?type rdfs:label ?label . FILTER ( lang(?label) = \""+lang +"\") \n"
                 + "}\n");
-        System.out.println(sparql_query);
+        log.debug("%s" , sparql_query);
         QueryExecutionFactory qef = makeQuery();
 		QueryExecution qe = qef.createQueryExecution(sparql_query.asQuery());
 		return qe.execSelect();
@@ -98,7 +98,7 @@ public class SparqlEndpointHandler {
                 + "FILTER (STRSTARTS(str(?type),\"http://dbpedia.org/ontology\")&&lang(?label)=\"en\")"
                 + "}\n GROUP BY ?type ?label \n ORDER BY DESC(?v)");
 
-        System.out.println(sparql_query.toString());
+        log.debug("%s" , sparql_query.toString());
         QueryExecutionFactory qef = makeQuery();
 		QueryExecution qe = qef.createQueryExecution(sparql_query.asQuery());
         return qe.execSelect();
@@ -109,19 +109,13 @@ public class SparqlEndpointHandler {
         ResultSet results = this.getallinstances("dbpedia.org/sparql",instances_limit);
         ArrayList<Entity> entity_list = new ArrayList<Entity>();
         while (results.hasNext()) {
-//        	System.out.println("*****************In SparqlEndPointHandler************************");
             QuerySolution qs = results.next();
             entity_list.add(new Entity(qs.getResource("type").getURI(), qs
                     .getLiteral("label").getString(), Double.parseDouble(qs
                     .getLiteral("v").getString())));
         }
-//        System.out.println("____________________________________________");
-        return entity_list;
-    }
 
-    public static void main(String[] args) {
-        SparqlEndpointHandler test = new SparqlEndpointHandler();
-        test.getallclasses("http://dbpedia.org/sparql");
+        return entity_list;
     }
 
     public String getBaseUri() {
