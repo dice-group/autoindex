@@ -3,12 +3,11 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import org.aksw.simba.autoindex.es.model.Entity;
 import org.aksw.simba.autoindex.es.repository.EntityRepository;
-import org.aksw.simba.autoindex.input.SparqlEndpointHandler;
+import org.aksw.simba.autoindex.sparql.SparqlHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,15 +16,15 @@ public class Loader {
 	private static final Logger log = LoggerFactory
             .getLogger(Loader.class);
 	@Autowired
-	ElasticsearchOperations operations;
+	private ElasticsearchOperations operations;
 
 	@Autowired
-	EntityRepository repository;
+	private EntityRepository repository;
 
 	@PostConstruct
 	@Transactional
 	public void loadAll() {
-		SparqlEndpointHandler sh = new SparqlEndpointHandler();
+		SparqlHandler sh = new SparqlHandler();
 		operations.putMapping(Entity.class);
 		Date d1 = new Date();
 		int instances_limit = 10;
@@ -34,7 +33,7 @@ public class Loader {
 		log.warn( sh.getResults(instances_limit).toString());
 		log.warn("*************************************************Loading Completed*************************************************");
 		Date d2 = new Date();
-		log.warn("Records Limit = %s" , instances_limit);
+		log.warn("Records Limit = " + instances_limit);
 		
 		getime(d1,d2);
 	}
@@ -48,7 +47,7 @@ public class Loader {
 		long diffHours = diff / (60 * 60 * 1000) % 24;
 		long diffDays = diff / (24 * 60 * 60 * 1000);
 
-		log.warn("%s  days, " , diffDays);
+		log.warn (diffDays + " days,");
 		log.warn(diffHours + " hours, ");
 		log.warn(diffMinutes + " minutes, ");
 		log.warn(diffSeconds + " seconds.");
