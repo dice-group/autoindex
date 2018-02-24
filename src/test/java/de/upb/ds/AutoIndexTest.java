@@ -1,7 +1,7 @@
 package de.upb.ds;
 import java.util.List;
 
-import org.aksw.simba.autoindex.input.SparqlEndpointHandler;
+import org.aksw.simba.autoindex.sparql.SparqlHandler;
 import org.apache.jena.ext.com.google.common.base.Joiner;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
@@ -12,7 +12,7 @@ import junit.framework.TestCase;
 
 public class AutoIndexTest extends TestCase {
 	private String endpoint= "http://dbpedia.org/sparql";;
-	private SparqlEndpointHandler seh = new SparqlEndpointHandler();
+	private SparqlHandler seh = new SparqlHandler();
 	
 	public AutoIndexTest(String testName) {
 		super(testName);
@@ -22,7 +22,8 @@ public class AutoIndexTest extends TestCase {
 	}
 	public void testgetallclasses() {
 		seh.setLang("en");
-		ResultSet results = seh.getallclasses(endpoint);
+		seh.setBaseUri(endpoint);
+		ResultSet results = seh.getallclasses();
 		assertNotNull(results);
 		List<QuerySolution> asText = ResultSetFormatter.toList(results);
 		Joiner listOfResults = Joiner.on("\n");
@@ -33,14 +34,15 @@ public class AutoIndexTest extends TestCase {
 	
 	public void testGetAllClassMultilingual() {
 		seh.setLang("de");
-		ResultSet results = seh.getallclasses(endpoint);
+		seh.setBaseUri(endpoint);
+		ResultSet results = seh.getallclasses();
 		assertNotNull(results);
 		List<QuerySolution> asText = ResultSetFormatter.toList(results);
 		System.out.println("Deutsch Language Results" +Joiner.on("\n").join(asText));
 		System.out.println("Total Visible Results " + asText.size());
 		Assert.assertTrue(asText.size() >1);
 		seh.setLang("en");
-		results = seh.getallclasses(endpoint);
+		results = seh.getallclasses();
 		assertNotNull(results);
 		asText = ResultSetFormatter.toList(results);
 		System.out.println("English Language Results" +Joiner.on("\n").join(asText));
@@ -55,7 +57,8 @@ public class AutoIndexTest extends TestCase {
 	public void testgetallinstances() {
 		int instances_limit = 500;
 		seh.setLang("en");
-		ResultSet sum = seh.getallinstances(endpoint,instances_limit);
+		seh.setBaseUri(endpoint);
+		ResultSet sum = seh.getallinstances(instances_limit);
 		assertNotNull(sum);
 		List<QuerySolution> asText = ResultSetFormatter.toList(sum);
 		System.out.println("Instances Reults" +Joiner.on("\n").join(asText));
@@ -76,8 +79,8 @@ public class AutoIndexTest extends TestCase {
 	}
 	public void testallproperties() {
 		seh.setLang("en");
-
-		ResultSet sum = seh.getallproperties(endpoint);
+		seh.setBaseUri(endpoint);
+		ResultSet sum = seh.getallproperties();
 	    assertNotNull(sum);
 
 	    List<QuerySolution> asText = ResultSetFormatter.toList(sum);

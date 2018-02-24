@@ -1,0 +1,23 @@
+server:
+  port: 9091
+
+spring:
+  data:
+    elasticsearch:
+      cluster-name: autoindex
+      cluster-nodes: 
+      properties:
+        node:
+          local: false
+          data: true
+        network:
+          publish_host: ${ES_PUBLISH_HOST:}
+        index:
+          number_of_shards: 3
+          replication_factor: 0
+        path:
+          logs: ${ES_HOME_DIR:.}/elasticsearch/log
+          data: ${ES_HOME_DIR:.}/elasticsearch/data
+        http:
+          enabled: true
+          port: 9200
