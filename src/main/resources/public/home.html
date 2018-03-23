@@ -1,39 +1,23 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<link rel="stylesheet" media="all"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-	th:href="@{/webjars/bootstrap/4.0.0-beta/css/bootstrap.min.css}" />
-
-<script src="https://code.jquery.com/jquery-3.2.1.js"
-	th:href="@{/webjars/jquery/3.2.1/jquery.min.js}">
-	
-</script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
-	th:href="@{/webjars/popper.js/1.12.3/popper.min.js}">
-	
-</script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
-	th:href="@{/webjars/bootstrap/4.0.0-beta/js/bootstrap.min.js}">
-	
-</script>
+<script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script src="/webjars/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/webjars/bootstrap/4.0.0-beta/css/bootstrap.css">
 <!-- Custom styles for this template -->
-<link href="../static/css/main.css" rel="stylesheet"
-	th:href="@{/css/main.css}" media="all" />
+<link rel="stylesheet" type="text/css" href="css/main.css">
+
 <title>AutoIndex</title>
 </head>
 <body>
-
-
 	<!-- Navigation -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
 		<div class="container">
-			<a class="navbar-brand" th:href="@{/home}">AutoIndex</a>
+			<a class="navbar-brand">AutoIndex</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarResponsive" aria-controls="navbarResponsive"
 				aria-expanded="false" aria-label="Toggle navigation">
@@ -41,9 +25,9 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarResponsive">
 				<ul class="navbar-nav ml-auto">
-					<li class="nav-item"><a class="nav-link" th:href="@{/index}">Index
+					<li class="nav-item"><a class="nav-link">Index
 							Endpoint</a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/query}">Query</a>
+					<li class="nav-item"><a class="nav-link">Query</a>
 					</li>
 
 				</ul>

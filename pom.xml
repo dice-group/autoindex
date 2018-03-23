@@ -12,12 +12,6 @@
 	</repository>
 </repositories>
 
-
-
-
-
-
-
 	<artifactId>autoindex</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
@@ -40,11 +34,7 @@
 		<jena-arq.version>2.10.0</jena-arq.version>
 	</properties>
 	<dependencies>
-	
-	
-	
-	
-		<dependency>
+	    <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
 		</dependency>
@@ -71,24 +61,23 @@
 			<artifactId>h2</artifactId>
 		</dependency>
 		
-		
-		
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>bootstrap</artifactId>
 			<version>4.0.0-beta</version>
 		</dependency>
-
 		<dependency>
-			<groupId>org.webjars.npm</groupId>
-			<artifactId>popper.js</artifactId>
-			<version>1.12.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
+			<groupId>org.webjars</groupId>
 			<artifactId>jquery</artifactId>
 			<version>3.2.1</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.webjars/bootstrap -->
+		<dependency>
+		    <groupId>org.webjars</groupId>
+		    <artifactId>bootstrap</artifactId>
+		    <version>4.0.0-beta</version>
+		</dependency>
+				
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
@@ -117,16 +106,12 @@
             		<artifactId>jna</artifactId>
             		<version>3.0.9</version>
         	</dependency>		
-		
 		<dependency>
 			<groupId>org.aksw.jena-sparql-api</groupId>
 			<artifactId>jena-sparql-api-core</artifactId>
 			<version>3.4.0-1</version>
 		</dependency>
 		</dependencies>
-	
-	
-	
 	<build>
 		<plugins>
 			<plugin>
