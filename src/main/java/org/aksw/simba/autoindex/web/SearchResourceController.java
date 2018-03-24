@@ -7,8 +7,6 @@ import java.util.List;
 import org.aksw.simba.autoindex.es.model.Entity;
 import org.aksw.simba.autoindex.es.repository.EntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
