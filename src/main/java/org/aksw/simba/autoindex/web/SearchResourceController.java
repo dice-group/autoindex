@@ -23,7 +23,6 @@ public class SearchResourceController {
 	
 	@RequestMapping("/searchByURL")
 	public List<Entity> searchUrl(@RequestBody final String url) {
-		System.out.println(url);
 		return entityRepo.search("url",  url);
 	}
 	
@@ -31,7 +30,7 @@ public class SearchResourceController {
 	public List<Entity> searchLabel(@RequestBody final String label) {
 		return entityRepo.search("label",  label);
 	}
-	@GetMapping(value = "/findAll")
+	@RequestMapping("/findAll")
 	public List<Entity> searchAll() {
 		return entityRepo.findall();
 	}
