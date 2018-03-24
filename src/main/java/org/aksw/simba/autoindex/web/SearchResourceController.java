@@ -31,8 +31,8 @@ public class SearchResourceController {
 	public List<Entity> searchLabel(@RequestBody final String label) {
 		return entityRepo.search("label",  label);
 	}
-	/*@GetMapping(value = "/all")
+	@GetMapping(value = "/findAll")
 	public List<Entity> searchAll() {
 		return entityRepo.findall();
-	}*/
+	}
 }
