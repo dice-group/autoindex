@@ -1,24 +1,18 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
-<script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-<link rel="stylesheet" href="/webjars/bootstrap/4.0.0-beta/css/bootstrap.css">
-<script src="/webjars/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-
-<!-- Custom styles for this template -->
 <link rel="stylesheet" type="text/css" href="css/main.css">
+<link rel="stylesheet" href="/webjars/bootstrap/4.0.0-beta/css/bootstrap.css">
 <title>AutoIndex</title>
 </head>
 <body>
 	<!-- Navigation -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
 		<div class="container">
-			<a class="navbar-brand" th:href="@{/home}">AutoIndex</a>
+			<a class="navbar-brand" href="home.html">AutoIndex</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarResponsive" aria-controls="navbarResponsive"
 				aria-expanded="false" aria-label="Toggle navigation">
@@ -26,7 +20,7 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarResponsive">
 				<ul class="navbar-nav ml-auto">
-					<li class="nav-item"><a class="nav-link" th:href="@{/index}">Index
+					<li class="nav-item"><a class="nav-link" href="index.html">Index
 							Endpoint</a></li>
 				</ul>
 			</div>
@@ -41,42 +35,35 @@
 					<p class="intro">If you have not indexed any endpoint you can
 						query http://dbpedia.org/sparql</p>
 
-					<form th:action="@{/query/label}" method="post">
-						<div class="form-group">
-							<label class="intro" for="searchQuery"> </label> <input
-								type="text" class="form-control" id="labelQuery"
-								aria-describedby="emailHelp" placeholder="Enter Query"
-								required="required" name="labelQuery" /> <small id="helpText"
-								class="form-text text-muted"> Enter your query Term</small>
-						</div>
-						<button id="searchButtonLabel" type="submit"
-							class="btn btn-success">Search By Label</button>
-					</form>
-
-					<form th:action="@{/query/url}" method="post">
-						<div class="form-group">
-							<label class="intro" for="searchQuery"> </label> <input
-								type="url" class="form-control" id="urlQuery"
-								aria-describedby="emailHelp" placeholder="Enter Query"
-								required="required" name="urlQuery" /> <small id="helpText"
-								class="form-text text-muted"> Enter your query URL (does not return result)</small>
-						</div>
-						<button id="searchButtonLabel" type="submit"
-							class="btn btn-success">Search By URL</button>
-
-					</form>
+					<div class="form-group" id="Label">
+						<label class="intro" for="searchQuery"> </label>
+						 <input type="text" class="form-control" id="queryText"
+							aria-describedby="emailHelp" placeholder="Enter Query Label"
+							required="required" name="labelQuery" /> 
+							<small id="helpText" class="form-text text-muted"> Enter your query Label</small>
 					
+						<button id="searchButtonLabel" type="submit"
+						class="btn btn-success">Search By Label</button>
+					</div>
+					<div class="form-group" id="url">
+						<label class="intro" for="searchQuery"> </label> 
+						<input type="url" class="form-control" id="urlQuery"
+							aria-describedby="emailHelp" placeholder="Enter Query URL"
+							required="required" name="urlQuery" /> 
+						<small id="helpText"
+							class="form-text text-muted"> Enter your query URL (does not return result)</small>
+						<button id="searchButtonURL" type="submit"
+						class="btn btn-success">Search By URL</button>
+					</div>	
 				</div>
-
-
 			</div>
 		</div>
 	</section>
 
-
-
-
-
+<script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script src="/webjars/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="js/query.js"></script>
 </body>
 
 </html>

@@ -9,25 +9,30 @@ import org.aksw.simba.autoindex.es.repository.EntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/rest/search")
+@RequestMapping(method = RequestMethod.POST)
 public class SearchResourceController {
-
+	
 	@Autowired
 	EntityRepository entityRepo;	
-	@GetMapping(value = "/url/{text}")
-	public List<Entity> searchUrl(@PathVariable final String text) {
-		return entityRepo.search("url", "https://" + text);
+	
+	@RequestMapping("/searchByURL")
+	public List<Entity> searchUrl(@RequestBody final String url) {
+		System.out.println(url);
+		return entityRepo.search("url",  url);
 	}
-	@GetMapping(value = "/label/{label}")
-	public List<Entity> searchLabel(@PathVariable final String label) {
+	
+	@RequestMapping("/searchByLabel")
+	public List<Entity> searchLabel(@RequestBody final String label) {
 		return entityRepo.search("label",  label);
 	}
-	@GetMapping(value = "/all")
+	/*@GetMapping(value = "/all")
 	public List<Entity> searchAll() {
 		return entityRepo.findall();
-	}
+	}*/
 }
