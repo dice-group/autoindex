@@ -1,29 +1,31 @@
-/*package org.aksw.simba.autoindex.es.web;
+package org.aksw.simba.autoindex.web;
 
-import org.aksw.simba.autoindex.es.model.Entity;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.aksw.simba.autoindex.es.repository.EntityRepository;
+import org.aksw.simba.autoindex.request.Request;
 
-@Controller
+
+@RestController
+@RequestMapping(method = RequestMethod.POST)
 public class IndexController {
-	@Autowired
-	private ElasticsearchTemplate elasticsearchTemplate;
 	
-	@RequestMapping(value = "index/create")
-	public void indexCreate() {
-		elasticsearchTemplate.createIndex(Entity.class);
-		elasticsearchTemplate.putMapping(Entity.class);
-		elasticsearchTemplate.refresh(Entity.class);
+	@Autowired
+	private EntityRepository entityRepo;	
+	
+	@RequestMapping(value = "/index/create")
+	public void indexCreate(@RequestBody final Request request) {
+		entityRepo.createIndex(request);
 	}
 
 	@RequestMapping(value = "index/delete")
-	public void indexDelete() {
-		if (elasticsearchTemplate.indexExists(Entity.class)) {
-			elasticsearchTemplate.deleteIndex(Entity.class);
-		}
-
+	public void indexDelete(@RequestBody final Request request) {
+		//TODO: Support Index Delete
+		
 	}
 }
 */

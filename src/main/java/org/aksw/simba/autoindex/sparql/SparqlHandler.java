@@ -4,10 +4,14 @@
 package org.aksw.simba.autoindex.sparql;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import org.aksw.jena_sparql_api.core.QueryExecutionFactory;
 import org.aksw.jena_sparql_api.http.QueryExecutionFactoryHttp;
 import org.aksw.jena_sparql_api.pagination.core.QueryExecutionFactoryPaginated;
 import org.aksw.simba.autoindex.es.model.Entity;
+import org.aksw.simba.autoindex.request.Request;
 import org.apache.jena.query.ParameterizedSparqlString;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QuerySolution;
@@ -15,13 +19,26 @@ import org.apache.jena.query.ResultSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @author Prashanth
- *
- */
+
 public class SparqlHandler {
-	 private static final Logger log = LoggerFactory
+	private static final Logger log = LoggerFactory
 	            .getLogger(SparqlHandler.class);
+	/*SELECT DISTINCT ?type ?label WHERE {
+	?type a <http://www.w3.org/2002/07/owl#Thing> .
+		?type <http://www.w3.org/2000/01/rdf-schema#label> ?label .
+		} LIMIT 1000*/
+	private static final String commandString = "select distinct ?LABEL ?URI where {?URI a ?LABEL}";
+	private static final Map<String,String> prefixMap = Collections.unmodifiableMap(new HashMap<String,String>(){/**
+		 * 
+		 */
+	private static final long serialVersionUID = 1L;
+	{
+		put("owl", "http://www.w3.org/2002/07/owl#");
+        put("xsd", "http://www.w3.org/2001/XMLSchema#");
+        put("rdf","http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+        put("rdfs","http://www.w3.org/2000/01/rdf-schema#");
+        put("vrank","http://purl.org/voc/vrank#");
+	}});
 	private static int maxCount = 1000;
 	private String lang = "en"; //Explore idea to not keep it open as a string since it may lead to some junk values.
 	private String baseURI = "http://dbpedia.org/sparql";
@@ -162,6 +179,47 @@ public class SparqlHandler {
                     .getLiteral("v").getString())));
         }
       return entity_list;
+    }
+    /*
+     * Below Functions will be in use.
+     * All Functions above will be removed once the Unit tests are fixed.
+     * 
+     */
+    	public ParameterizedSparqlString constructSparqlQuery(String baseURI , String defaultGraph , int limit) {
+    		ParameterizedSparqlString sparqlQueryHandler = new ParameterizedSparqlString();
+    		sparqlQueryHandler.setBaseUri(baseURI);
+    		sparqlQueryHandler.setNsPrefixes(prefixMap);
+    		sparqlQueryHandler.setCommandText(commandString);
+    		if(!defaultGraph.isEmpty()) {
+    			log.warn("Overrding a new default Graph , name= " + defaultGraph);
+    			sparqlQueryHandler.setIri("default-graph-uri", graphName);
+    		}
+    		if (limit != 0) {
+    			sparqlQueryHandler.append("LIMIT ");
+    			sparqlQueryHandler.appendLiteral(limit);
+    		}
+    		return sparqlQueryHandler;
+    	}
+    	
+    public ArrayList<Entity> RetrieveDataFromEndPoint(Request request){
+    		String baseURI = request.getUrl(); 
+    		String defaultGraph = request.getDefaultGraph();
+    		if (baseURI.isEmpty()) {
+    			log.warn("base URI is empty, Cannot proceed further");
+    			throw new IllegalArgumentException("base URI is empty");
+    		}
+    		int limit = request.getlimit();
+    		ParameterizedSparqlString sparqlQueryHandler = constructSparqlQuery(baseURI , defaultGraph , limit);
+    		ResultSet output = runQuery(sparqlQueryHandler);
+    		log.debug("SparQlQueryString=" + sparqlQueryHandler.toString());
+    		ArrayList<Entity> entity_list = new ArrayList<Entity>();
+    		while (output.hasNext()) {
+    			QuerySolution qs = output.next();
+    			Entity entity = new Entity(qs.getResource("URI").toString() , qs.getResource("LABEL").toString());
+    			entity_list.add(entity);
+    		}
+		return entity_list;
+    	
     }
    
 }
