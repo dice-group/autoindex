@@ -40,14 +40,6 @@ public class Entity {
 		this.label = label;
 	}
 
-	/*public Double getPagerank() {
-		return pagerank;
-	}
-
-	public void setPagerank(Double pagerank) {
-		this.pagerank = pagerank;
-	}*/
-
 	public Entity() {
 		this.url="";
 		this.label="";
