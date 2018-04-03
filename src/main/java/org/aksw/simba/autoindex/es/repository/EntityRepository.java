@@ -15,26 +15,25 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
-
 import org.springframework.stereotype.Service;
 @Service
 public class EntityRepository{
 	
 	@Autowired
-	ElasticSearchRepositoryInterface ES;
+	ElasticSearchRepositoryInterface elasticSearchRepositoryInterface;
 	private static final Logger log = LoggerFactory
             .getLogger(EntityRepository.class);
 	public void save(ArrayList<Entity> list) {
-		ES.save(list);
+		elasticSearchRepositoryInterface.save(list);
 	}
 	public List<Entity> search(String type, String label) {
 		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(prefixQuery("label", label)).build();
-		return ES.search(searchQuery).getContent();
+		return elasticSearchRepositoryInterface.search(searchQuery).getContent();
 		
 	}
 	public List<Entity> findall(){
 		List<Entity> entityList = new ArrayList<>();
-		Iterable<Entity> entities = ES.findAll();
+		Iterable<Entity> entities = elasticSearchRepositoryInterface.findAll();
 		entities.forEach(entityList::add);
 		return entityList;
 	}
@@ -60,6 +59,7 @@ public class EntityRepository{
 			return;
 		}
 		SparqlHandler sparqlHandler = new SparqlHandler();
-		sparqlHandler.fetchFromSparqlEndPoint(request);
+		ArrayList<Entity> entity_list = sparqlHandler.fetchFromSparqlEndPoint(request);
+		elasticSearchRepositoryInterface.save(entity_list); //Save to ES. Currently URL is getting stored as id. Need to check
 	}
 }
