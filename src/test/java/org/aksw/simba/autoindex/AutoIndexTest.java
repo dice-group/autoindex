@@ -1,7 +1,7 @@
-package de.upb.ds;
+package org.aksw.simba.autoindex;
 import java.util.List;
 
-import org.aksw.simba.autoindex.sparql.SparqlHandler;
+import org.aksw.simba.autoindex.sparql.*;
 import org.apache.jena.ext.com.google.common.base.Joiner;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
@@ -55,7 +55,7 @@ public class AutoIndexTest extends TestCase {
 	
 	
 	public void testgetallinstances() {
-		int instances_limit = 500;
+		int instances_limit = 1;
 		seh.setLang("en");
 		seh.setBaseUri(endpoint);
 		ResultSet sum = seh.getallinstances(instances_limit);
