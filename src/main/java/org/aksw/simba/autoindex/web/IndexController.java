@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.UnsupportedEncodingException;
+
 import org.aksw.simba.autoindex.es.repository.EntityRepository;
 import org.aksw.simba.autoindex.request.Request;
 
@@ -19,7 +22,12 @@ public class IndexController {
 	
 	@RequestMapping(value = "/index/create")
 	public void indexCreate(@RequestBody final Request request) {
-		entityRepo.createIndex(request);
+		try {
+			entityRepo.createIndex(request);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@RequestMapping(value = "index/delete")
@@ -28,4 +36,3 @@ public class IndexController {
 		
 	}
 }
-*/

@@ -3,17 +3,18 @@
  */
 package org.aksw.simba.autoindex.sparql;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import org.aksw.jena_sparql_api.core.QueryExecutionFactory;
-import org.aksw.jena_sparql_api.http.QueryExecutionFactoryHttp;
-import org.aksw.jena_sparql_api.pagination.core.QueryExecutionFactoryPaginated;
+
 import org.aksw.simba.autoindex.es.model.Entity;
 import org.aksw.simba.autoindex.request.Request;
 import org.apache.jena.query.ParameterizedSparqlString;
+import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.slf4j.Logger;
@@ -27,7 +28,15 @@ public class SparqlHandler {
 	?type a <http://www.w3.org/2002/07/owl#Thing> .
 		?type <http://www.w3.org/2000/01/rdf-schema#label> ?label .
 		} LIMIT 1000*/
-	private static final String commandString = "select distinct ?LABEL ?URI where {?URI a ?LABEL}";
+	
+	/* Better query
+	 * SELECT DISTINCT ?URI ?label WHERE {
+		?URI <http://www.w3.org/2000/01/rdf-schema#label> ?label .
+		} LIMIT 100
+	*/
+	private static final String commandString = "SELECT DISTINCT ?URI ?label WHERE {\n" + 
+			"?URI <http://www.w3.org/2000/01/rdf-schema#label> ?label .\n" + 
+			"} ";
 	private static final Map<String,String> prefixMap = Collections.unmodifiableMap(new HashMap<String,String>(){/**
 		 * 
 		 */
@@ -39,10 +48,11 @@ public class SparqlHandler {
         put("rdfs","http://www.w3.org/2000/01/rdf-schema#");
         put("vrank","http://purl.org/voc/vrank#");
 	}});
+/*	
 	private static int maxCount = 1000;
 	private String lang = "en"; //Explore idea to not keep it open as a string since it may lead to some junk values.
 	private String baseURI = "http://dbpedia.org/sparql";
-	private String graphName = "http://dbpedia.org";
+	private String graphName = "";
 	private String filterName = "http://dbpedia.org/ontology"; //Temporary till getAllProperties is figured out.
 	private ArrayList<String> endpoints;
 	public SparqlHandler() {
@@ -80,16 +90,17 @@ public class SparqlHandler {
     public void setFilter(String filterName) {
     		this.filterName = filterName;
     }
-    private  QueryExecutionFactory makeQuery() {
-	    	QueryExecutionFactory qef = new QueryExecutionFactoryHttp(this.baseURI, this.graphName);
+    private  QueryExecutionFactory createQuery() {
+	    	QueryExecutionFactory qef = new QueryExecutionFactoryHttp(this.baseURI , this.baseURI);
 	    	qef = new QueryExecutionFactoryPaginated(qef, maxCount);
 	    	return qef;
     }
+   
     private ResultSet runQuery(ParameterizedSparqlString sparql_query) {
-    		QueryExecutionFactory qef = makeQuery();
+    		QueryExecutionFactory qef = createQuery();
 		QueryExecution qe = qef.createQueryExecution(sparql_query.asQuery());
         return qe.execSelect();
-    }
+    }*/
     /*
      * PREFIX owl: <http://www.w3.org/2002/07/owl#> 
      * PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -97,7 +108,7 @@ public class SparqlHandler {
      * SELECT DISTINCT ?type ?label WHERE {?type a owl:Class .?type rdfs:label ?label . 
      * FILTER ( lang(?label) = "en")
      */
-    public  ResultSet getallclasses() {
+   /* public  ResultSet getallclasses() {
 		ParameterizedSparqlString sparql_query = new ParameterizedSparqlString(
                 "PREFIX owl: <http://www.w3.org/2002/07/owl#>"
                 + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>"
@@ -110,7 +121,7 @@ public class SparqlHandler {
                 + "}");
         log.debug("%s" , sparql_query);
         return runQuery(sparql_query);
-    }
+    }*/
     /*
      * PREFIX owl: <http://www.w3.org/2002/07/owl#>
 		PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -123,7 +134,7 @@ public class SparqlHandler {
 		FILTER (STRSTARTS(str(?type),"http://dbpedia.org/ontology")&&lang(?label)="en")
 		}GROUP BY ?type ?label ORDER BY DESC(?v)
      */
-    public  ResultSet getallproperties() {
+    /*public  ResultSet getallproperties() {
     		//TODO: Hardcoding of DBPedia is available below. Need to find if this function is useful Else Add a filter parameter.
         ParameterizedSparqlString sparql_query = new ParameterizedSparqlString(
                 "PREFIX owl: <http://www.w3.org/2002/07/owl#>"
@@ -179,45 +190,57 @@ public class SparqlHandler {
                     .getLiteral("v").getString())));
         }
       return entity_list;
-    }
+    }*/
     /*
      * Below Functions will be in use.
      * All Functions above will be removed once the Unit tests are fixed.
      * 
      */
-    	public ParameterizedSparqlString constructSparqlQuery(String baseURI , String defaultGraph , int limit) {
+    	public Query constructSparqlQuery(String baseURI , String defaultGraph , int limit) {
     		ParameterizedSparqlString sparqlQueryHandler = new ParameterizedSparqlString();
     		sparqlQueryHandler.setBaseUri(baseURI);
     		sparqlQueryHandler.setNsPrefixes(prefixMap);
     		sparqlQueryHandler.setCommandText(commandString);
     		if(!defaultGraph.isEmpty()) {
     			log.warn("Overrding a new default Graph , name= " + defaultGraph);
-    			sparqlQueryHandler.setIri("default-graph-uri", graphName);
+    			sparqlQueryHandler.setIri("default-graph-uri", defaultGraph);
     		}
-    		if (limit != 0) {
+    		if (limit > 0) {
     			sparqlQueryHandler.append("LIMIT ");
     			sparqlQueryHandler.appendLiteral(limit);
     		}
-    		return sparqlQueryHandler;
+    		Query query = QueryFactory.create(sparqlQueryHandler.asQuery());
+    		log.debug("Query=" + query.toString());
+    		return query;
     	}
-    	
-    public ArrayList<Entity> RetrieveDataFromEndPoint(Request request){
+    	public ResultSet executeQuery(String baseURI , Query query) {
+    		QueryExecution queryExecutionFactory = org.apache.jena.query.QueryExecutionFactory.sparqlService(baseURI , query);
+    		ResultSet output = queryExecutionFactory.execSelect();
+    		return output;
+    	}
+    	public ArrayList<Entity> generateOutputEntities(ResultSet result){
+    		ArrayList<Entity> entity_list = new ArrayList<Entity>();
+    		while (result.hasNext()) {
+    			QuerySolution qs = result.next();
+    			Entity entity = new Entity(qs.getResource("URI").getURI().toString() , qs.getLiteral("label").getString());
+    			entity_list.add(entity);
+    		}
+    		return entity_list;
+    	}
+    public ArrayList<Entity> fetchFromSparqlEndPoint(Request request) throws UnsupportedEncodingException{
     		String baseURI = request.getUrl(); 
-    		String defaultGraph = request.getDefaultGraph();
     		if (baseURI.isEmpty()) {
     			log.warn("base URI is empty, Cannot proceed further");
     			throw new IllegalArgumentException("base URI is empty");
     		}
-    		int limit = request.getlimit();
-    		ParameterizedSparqlString sparqlQueryHandler = constructSparqlQuery(baseURI , defaultGraph , limit);
-    		ResultSet output = runQuery(sparqlQueryHandler);
-    		log.debug("SparQlQueryString=" + sparqlQueryHandler.toString());
-    		ArrayList<Entity> entity_list = new ArrayList<Entity>();
-    		while (output.hasNext()) {
-    			QuerySolution qs = output.next();
-    			Entity entity = new Entity(qs.getResource("URI").toString() , qs.getResource("LABEL").toString());
-    			entity_list.add(entity);
+    		if (!baseURI.startsWith("http://")) {
+    			baseURI = "http://" + baseURI; //Appending because QueryHandler appends local path otherwise
     		}
+    		String defaultGraph = request.getDefaultGraph();
+    		int limit = request.getlimit();
+    		Query query = constructSparqlQuery(baseURI , defaultGraph , limit);
+    		ResultSet output = executeQuery(baseURI , query);
+    		ArrayList<Entity> entity_list = generateOutputEntities(output); 		
 		return entity_list;
     	
     }

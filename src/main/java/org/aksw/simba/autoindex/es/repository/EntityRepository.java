@@ -2,6 +2,7 @@ package org.aksw.simba.autoindex.es.repository;
 
 import static org.elasticsearch.index.query.QueryBuilders.prefixQuery;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class EntityRepository{
 		return entityList;
 	}
 	
-	public void createIndex(Request request) {
+	public void createIndex(Request request) throws UnsupportedEncodingException {
 		String url = request.getUrl();
 		String label = request.getDefaultGraph();
 		RequestType requestType = request.getRequestType();
@@ -59,6 +60,6 @@ public class EntityRepository{
 			return;
 		}
 		SparqlHandler sparqlHandler = new SparqlHandler();
-		sparqlHandler.RetrieveDataFromEndPoint(request);
+		sparqlHandler.fetchFromSparqlEndPoint(request);
 	}
 }

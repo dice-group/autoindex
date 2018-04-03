@@ -1,12 +1,12 @@
 $("#btn_submit").click(function(){
-	var url = encodeURIComponent($("#index").val());
+	var url = $("#index").val();
 	var data = {};
 	data["url"] = url;
 	data["useLocalDataSource"] = "false";
 	data["default_graph"] = "";
 	data["requestType"] = "URI";
 	data["userId"] = "00000000001";
-	data["limit"] = "10";	
+	data["limit"] = $("#count").val();	
 	var file = [];
 	data["fileList"] = file;
 

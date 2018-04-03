@@ -37,10 +37,15 @@
 					<div class="form-group">
 						<label class="intro" for="exampleInput">Endpoint Url</label> 
 						<input
-							type="email" class="form-control" id="index" name="index" 
+							type="url" class="form-control" id="index" name="index" 
 							aria-describedby="emailHelp" placeholder="Enter URL" required="required"/> <small
 							id="emailHelp" class="form-text text-muted">The URL
 							should be a valid working Endpoint </small>
+						<label class="intro" for="exampleInput">Number of Records to Index</label> 
+						<input type="number" class="col-xs-2" id="count" name="count" 
+							aria-describedby="emailHelp" value="0"/>
+						<small
+							id="countHelp" class="form-text text-muted"> Number of Records = 0 to index all Records </small>
 					</div>
 					<button type="submit" class="btn btn-success" id="btn_submit">Submit</button>
 					
