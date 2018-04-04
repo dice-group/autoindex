@@ -2,14 +2,15 @@ package org.aksw.simba.autoindex.es.repository;
 
 import static org.elasticsearch.index.query.QueryBuilders.prefixQuery;
 
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.aksw.simba.autoindex.datasource.file.FileHandler;
+import org.aksw.simba.autoindex.datasource.sparql.SparqlHandler;
 import org.aksw.simba.autoindex.es.model.Entity;
 import org.aksw.simba.autoindex.request.Request;
 import org.aksw.simba.autoindex.request.Request.RequestType;
-import org.aksw.simba.autoindex.sparql.SparqlHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,18 +39,10 @@ public class EntityRepository{
 		return entityList;
 	}
 	
-	public void createIndex(Request request) throws UnsupportedEncodingException {
+	public void createIndex(Request request) throws IOException {
 		String url = request.getUrl();
 		String label = request.getDefaultGraph();
 		RequestType requestType = request.getRequestType();
-		if (requestType.compareTo(RequestType.LOCAL_DB) == 0) {
-			log.warn("Index from Database-MS, Not implemented yet");
-			return;
-		}
-		if(label.isEmpty()) {
-			//Use Default graph.
-			//TODO:
-		}
 		String userId = request.getUserId();
 		Boolean useLocalDataSource = request.isUseLocalDataSource();
 		log.warn("URL=" + url + " , label=" + label + " , userId = " + userId + ", useLocalDataSource =" + useLocalDataSource);
@@ -58,8 +51,34 @@ public class EntityRepository{
 			log.warn("Index from Database-MS, Not implemented yet");
 			return;
 		}
-		SparqlHandler sparqlHandler = new SparqlHandler();
-		ArrayList<Entity> entity_list = sparqlHandler.fetchFromSparqlEndPoint(request);
-		elasticSearchRepositoryInterface.save(entity_list); //Save to ES. Currently URL is getting stored as id. Need to check
+		ArrayList<Entity> entity_list = null;
+		switch(requestType) {
+			case URI : {
+				SparqlHandler sparqlHandler = new SparqlHandler();
+				entity_list = sparqlHandler.fetchFromSparqlEndPoint(request);
+				elasticSearchRepositoryInterface.save(entity_list);
+				System.out.println("After ES Save");
+				return;
+			}
+			case RDF_FILE: {
+				FileHandler fileHandler = new FileHandler();
+				List<String> fileList = request.getFileList();
+				for (String file : fileList ) {
+					entity_list = fileHandler.indexInputFile(file);
+					elasticSearchRepositoryInterface.save(entity_list);
+				}
+				return;
+			}
+			case LOCAL_DB: {
+				log.warn("Index from Database-MS, Not implemented yet");
+				return;
+			}
+			default :{
+				log.warn("Not implemented yet");
+				return;
+			}
+			
+		}
+		 
 	}
 }

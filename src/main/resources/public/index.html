@@ -33,21 +33,34 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6">
-					<h1 class="mt-5">Index RDF Endpoint</h1>
+					<h1 class="mt-5" align="center">Index RDF</h1>
 					<div class="form-group">
-						<label class="intro" for="exampleInput">Endpoint Url</label> 
+					<fieldset>
+						<label class="intro" for="exampleInput">Sparql Endpoint</label> 
 						<input
 							type="url" class="form-control" id="index" name="index" 
-							aria-describedby="emailHelp" placeholder="Enter URL" required="required"/> <small
+							aria-describedby="emailHelp" placeholder="Enter URL" required="required" title="The URL should be a valid working Endpoint"/> <small
 							id="emailHelp" class="form-text text-muted">The URL
 							should be a valid working Endpoint </small>
-						<label class="intro" for="exampleInput">Number of Records to Index</label> 
-						<input type="number" class="col-xs-2" id="count" name="count" 
-							aria-describedby="emailHelp" value="0"/>
-						<small
-							id="countHelp" class="form-text text-muted"> Number of Records = 0 to index all Records </small>
-					</div>
-					<button type="submit" class="btn btn-success" id="btn_submit">Submit</button>
+						
+						<label class="intro" for="exampleInput">Record Limit</label><br> 
+						<input type="number" class="col-lg-2" id="count" name="count" 
+							aria-describedby="emailHelp" value="0" title="limit=0 to index all Records"/>
+						<!-- small
+							id="countHelp" class="form-text text-muted"> limit=0 indexes all Records </small-->
+						<button type="submit" class="btn btn-primary" id="btn_submit">Submit</button>
+					</fieldset>
+					</div>	
+					<h1 class="mt-5" align="center">OR</h1>
+					<div class="form-group">
+					<fieldset>
+						
+						<label class="intro" for="exampleInput">Index RDF Data Files from your Computer</label> 
+						<input type="file" class="filestyle" id="inputFile"/> <small
+							id="emailHelp" class="form-text text-muted">A valid RDF file should be provided, For example TTL, TSV, RDF/XML, N-triples, JSON-LD </small>
+						<button type="submit" class="btn btn-primary" id="btn_submitfile">Submit</button>
+					</fieldset>
+					</div>	
 					
 				</div>
 			</div>
@@ -72,6 +85,7 @@
 <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-filestyle/2.1.0/bootstrap-filestyle.min.js"></script>
 <script src="js/index.js"></script>
 </body>
 </html>

@@ -20,3 +20,24 @@ $("#btn_submit").click(function(){
 		async: true,		
 	});
 });
+$("#btn_submitfile").click(function(){
+	var selectedFile = document.getElementById('inputFile').files[0];
+	var myForm = new FormData();
+	myForm.append("file", selectedFile);
+	$.ajax({
+		type : "POST",
+		data: myForm,
+		url: "/index/uploadFile",
+		timeout: 100000,
+		processData: false,
+		enctype :  "multipart/form-data",
+		contentType: false,
+		async: false,
+		cache: false,
+		success: function(data){
+			alert("Indexing Completed");
+			document.getElementById("inputFile").value = "";
+			
+		}
+	});
+});

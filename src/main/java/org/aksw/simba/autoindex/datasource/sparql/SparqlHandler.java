@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.aksw.simba.autoindex.sparql;
+package org.aksw.simba.autoindex.datasource.sparql;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;

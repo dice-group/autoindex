@@ -13,7 +13,7 @@ public class Request{
 	private RequestType requestType;
 	public enum RequestType {
 		URI ,
-		TTL_TSV_FILE  , 
+		RDF_FILE  , 
 		LOCAL_DB,
 		NONE
 	}
@@ -46,7 +46,16 @@ public class Request{
 		this.fileList = new ArrayList<String>();
 		this.limit = 0;
 	}
-	
+	public Request(List<String> fileList , String userId) {
+		this.fileList = fileList;
+		this.userId = userId;
+		this.useLocalDataSource = false;
+		this.requestType = RequestType.RDF_FILE;
+		this.limit = 0;
+		this.url = "";
+		this.default_graph = "";
+		
+	}
 	public void setUrl(String url) {
 		this.url = url;
 	}
@@ -86,7 +95,7 @@ public class Request{
 		if (requestType.compareTo("URI") == 0 || requestType.compareTo("0") == 0 ) 
 			this.requestType = RequestType.URI;
 		else if (requestType.compareTo("filePath") == 0  || requestType.compareTo("1") == 0) 
-			this.requestType = RequestType.TTL_TSV_FILE;
+			this.requestType = RequestType.RDF_FILE;
 		else 
 			this.requestType = RequestType.NONE;
 	}
@@ -105,11 +114,12 @@ public class Request{
 	
 	public void setLimit (int limit) {
 		this.limit = limit;
-		System.out.println("Limit Found in Request=" + this.limit);
 	}
 	
 	public int getlimit() {
 		return this.limit;
 	}
+	
+	
 	
 }
