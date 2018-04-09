@@ -9,6 +9,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldIndex;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+
 @MappedSuperclass
 @Document(indexName = "entity", type = "entity") //Create Programatically
 public class Entity {
@@ -19,11 +20,6 @@ public class Entity {
 	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
 	protected String url;
 	protected String label;
-
-	public Entity(String url, String label, Double pagerank) {
-		this.url=url;
-		this.label=label;
-	}
 
 	public Entity(String url, String label) {
 		this.url=url;

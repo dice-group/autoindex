@@ -17,15 +17,16 @@ $("#btn_submit").click(function(){
 		url: "/index/create",
 		timeout: 100000,
 		contentType: "application/json",
-		async: true,	
-		success: function(data){
-			alert("Indexing Completed");
-			
-		}
-	});
-});
+		async: true,		
+	})
+	.done(function(data)){
+		alert("Indexing done");
+	}
+	.fail(function(data)){
+		alert("Error occured");
+	};
 $("#btn_submitfile").click(function(){
-	var selectedFile = document.getElementById('inputFile').files[0];
+	var selectedFile = document.getElementById("inputFile").files[0];
 	var myForm = new FormData();
 	myForm.append("file", selectedFile);
 	$.ajax({
@@ -38,10 +39,11 @@ $("#btn_submitfile").click(function(){
 		contentType: false,
 		async: false,
 		cache: false,
-		success: function(data){
-			alert("Indexing Completed");
-			document.getElementById("inputFile").value = "";
-			
-		}
-	});
+	})
+	.done(function(data)){ 
+		alert("Indexing done");
+	}
+	.fail(function(data)){
+		alert("Error occured");
+	};
 });

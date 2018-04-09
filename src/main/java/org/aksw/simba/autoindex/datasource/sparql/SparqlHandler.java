@@ -41,18 +41,18 @@ public class SparqlHandler {
 			"		?type a owl:Class .\n" + 
 			"		?type rdfs:label ?label .\n" + 
 			"		}";
+	public static final Map<String, String> prefixMap;
 	
-	private static final Map<String,String> prefixMap = Collections.unmodifiableMap(new HashMap<String,String>(){/**
-		 * 
-		 */
-	private static final long serialVersionUID = 1L;
-	{
-		put("owl", "http://www.w3.org/2002/07/owl#");
-        put("xsd", "http://www.w3.org/2001/XMLSchema#");
-        put("rdf","http://www.w3.org/1999/02/22-rdf-syntax-ns#");
-        put("rdfs","http://www.w3.org/2000/01/rdf-schema#");
-        put("vrank","http://purl.org/voc/vrank#");
-	}});
+	static {
+		 	Map<String, String> prefix = new HashMap<String, String>();
+		    	prefix.put("owl", "http://www.w3.org/2002/07/owl#");
+		    	prefix.put("xsd", "http://www.w3.org/2001/XMLSchema#");
+		    	prefix.put("rdf","http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		    	prefix.put("rdfs","http://www.w3.org/2000/01/rdf-schema#");
+		    	prefix.put("vrank","http://purl.org/voc/vrank#");
+		    	prefixMap = Collections.unmodifiableMap(prefix);
+		    };
+	
 
 	public ArrayList<DataClass> fetchClasses(Request request){
 		ArrayList<DataClass> classList = null;

@@ -13,11 +13,6 @@ public class Property extends Entity{
 	private String url;
 	private String label;
 	
-	public Property(String type, String label, Double pagerank) {
-		this.url=type;
-		this.label=label;
-	}
-
 	public Property(String url, String label) {
 		this.url = url;
 		this.label=label;

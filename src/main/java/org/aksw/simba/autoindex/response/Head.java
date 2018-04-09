@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Head{
-	List<String> vars = new ArrayList<>();
+	private List<String> vars = new ArrayList<>();
 	
 	public void add(String entry) {
 		this.vars.add(entry);

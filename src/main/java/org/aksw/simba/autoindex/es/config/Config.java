@@ -13,7 +13,6 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 
-
 @Configuration
 @EnableElasticsearchRepositories(basePackages = "org.askw.simba.autoindex.es.repository")
 public class Config {

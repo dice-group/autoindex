@@ -67,7 +67,4 @@ public class FileHandler{
         return entity_list;
     }
 	
-	public void indexTSVFile(File file) {
-		
-	}
 }
