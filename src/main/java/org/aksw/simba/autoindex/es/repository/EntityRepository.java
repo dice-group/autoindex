@@ -14,6 +14,7 @@ import org.aksw.simba.autoindex.es.model.Entity;
 import org.aksw.simba.autoindex.es.model.Property;
 import org.aksw.simba.autoindex.request.Request;
 import org.aksw.simba.autoindex.request.Request.RequestType;
+import org.aksw.simba.autoindex.response.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,17 +51,9 @@ public class EntityRepository{
 		return entityList;
 	}
 	
-	public void createIndex(String indexName) {
-		if(!elasticsearchTemplate.indexExists(indexName)) {
-			log.warn("Index Name doesnt exist, create Index=" + indexName);
-			elasticsearchTemplate.createIndex(indexName , "property");
-		}
-		
-		elasticsearchTemplate.putMapping(Entity.class);
-		elasticsearchTemplate.refresh(Entity.class);
-	}
-	
-	public void createIndex(Request request) throws IOException {
+	public Response createIndex(Request request) throws IOException {
+		Response response = new Response();
+		response.setBoolean(true);
 		String url = request.getUrl();
 		String label = request.getDefaultGraph();
 		RequestType requestType = request.getRequestType();
@@ -70,14 +63,14 @@ public class EntityRepository{
 		if(useLocalDataSource) { 
 			//Read from Database-ms
 			log.warn("Index from Database-MS, Not implemented yet");
-			return;
+			return response;
 		}
 		ArrayList<Entity> entity_list = null;
 		switch(requestType) {
 			case URI : {
 				SparqlHandler sparqlHandler = new SparqlHandler();
 				entity_list = sparqlHandler.fetchFromSparqlEndPoint(request);
-				elasticSearchRepositoryInterface.save(entity_list);
+			    elasticSearchRepositoryInterface.save(entity_list);
 				log.warn("Fetch and Index Properties");
 				ArrayList<Property> propertyList = sparqlHandler.fetchProperties(request);
 				elasticSearchRepositoryInterface.save(propertyList);
@@ -85,7 +78,7 @@ public class EntityRepository{
 				log.warn("Fetch and Index Classes");
 				ArrayList<DataClass> classList = sparqlHandler.fetchClasses(request);
 				elasticSearchRepositoryInterface.save(classList);
-				return;
+				return response;
 			}
 			case RDF_FILE: {
 				FileHandler fileHandler = new FileHandler();
@@ -94,15 +87,17 @@ public class EntityRepository{
 					entity_list = fileHandler.indexInputFile(file);
 					elasticSearchRepositoryInterface.save(entity_list);
 				}
-				return;
+				return response;
 			}
 			case LOCAL_DB: {
 				log.warn("Index from Database-MS, Not implemented yet");
-				return;
+				response.setBoolean(false);
+				return response;
 			}
 			default :{
 				log.warn("Not implemented yet");
-				return;
+				response.setBoolean(false);
+				return response;
 			}
 			
 		}

@@ -2,10 +2,10 @@ package org.aksw.simba.autoindex.web;
 
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 import org.aksw.simba.autoindex.es.repository.EntityRepository;
 import org.aksw.simba.autoindex.request.Request;
+import org.aksw.simba.autoindex.response.Response;
 import org.aksw.simba.autoindex.utils.MultipartFileHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,37 +19,56 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @RestController
-@RequestMapping(method = RequestMethod.POST)
+@RequestMapping(method = RequestMethod.POST , produces="application/json")
 public class IndexController {
 	
 	@Autowired
 	private EntityRepository entityRepo;	
 	
 	@RequestMapping(value = "/index/create")
-	public void indexCreate(@RequestBody final Request request) {
-		
+	public Response indexCreate(@RequestBody final Request request) {
+			Response response;
 			try {
-				entityRepo.createIndex(request);
+				response = entityRepo.createIndex(request);
 			} catch (IOException e) {
-				
+				response = new Response();
+				response.setBoolean(false);
 				e.printStackTrace();
+				return response;
 			}
-		
+			catch (Exception e) {
+				response = new Response();
+				response.setBoolean(false);
+				e.printStackTrace();
+				return response;
+			}
+		return response;
 	}
 	@PostMapping(value = "/index/uploadFile")
-	public void indexCreateWithFileUpload(@RequestParam("file") final MultipartFile multipartFile, @RequestParam(value = "userId" , required=false) final String userId, RedirectAttributes redirectAttributes) throws IOException {
+	public Response indexCreateWithFileUpload(@RequestParam("file") final MultipartFile multipartFile, @RequestParam(value = "userId" , required=false) final String userId, RedirectAttributes redirectAttributes) throws IOException {
 		MultipartFileHandler multipartFileHandler = new MultipartFileHandler();
+		Response response;
 		try {
-			
 			multipartFileHandler.store(multipartFile);
 			Request request = new Request(multipartFileHandler.getFiles() , userId);
-			entityRepo.createIndex(request);
+			response = entityRepo.createIndex(request);
 		} catch (IOException e) {
+			response = new Response();
+			response.setBoolean(false);
 			e.printStackTrace();
+			return response;
 		}
+		catch (Exception e) {
+			response = new Response();
+			response.setBoolean(false);
+			e.printStackTrace();
+			return response;
+		}
+		
 		finally {
 			multipartFileHandler.deleteAllFiles();
 		}
+		return response;
 	}
 	@RequestMapping(value = "index/delete")
 	public void indexDelete(@RequestBody final Request request) {
