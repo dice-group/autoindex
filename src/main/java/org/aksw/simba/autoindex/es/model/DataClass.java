@@ -1,32 +1,25 @@
 package org.aksw.simba.autoindex.es.model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.MappedSuperclass;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldIndex;
 import org.springframework.data.elasticsearch.annotations.FieldType;
-@MappedSuperclass
-@Document(indexName = "entity", type = "entity") //Create Programatically
-public class Entity {
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private String id;
-	
-	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
-	protected String url;
-	protected String label;
 
-	public Entity(String url, String label, Double pagerank) {
-		this.url=url;
+@Document(indexName = "class", type = "class") 
+public class DataClass extends Entity{
+
+	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+	private String url;
+	private String label;
+	
+	public DataClass(String type, String label, Double pagerank) {
+		this.url=type;
 		this.label=label;
 	}
 
-	public Entity(String url, String label) {
-		this.url=url;
+	public DataClass(String url, String label) {
+		this.url = url;
 		this.label=label;
 	}
 
@@ -46,7 +39,7 @@ public class Entity {
 		this.label = label;
 	}
 	
-	public Entity() {
+	public DataClass() {
 		this.url="";
 		this.label="";
 	}

@@ -17,7 +17,11 @@ $("#btn_submit").click(function(){
 		url: "/index/create",
 		timeout: 100000,
 		contentType: "application/json",
-		async: true,		
+		async: true,	
+		success: function(data){
+			alert("Indexing Completed");
+			
+		}
 	});
 });
 $("#btn_submitfile").click(function(){
