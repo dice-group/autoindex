@@ -1,4 +1,4 @@
-package org.aksw.simba.autoindex;
+/*package org.aksw.simba.autoindex;
 import java.util.List;
 
 import org.aksw.simba.autoindex.sparql.*;
@@ -89,4 +89,4 @@ public class AutoIndexTest extends TestCase {
 		Assert.assertTrue(asText.size() >1);
 
 	}
-}
+}*/
