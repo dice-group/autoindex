@@ -20,7 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RestController
 @RequestMapping(method = RequestMethod.POST , produces="application/json")
-public class IndexController {
+public class CreateIndex {
 	
 	@Autowired
 	private EntityRepository entityRepo;	
