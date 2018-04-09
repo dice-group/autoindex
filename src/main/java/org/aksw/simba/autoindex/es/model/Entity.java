@@ -41,7 +41,7 @@ public class Entity {
 	public void setLabel(String label) {
 		this.label = label;
 	}
-	
+
 	public Entity() {
 		this.url="";
 		this.label="";
