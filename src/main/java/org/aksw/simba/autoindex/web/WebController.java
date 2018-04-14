@@ -2,9 +2,9 @@ package org.aksw.simba.autoindex.web;
 
 
 import java.io.IOException;
-
 import org.aksw.simba.autoindex.es.repository.EntityRepository;
 import org.aksw.simba.autoindex.request.Request;
+import org.aksw.simba.autoindex.request.SearchRequest;
 import org.aksw.simba.autoindex.response.Response;
 import org.aksw.simba.autoindex.utils.MultipartFileHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RestController
 @RequestMapping(method = RequestMethod.POST , produces="application/json")
-public class CreateIndex {
+public class WebController {
 	
 	@Autowired
 	private EntityRepository entityRepo;	
@@ -44,6 +44,7 @@ public class CreateIndex {
 			}
 		return response;
 	}
+	
 	@PostMapping(value = "/index/uploadFile")
 	public Response indexCreateWithFileUpload(@RequestParam("file") final MultipartFile multipartFile, @RequestParam(value = "userId" , required=false) final String userId, RedirectAttributes redirectAttributes) throws IOException {
 		MultipartFileHandler multipartFileHandler = new MultipartFileHandler();
@@ -70,10 +71,16 @@ public class CreateIndex {
 		}
 		return response;
 	}
+	
 	@RequestMapping(value = "index/delete")
 	public void indexDelete(@RequestBody final Request request) {
 		//TODO: Support Index Delete
 		
+	}
+	
+	@RequestMapping("/search")
+	public Response searchUrl(@RequestBody final SearchRequest searchRequest) {
+		return entityRepo.search(searchRequest);	
 	}
 	
 }

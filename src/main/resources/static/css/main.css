@@ -19,3 +19,14 @@ fieldset {
 legend {
     padding: 2px;    
 }
+
+table, th, td {
+    border: 1px solid black;
+    color: white;
+    border-collapse: collapse;
+    padding: 15px;
+    text-align: center;
+    border-spacing: 5px;
+    align: center;
+    
+}

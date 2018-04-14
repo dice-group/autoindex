@@ -19,12 +19,14 @@ $("#btn_submit").click(function(){
 		contentType: "application/json",
 		async: true,		
 	})
-	.done(function(data)){
+	.done(function(data){
 		alert("Indexing done");
-	}
-	.fail(function(data)){
+	})
+	.fail(function(data){
 		alert("Error occured");
-	};
+	});
+});
+
 $("#btn_submitfile").click(function(){
 	var selectedFile = document.getElementById("inputFile").files[0];
 	var myForm = new FormData();
@@ -40,10 +42,10 @@ $("#btn_submitfile").click(function(){
 		async: false,
 		cache: false,
 	})
-	.done(function(data)){ 
+	.done(function(data){ 
 		alert("Indexing done");
-	}
-	.fail(function(data)){
+	})
+	.fail(function(data){
 		alert("Error occured");
-	};
+	});
 });

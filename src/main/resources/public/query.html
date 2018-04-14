@@ -9,10 +9,11 @@
 <title>AutoIndex</title>
 </head>
 <body>
+	<div id = "window">
 	<!-- Navigation -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
 		<div class="container">
-			<a class="navbar-brand" href="home.html">AutoIndex</a>
+			<a class="navbar-brand" href="home.html">About us</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarResponsive" aria-controls="navbarResponsive"
 				aria-expanded="false" aria-label="Toggle navigation">
@@ -21,7 +22,7 @@
 			<div class="collapse navbar-collapse" id="navbarResponsive">
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item"><a class="nav-link" href="index.html">Index
-							Endpoint</a></li>
+							Data</a></li>
 				</ul>
 			</div>
 		</div>
@@ -31,35 +32,48 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6">
-					<h1 class="mt-5">Query Endpoint</h1>
-					<p class="intro">If you have not indexed any endpoint you can
-						query http://dbpedia.org/sparql</p>
-
+					<h1 class="mt-5">Search</h1>
+					<p class="intro">Query on indexed classes, property, entity or all</p>
+										
 					<div class="form-group" id="Label">
-						<label class="intro" for="searchQuery"> </label>
-						 <input type="text" class="form-control" id="queryText"
+					<label class="intro">Lookup</label>&nbsp;
+						  <div class="btn-group" data-toggle="buttons">
+							  <label class="btn btn-primary active">
+							    <input type="radio" name="options" id="option1" value="label" checked> Label
+							  </label>
+							  <label class="btn btn-primary">
+							    <input type="radio" name="options" id="option2" value="uri"> URI
+							  </label>
+							  
+						</div>
+						<br> <br> 
+						<input type="text" class="form-control" id="queryText"
 							aria-describedby="emailHelp" placeholder="Enter Query Label"
 							required="required" name="labelQuery" /> 
-							<small id="helpText" class="form-text text-muted"> Enter your query Label</small>
-					
+						
+							<br>
+		  					 <label for="sel1">Search under</label>
+							  <select class="form-control" id="sel1">
+							    <option value="entity">Entity</option>
+							    <option value="property">Property</option>
+							    <option value="class">Class</option>
+							    <option value="all" selected>All</option>
+							  </select>
+							 
+							  
+						<br>
 						<button id="searchButtonLabel" type="submit"
-						class="btn btn-success">Search By Label</button>
+						class="btn btn-success">Search</button>
 					</div>
-					<div class="form-group" id="url">
-						<label class="intro" for="searchQuery"> </label> 
-						<input type="url" class="form-control" id="urlQuery"
-							aria-describedby="emailHelp" placeholder="Enter Query URL"
-							required="required" name="urlQuery" /> 
-						<small id="helpText"
-							class="form-text text-muted"> Enter your query URL (does not return result)</small>
-						<button id="searchButtonURL" type="submit"
-						class="btn btn-success">Search By URL</button>
-					</div>	
+					
 				</div>
 			</div>
 		</div>
 	</section>
-
+	<div id="results">
+		
+	</div>
+</div>
 <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
