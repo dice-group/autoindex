@@ -5,7 +5,7 @@ public class Response{
 	
 	private Head head ;
 	private boolean Boolean = false;
-	//private Results results;
+	private Results results;
 	
 	public Head getHead() {
 		if (this.head == null) {
@@ -26,7 +26,7 @@ public class Response{
 		return this.Boolean;
 	}
 	//TODO: for search()
-	/*public Results getResults() {
+	public Results getResults() {
 		if (this.results == null) {
 			return new Results();
 		}
@@ -35,6 +35,6 @@ public class Response{
 	
 	public void setResults(Results results) {
 		this.results = results;
-	}*/
+	}
 	
 }
