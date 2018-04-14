@@ -9,6 +9,7 @@
 <title>AutoIndex</title>
 </head>
 <body>
+	<div id = "window">
 	<!-- Navigation -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
 		<div class="container">
@@ -53,10 +54,10 @@
 							<br>
 		  					 <label for="sel1">Search under</label>
 							  <select class="form-control" id="sel1">
-							    <option>Entity</option>
-							    <option>Property</option>
-							    <option>Class</option>
-							    <option selected>All</option>
+							    <option value="entity">Entity</option>
+							    <option value="property">Property</option>
+							    <option value="class">Class</option>
+							    <option value="all" selected>All</option>
 							  </select>
 							 
 							  
@@ -69,7 +70,10 @@
 			</div>
 		</div>
 	</section>
-
+	<div id="results">
+		
+	</div>
+</div>
 <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
 <script src="/webjars/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
