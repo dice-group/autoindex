@@ -2,7 +2,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5da35f0710b845ba968aa98863556d7a)](https://www.codacy.com/app/idreestahir/autoindex?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dice-group/autoindex&amp;utm_campaign=Badge_Grade)
 [![BCH compliance](https://bettercodehub.com/edge/badge/dice-group/autoindex?branch=master)](https://bettercodehub.com/)
 
-Autoindex is a REST API that aims to index any RDF Dump or Sparql Endpoint and the query it. it is currently a work in progress.
+Autoindex is a REST API that aims to index any RDF Dump or Sparql Endpoint and the query it. It is currently a work in progress. A UI is also available for test under http://localhost:9091/
 
 ## Getting Started
 
@@ -13,34 +13,41 @@ Maven is the only pre-requisite for  . The instructions to install maven can be 
 ### Installing
 
 1. Once the maven is up and running. Clone the repository using the following command in a desired folder.
+
+    `git clone https://github.com/dice-group/autoindex.git`
+
 2. Navigate to the base folder of the project and run the following command
     
-    `mvn clean install` 
+    `mvn clean package` 
 
-3. Run the jar file as follows 
+3. Run `mvn clean spring-boot:run`
 
-   `java -jar target/autoindex-0.0.1-SNAPSHOT.jar`
+4. Use Web Page available under localhost:9091.
 
-4. Use Postman or Curl command to access the rest api 
+For docker, refer to the end of this file.
 
-5. Add sparql endpoint in [SparqlEnpointHandler class](https://github.com/dice-group/autoindex/blob/master/src/main/java/org/aksw/simba/autoindex/input/SparqlEndpointHandler.java#L20). Default is `http://dbpedia.org/sparql` .
+### Functionalities
 
-### Queries
-1. Get all the resources :
+1. Index a Endpoint/File/Single Key value pair
 
-   `localhost:8080/rest/search/all`
+    http://localhost:9091/index.html
 
-2. Get results for a label search
+2. Get results for a label search or URI Search
 
-    `localhost:8080/rest/search/label/{LABEL}`
+   http://localhost:9091/results.html
 
-3. Get results for a keyword search
+### REST Interfaces available for POST Requests. 
 
-    `localhost:8080/rest/search/url/{URL}`
+Create Index : /index/create 
+Parameters  : url : {Valid End Point URL} , requestType : URI , userId : {if any} , useLocalDataSource : false (true to use a local Extraction data source) , default_graph : { if any}
+
+Create Index from File : Require Multipart Form data , API : /index/uploadFile
+Parameters: userId {if any}
+
+Search : /search
+Parameters: query : { Query to search} , type: {LABEL or URI}, userId : {if any and must match the id provided during createIndex} , category : {Either Entity , Class or Property}.
+
     
-### Change Index class
-Add sparql endpoint in [SparqlEnpointHandler class](https://github.com/dice-group/autoindex/blob/master/src/main/java/org/aksw/simba/autoindex/input/SparqlEndpointHandler.java#L20). Default is `http://dbpedia.org/sparql` .
-
 ### Docker
 First install docker in your system. For ubuntu you may refer to below link. 
 [https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04]
