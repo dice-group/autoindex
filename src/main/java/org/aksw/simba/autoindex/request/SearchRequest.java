@@ -31,7 +31,6 @@ public class SearchRequest{
 	}
 	
 	public void setQuery(String query) {
-		System.out.println("query=" + query);
 		this.query = query;
 	}
 	
@@ -40,7 +39,6 @@ public class SearchRequest{
 	}
 	
 	public void setType(String type) {
-		System.out.println("type=" + type);
 		if(type.equals("uri") || type.equals("URI"))
 			this.type = Type.URI;
 		else if (type.equals("label") || type.equals("LABEL"))
@@ -50,7 +48,6 @@ public class SearchRequest{
 	}
 	
 	public void setCategory(String category) {
-		System.out.println("Category=" + category);
 		if(category.equals("CLASS") || category.equals("class"))
 			this.category = Category.CLASS;
 		else if (category.equals("PROPERTY") || category.equals("property"))
