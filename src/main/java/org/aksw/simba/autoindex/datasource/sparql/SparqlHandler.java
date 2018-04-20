@@ -3,10 +3,7 @@
  */
 package org.aksw.simba.autoindex.datasource.sparql;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,7 +12,6 @@ import java.util.Map;
 import org.aksw.simba.autoindex.es.model.DataClass;
 import org.aksw.simba.autoindex.es.model.Entity;
 import org.aksw.simba.autoindex.es.model.Property;
-import org.aksw.simba.autoindex.request.Keys;
 import org.aksw.simba.autoindex.request.Request;
 import org.apache.jena.query.ParameterizedSparqlString;
 import org.apache.jena.query.Query;
@@ -27,27 +23,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-
-
 public class SparqlHandler {
 	
 	private static final Logger log = LoggerFactory
 	            .getLogger(SparqlHandler.class);
 
-	private static final String commandString = "SELECT DISTINCT ?key1 ?key2 WHERE{?key1 a ?s1 . ?key1 ?s2 ?key2 .}" ;
+	private static final String commandString = "SELECT DISTINCT ?type ?label WHERE{?type a owl:Thing . ?type rdfs:label ?label .}" ;
 	
-	private static final String propertiesString = "SELECT DISTINCT ?key1 ?key2  (COUNT(*)AS ?v) WHERE {\n" + 
-			"		?key1 a rdf:Property;\n" + 
-			"		?s2 ?key2.\n" + 
-			"		} GROUP BY ?key1 ?key2 \n" + 
+	private static final String propertiesString = "SELECT DISTINCT ?type ?label  (COUNT(*)AS ?v) WHERE {\n" + 
+			"		?type a rdf:Property;\n" + 
+			"		rdfs:label ?label.\n" + 
+			"		} GROUP BY ?type ?label \n" + 
 			"		 ORDER BY DESC(?v)" ;
 	
-	private static final String classesString = "SELECT DISTINCT ?key1 ?key2  \n" + 
+	private static final String classesString = "SELECT DISTINCT ?type ?label  \n" + 
 			"		WHERE {\n" + 
-			"		?key1 a owl:Class .\n" + 
-			"		?key1 ?s2 ?key2 .\n" + 
+			"		?type a owl:Class .\n" + 
+			"		?type rdfs:label ?label .\n" + 
 			"		}";
 	public static final Map<String, String> prefixMap;
 	
@@ -61,30 +53,7 @@ public class SparqlHandler {
 		    	prefixMap = Collections.unmodifiableMap(prefix);
 		    };
 	
-	private static final String TEMPLATE_FILE = "src/main/resources/properties/properties.yml";
-	
-	private String key1 = "";
-	private String key2 = ""; 
-	
-	private void resourceLoader() {
-		try {
-			String yamlTemplateContents = new String(Files.readAllBytes(Paths.get(TEMPLATE_FILE)));
-			ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
-			Keys keys = new Keys();
-			keys = yamlReader.readValue(yamlTemplateContents, Keys.class);
-			key1 = keys.getFirstKey();
-			key2 = keys.getSecondKey();
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			log.error("resourceLoader, IO Exception while parsing YAML template,Stack Trace=" + e.getMessage());
-			e.printStackTrace();
-		}
-	}
-	
-	public SparqlHandler() {
-		resourceLoader();
-	}
+
 	public ArrayList<DataClass> fetchClasses(Request request){
 		ArrayList<DataClass> classList = null;
 		String baseURI = request.getUrl(); 
@@ -106,7 +75,7 @@ public class SparqlHandler {
 		ArrayList<DataClass> classList = new ArrayList<DataClass>();
 		while (result.hasNext()) {
 			QuerySolution qs = result.next();
-			DataClass dataClass = new DataClass(qs.getResource("key1").getURI().toString() , qs.getLiteral("key2").getString());
+			DataClass dataClass = new DataClass(qs.getResource("type").getURI().toString() , qs.getLiteral("label").getString());
 			classList.add(dataClass);
 		}
 		return classList;
@@ -133,7 +102,7 @@ public class SparqlHandler {
 		ArrayList<Property> propertyList = new ArrayList<Property>();
 		while (result.hasNext()) {
 			QuerySolution qs = result.next();
-			Property property = new Property(qs.getResource("key1").getURI().toString() , qs.getLiteral("key2").getString());
+			Property property = new Property(qs.getResource("type").getURI().toString() , qs.getLiteral("label").getString());
 			propertyList.add(property);
 		}
 		return propertyList;
@@ -143,13 +112,7 @@ public class SparqlHandler {
     		ParameterizedSparqlString sparqlQueryHandler = new ParameterizedSparqlString();
     		sparqlQueryHandler.setBaseUri(baseURI);
     		sparqlQueryHandler.setNsPrefixes(prefixMap);
-    		//TODO: Find a way to handle this by ParameterizedSparql String. 
-    		// Doesnt work with SetLiteral or SetParam(Node) or setIRI. Try other options
-    		String commandText = commandString;
-    		commandText= commandText.replace("?s1", key1);
-    		commandText=commandText.replace("?s2", key2);
-    		sparqlQueryHandler.setCommandText(commandText);
-    		
+    		sparqlQueryHandler.setCommandText(commandString);
     		if(!defaultGraph.isEmpty()) {
     			log.warn("Overrding a new default Graph , name= " + defaultGraph);
     			sparqlQueryHandler.setIri("default-graph-uri", defaultGraph);
@@ -173,13 +136,12 @@ public class SparqlHandler {
     		ArrayList<Entity> entity_list = new ArrayList<Entity>();
     		while (result.hasNext()) {
     			QuerySolution qs = result.next();
-    			Entity entity = new Entity(qs.getResource("key1").getURI().toString() , qs.getLiteral("key2").getString());
+    			Entity entity = new Entity(qs.getResource("type").getURI().toString() , qs.getLiteral("label").getString());
     			entity_list.add(entity);
     		}
     		return entity_list;
     	}
     	
-
     public ArrayList<Entity> fetchFromSparqlEndPoint(Request request) throws UnsupportedEncodingException{
     		String baseURI = request.getUrl(); 
     		if (baseURI.isEmpty()) {
