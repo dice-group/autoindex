@@ -53,22 +53,32 @@ $("#btn_submitfile").click(function(){
 $("#submit_labeled_url").click(function(){
 	var url_validation = false;
 	var data = {};
-	var labeled_url_field = "#labeled_index";
-	var lebeled_url = $(labeled_url_field).val();
-    var is_url_valid = validate(lebeled_url);
-    if(is_url_valid == true){
-    $(this).parent().find('#labeled_index').removeClass('alert-danger');
-    console.log("Post Funcationality");
-    }
-    else{
-    $(this).parent().find('#labeled_index').addClass('alert-danger');
-    }
-	
+	var url_field = "#indexed_url";
+	var label_field = "#indexed_label";
+	var url_val = $(url_field).val();
+	var label_val = $(label_field).val();
+	data["useLocalDataSource"] = "false";
+	data["default_graph"] = "";
+	data["requestType"] = "custom";
+	data["userId"] = "00000000001";
+	data["limit"] = $("#count").val();	
+	var file = [];
+	data["fileList"] = file;
+	data["keys"] =  =[{"firstKey":url_val ,"secondKey":label_val}];: 
+	$.ajax({
+		type : "POST",
+		dataType: "text",
+		data: JSON.stringify(data),
+		url: "/index/create",
+		timeout: 100000,
+		contentType: "application/json",
+		async: true,		
+	})
+	.done(function(data){	
+		alert("Indexing done");
+	})
+	.fail(function(data){
+		alert("Error occured");
+	});
 });
-    function validate(lebeled_url) {
-        var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-        if (pattern.test(lebeled_url)) {
-            return true;
-        } 
-            return false;
-    }
+

@@ -11,10 +11,12 @@ public class Request{
 	private String userId;
 	private Boolean useLocalDataSource;
 	private RequestType requestType;
+	private Keys keys;
 	public enum RequestType {
 		URI ,
 		RDF_FILE  , 
 		LOCAL_DB,
+		CUSTOM_STRING,
 		NONE
 	}
 	private List<String> fileList;
@@ -27,6 +29,7 @@ public class Request{
 		this.requestType = RequestType.NONE;
 		this.fileList = new ArrayList<String>();
 		this.limit = 0;
+		this.keys = new Keys();
 	}
 	public Request(String url) {
 		this.url = url;
@@ -36,6 +39,7 @@ public class Request{
 		this.requestType = RequestType.URI;
 		this.fileList = new ArrayList<String>();
 		this.limit = 0;
+		this.keys = new Keys();
 	}
 	public Request(String url , String label , String userId){
 		this.url = url;
@@ -45,6 +49,7 @@ public class Request{
 		this.requestType = RequestType.URI;
 		this.fileList = new ArrayList<String>();
 		this.limit = 0;
+		this.keys = new Keys();
 	}
 	public Request(List<String> fileList , String userId) {
 		this.fileList = fileList;
@@ -54,6 +59,7 @@ public class Request{
 		this.limit = 0;
 		this.url = "";
 		this.default_graph = "";
+		this.keys = new Keys();
 		
 	}
 	public void setUrl(String url) {
@@ -96,6 +102,8 @@ public class Request{
 			this.requestType = RequestType.URI;
 		else if (requestType.compareTo("filePath") == 0  || requestType.compareTo("1") == 0) 
 			this.requestType = RequestType.RDF_FILE;
+		else if (requestType.compareTo("custom") == 0  || requestType.compareTo("2") == 0) 
+			this.requestType = RequestType.CUSTOM_STRING;
 		else 
 			this.requestType = RequestType.NONE;
 	}
@@ -119,7 +127,17 @@ public class Request{
 	public int getlimit() {
 		return this.limit;
 	}
+
+	private Keys getKeys() {
+		if(this.keys == null) {
+			this.keys = new Keys();
+		}
+		return this.keys;
+	}
 	
+	private void setKeys(Keys keys) {
+		this.keys = keys;
+}
 	
 	
 }
