@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.aksw.simba.autoindex.custom.CustomeIndex;
 import org.aksw.simba.autoindex.datasource.file.FileHandler;
 import org.aksw.simba.autoindex.datasource.sparql.SparqlHandler;
 import org.aksw.simba.autoindex.es.model.DataClass;
 import org.aksw.simba.autoindex.es.model.Entity;
 import org.aksw.simba.autoindex.es.model.Property;
+import org.aksw.simba.autoindex.request.Keys;
 import org.aksw.simba.autoindex.request.Request;
 import org.aksw.simba.autoindex.request.Request.RequestType;
 import org.aksw.simba.autoindex.request.SearchRequest;
@@ -153,7 +155,9 @@ public class EntityRepository{
 			return response;
 		}
 		ArrayList<Entity> entity_list = null;
+
 		switch(requestType) {
+
 			case URI : {
 				SparqlHandler sparqlHandler = new SparqlHandler();
 				entity_list = sparqlHandler.fetchFromSparqlEndPoint(request);
@@ -181,6 +185,14 @@ public class EntityRepository{
 				response.setBoolean(false);
 				return response;
 			}
+			case CUSTOM_STRING: {
+				CustomeIndex manual_input = new CustomeIndex();
+				Keys custom_input = request.getKeys();
+				entity_list = manual_input.makeKeys(custom_input);
+				elasticSearchRepositoryInterface.save(entity_list);
+				return response;
+			}
+			
 			default :{
 				log.warn("Not implemented yet");
 				response.setBoolean(false);

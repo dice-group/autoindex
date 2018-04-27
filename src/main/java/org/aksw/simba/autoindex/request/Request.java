@@ -6,6 +6,7 @@ import java.util.List;
 /*Class for Dependancy Injection of Spring for Handling Index Create Requests*/
 
 public class Request{
+	
 	private String url;
 	private String default_graph;
 	private String userId;
@@ -106,6 +107,7 @@ public class Request{
 			this.requestType = RequestType.CUSTOM_STRING;
 		else 
 			this.requestType = RequestType.NONE;
+
 	}
 	
 	public RequestType getRequestType() {
@@ -128,14 +130,14 @@ public class Request{
 		return this.limit;
 	}
 
-	private Keys getKeys() {
+	public Keys getKeys() {
 		if(this.keys == null) {
 			this.keys = new Keys();
 		}
 		return this.keys;
 	}
 	
-	private void setKeys(Keys keys) {
+	public void setKeys(Keys keys) {
 		this.keys = keys;
 }
 	

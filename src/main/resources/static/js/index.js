@@ -58,13 +58,11 @@ $("#submit_labeled_url").click(function(){
 	var url_val = $(url_field).val();
 	var label_val = $(label_field).val();
 	data["useLocalDataSource"] = "false";
-	data["default_graph"] = "";
 	data["requestType"] = "custom";
 	data["userId"] = "00000000001";
-	data["limit"] = $("#count").val();	
 	var file = [];
 	data["fileList"] = file;
-	data["keys"] =  =[{"firstKey":url_val ,"secondKey":label_val}];: 
+	data["keys"] = {"firstKey":url_val ,"secondKey":label_val};
 	$.ajax({
 		type : "POST",
 		dataType: "text",
