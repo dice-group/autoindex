@@ -12,6 +12,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.aksw.simba.autoindex.es.model.DataClass;
 import org.aksw.simba.autoindex.es.model.Entity;
 import org.aksw.simba.autoindex.es.model.Property;
@@ -25,12 +27,13 @@ import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
-
+@Component
 public class SparqlHandler {
 	
 	private static final Logger log = LoggerFactory
@@ -63,17 +66,23 @@ public class SparqlHandler {
 	
 	private static final String TEMPLATE_FILE = "src/main/resources/properties/properties.yml";
 	
-	private String key1 = "";
-	private String key2 = ""; 
-	
+	private  static String key1 ;
+
+	private static String key2; 
+	//Used in addition of @PropertySource
+
+	@PostConstruct
 	private void resourceLoader() {
 		try {
+			
 			String yamlTemplateContents = new String(Files.readAllBytes(Paths.get(TEMPLATE_FILE)));
 			ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
 			Keys keys = new Keys();
 			keys = yamlReader.readValue(yamlTemplateContents, Keys.class);
+			
 			key1 = keys.getFirstKey();
 			key2 = keys.getSecondKey();
+			
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -82,9 +91,6 @@ public class SparqlHandler {
 		}
 	}
 	
-	public SparqlHandler() {
-		resourceLoader();
-	}
 	public ArrayList<DataClass> fetchClasses(Request request){
 		ArrayList<DataClass> classList = null;
 		String baseURI = request.getUrl(); 

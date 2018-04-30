@@ -6,7 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan({"org.aksw.simba.autoindex.es.repository" , "org.aksw.simba.autoindex.es.load" , "org.aksw.simba.autoindex.web"})
+@ComponentScan({"org.aksw.simba.autoindex.es.repository" ,  "org.aksw.simba.autoindex.web" , "org.aksw.simba.autoindex.datasource.sparql"})
 @EnableJpaRepositories("ElasticsearchRepository")
 public class SpringElasticApplication {
 
