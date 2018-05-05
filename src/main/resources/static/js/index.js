@@ -55,6 +55,7 @@ $("#submit_labeled_url").click(function(){
 	var data = {};
 	var url_field = "#indexed_url";
 	var label_field = "#indexed_label";
+	var selected_index_type = $('input:radio[name=optradio]:checked').val();
 	var url_val = $(url_field).val();
 	var label_val = $(label_field).val();
 	data["useLocalDataSource"] = "false";
@@ -62,7 +63,7 @@ $("#submit_labeled_url").click(function(){
 	data["userId"] = "00000000001";
 	var file = [];
 	data["fileList"] = file;
-	data["keys"] = {"firstKey":url_val ,"secondKey":label_val};
+	data["keys"] = {"firstKey":url_val ,"secondKey":label_val,"thirdKey":selected_index_type};
 	$.ajax({
 		type : "POST",
 		dataType: "text",
@@ -79,4 +80,6 @@ $("#submit_labeled_url").click(function(){
 		alert("Error occured");
 	});
 });
+
+
 

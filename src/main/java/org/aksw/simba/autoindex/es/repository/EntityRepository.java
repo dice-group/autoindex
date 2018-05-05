@@ -5,13 +5,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.aksw.simba.autoindex.custom.CustomeIndex;
+import org.aksw.simba.autoindex.custom.CustomStringHandler;
 import org.aksw.simba.autoindex.datasource.file.FileHandler;
 import org.aksw.simba.autoindex.datasource.sparql.SparqlHandler;
 import org.aksw.simba.autoindex.es.model.DataClass;
 import org.aksw.simba.autoindex.es.model.Entity;
 import org.aksw.simba.autoindex.es.model.Property;
-import org.aksw.simba.autoindex.request.Keys;
 import org.aksw.simba.autoindex.request.Request;
 import org.aksw.simba.autoindex.request.Request.RequestType;
 import org.aksw.simba.autoindex.request.SearchRequest;
@@ -186,9 +185,8 @@ public class EntityRepository{
 				return response;
 			}
 			case CUSTOM_STRING: {
-				CustomeIndex manual_input = new CustomeIndex();
-				Keys custom_input = request.getKeys();
-				entity_list = manual_input.makeKeys(custom_input);
+				CustomStringHandler manual_input = new CustomStringHandler();
+				entity_list = manual_input.indexInput(request);
 				elasticSearchRepositoryInterface.save(entity_list);
 				return response;
 			}
