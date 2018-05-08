@@ -11,6 +11,7 @@ public class Request{
 	private String userId;
 	private Boolean useLocalDataSource;
 	private RequestType requestType;
+	private Keys keys;
 	public enum RequestType {
 		URI ,
 		RDF_FILE  , 
@@ -27,6 +28,7 @@ public class Request{
 		this.requestType = RequestType.NONE;
 		this.fileList = new ArrayList<String>();
 		this.limit = 0;
+		this.keys = new Keys();
 	}
 	public Request(String url) {
 		this.url = url;
@@ -36,6 +38,7 @@ public class Request{
 		this.requestType = RequestType.URI;
 		this.fileList = new ArrayList<String>();
 		this.limit = 0;
+		this.keys = new Keys();
 	}
 	public Request(String url , String label , String userId){
 		this.url = url;
@@ -45,6 +48,7 @@ public class Request{
 		this.requestType = RequestType.URI;
 		this.fileList = new ArrayList<String>();
 		this.limit = 0;
+		this.keys = new Keys();
 	}
 	public Request(List<String> fileList , String userId) {
 		this.fileList = fileList;
@@ -54,7 +58,7 @@ public class Request{
 		this.limit = 0;
 		this.url = "";
 		this.default_graph = "";
-		
+		this.keys = new Keys();
 	}
 	public void setUrl(String url) {
 		this.url = url;
@@ -120,6 +124,15 @@ public class Request{
 		return this.limit;
 	}
 	
+	private Keys getKeys() {
+		if(this.keys == null) {
+			this.keys = new Keys();
+		}
+		return this.keys;
+	}
 	
+	private void setKeys(Keys keys) {
+		this.keys = keys;
+	}
 	
 }
