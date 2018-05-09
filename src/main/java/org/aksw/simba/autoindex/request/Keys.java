@@ -4,7 +4,7 @@ public class Keys{
 	
 	private String firstKey;
 	private String secondKey;
-	
+	private String thirdKey;
 	public String getFirstKey() {
 		return this.firstKey;
 	}
@@ -20,4 +20,13 @@ public class Keys{
 	public void setSecondKey(String secondKey) {
 		this.secondKey = secondKey;
 	}
+	
+	public String getThirdKey() {
+		return this.thirdKey;
+	}
+	
+	public void setThirdKey(String thirdKey) {
+		this.thirdKey = thirdKey;
+	}
+
 }

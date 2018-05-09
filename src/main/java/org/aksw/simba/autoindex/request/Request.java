@@ -6,6 +6,7 @@ import java.util.List;
 /*Class for Dependancy Injection of Spring for Handling Index Create Requests*/
 
 public class Request{
+	
 	private String url;
 	private String default_graph;
 	private String userId;
@@ -16,6 +17,7 @@ public class Request{
 		URI ,
 		RDF_FILE  , 
 		LOCAL_DB,
+		CUSTOM_STRING,
 		NONE
 	}
 	private List<String> fileList;
@@ -100,8 +102,11 @@ public class Request{
 			this.requestType = RequestType.URI;
 		else if (requestType.compareTo("filePath") == 0  || requestType.compareTo("1") == 0) 
 			this.requestType = RequestType.RDF_FILE;
+		else if (requestType.compareTo("custom") == 0  || requestType.compareTo("2") == 0) 
+			this.requestType = RequestType.CUSTOM_STRING;
 		else 
 			this.requestType = RequestType.NONE;
+
 	}
 	
 	public RequestType getRequestType() {
@@ -123,16 +128,14 @@ public class Request{
 	public int getlimit() {
 		return this.limit;
 	}
-	
-	private Keys getKeys() {
+
+	public Keys getKeys() {
 		if(this.keys == null) {
 			this.keys = new Keys();
 		}
 		return this.keys;
-	}
-	
-	private void setKeys(Keys keys) {
+	}	
+	public void setKeys(Keys keys) {
 		this.keys = keys;
-	}
-	
+  }	
 }
