@@ -61,7 +61,6 @@ public class Request{
 		this.url = "";
 		this.default_graph = "";
 		this.keys = new Keys();
-		
 	}
 	public void setUrl(String url) {
 		this.url = url;
@@ -135,11 +134,8 @@ public class Request{
 			this.keys = new Keys();
 		}
 		return this.keys;
-	}
-	
+	}	
 	public void setKeys(Keys keys) {
 		this.keys = keys;
-}
-	
-	
+  }	
 }

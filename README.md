@@ -47,6 +47,11 @@ Parameters: userId {if any}
 Search : /search
 Parameters: query : { Query to search} , type: {LABEL or URI}, userId : {if any and must match the id provided during createIndex} , category : {Either Entity , Class or Property}.
 
+### Customizing Select Queries
+application.properties file contains options to edit/add new prefixes , modify existing select queries for entity,class and property by modifying entity.whereclause , class.whereclause and property.whereclause fields respectively.
+
+To add new prefixes, go to the prefix list, add a new entry, both name and url are mandatory. If the last line in prefixes in configuration file is prefix4.url then you can add a new entry as prefix5.name and prefix5.url and so on.
+
     
 ### Docker
 First install docker in your system. For ubuntu you may refer to below link. 

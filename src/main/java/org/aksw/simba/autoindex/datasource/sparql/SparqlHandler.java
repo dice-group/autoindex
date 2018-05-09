@@ -3,11 +3,18 @@
  */
 package org.aksw.simba.autoindex.datasource.sparql;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
+
+import javax.annotation.PostConstruct;
 
 import org.aksw.simba.autoindex.es.model.DataClass;
 import org.aksw.simba.autoindex.es.model.Entity;
@@ -21,39 +28,52 @@ import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class SparqlHandler {
 	
 	private static final Logger log = LoggerFactory
 	            .getLogger(SparqlHandler.class);
-
-	private static final String commandString = "SELECT DISTINCT ?type ?label WHERE{?type a owl:Thing . ?type rdfs:label ?label .}" ;
+	private static  String commandString = "" ; //Read from properties file.
+	private static  String propertiesString = "" ;
+	private static  String classesString = "";
+	public static  Map<String, String> prefixMap;
+	private static final String TEMPLATE_FILE = "src/main/resources/application.properties";
+	private Properties properties = new Properties();
 	
-	private static final String propertiesString = "SELECT DISTINCT ?type ?label  (COUNT(*)AS ?v) WHERE {\n" + 
-			"		?type a rdf:Property;\n" + 
-			"		rdfs:label ?label.\n" + 
-			"		} GROUP BY ?type ?label \n" + 
-			"		 ORDER BY DESC(?v)" ;
+	@PostConstruct
+	private void resourceLoader() throws FileNotFoundException {
+		InputStream input = null;
+		try {
+			 input = new FileInputStream(TEMPLATE_FILE);
+			 properties.load(input);
+			 commandString = properties.getProperty("entity.whereclause");
+			 propertiesString = properties.getProperty("property.whereclause");
+			 classesString = properties.getProperty("class.whereclause");
+			 int i=1;
+			 Map<String, String> prefix = new HashMap<String, String>();
+			 while(properties.containsKey("prefix" + i + ".name")) {
+				 prefix.put(properties.getProperty("prefix" + i + ".name") , properties.getProperty("prefix" + i + ".url"));
+				 ++i;
+			 }
+			 prefixMap = Collections.unmodifiableMap(prefix);
+			 System.out.println(prefixMap.toString());
+		}
+		catch (IOException ex) {
+			ex.printStackTrace();
+		}	
+		finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 	
-	private static final String classesString = "SELECT DISTINCT ?type ?label  \n" + 
-			"		WHERE {\n" + 
-			"		?type a owl:Class .\n" + 
-			"		?type rdfs:label ?label .\n" + 
-			"		}";
-	public static final Map<String, String> prefixMap;
-	
-	static {
-		 	Map<String, String> prefix = new HashMap<String, String>();
-		    	prefix.put("owl", "http://www.w3.org/2002/07/owl#");
-		    	prefix.put("xsd", "http://www.w3.org/2001/XMLSchema#");
-		    	prefix.put("rdf","http://www.w3.org/1999/02/22-rdf-syntax-ns#");
-		    	prefix.put("rdfs","http://www.w3.org/2000/01/rdf-schema#");
-		    	prefix.put("vrank","http://purl.org/voc/vrank#");
-		    	prefixMap = Collections.unmodifiableMap(prefix);
-		    };
-	
-
 	public ArrayList<DataClass> fetchClasses(Request request){
 		ArrayList<DataClass> classList = null;
 		String baseURI = request.getUrl(); 
@@ -75,7 +95,7 @@ public class SparqlHandler {
 		ArrayList<DataClass> classList = new ArrayList<DataClass>();
 		while (result.hasNext()) {
 			QuerySolution qs = result.next();
-			DataClass dataClass = new DataClass(qs.getResource("type").getURI().toString() , qs.getLiteral("label").getString());
+			DataClass dataClass = new DataClass(qs.getResource("key1").getURI().toString() , qs.getLiteral("key2").getString());
 			classList.add(dataClass);
 		}
 		return classList;
@@ -102,7 +122,7 @@ public class SparqlHandler {
 		ArrayList<Property> propertyList = new ArrayList<Property>();
 		while (result.hasNext()) {
 			QuerySolution qs = result.next();
-			Property property = new Property(qs.getResource("type").getURI().toString() , qs.getLiteral("label").getString());
+			Property property = new Property(qs.getResource("key1").getURI().toString() , qs.getLiteral("key2").getString());
 			propertyList.add(property);
 		}
 		return propertyList;
@@ -112,7 +132,12 @@ public class SparqlHandler {
     		ParameterizedSparqlString sparqlQueryHandler = new ParameterizedSparqlString();
     		sparqlQueryHandler.setBaseUri(baseURI);
     		sparqlQueryHandler.setNsPrefixes(prefixMap);
-    		sparqlQueryHandler.setCommandText(commandString);
+    		//TODO: Find a way to handle this by ParameterizedSparql String. 
+    		// Doesnt work with SetLiteral or SetParam(Node) or setIRI. Try other options
+    		String commandText = commandString;
+    	
+    		sparqlQueryHandler.setCommandText(commandText);
+    		
     		if(!defaultGraph.isEmpty()) {
     			log.warn("Overrding a new default Graph , name= " + defaultGraph);
     			sparqlQueryHandler.setIri("default-graph-uri", defaultGraph);
@@ -136,12 +161,13 @@ public class SparqlHandler {
     		ArrayList<Entity> entity_list = new ArrayList<Entity>();
     		while (result.hasNext()) {
     			QuerySolution qs = result.next();
-    			Entity entity = new Entity(qs.getResource("type").getURI().toString() , qs.getLiteral("label").getString());
+    			Entity entity = new Entity(qs.getResource("key1").getURI().toString() , qs.getLiteral("key2").getString());
     			entity_list.add(entity);
     		}
     		return entity_list;
     	}
     	
+
     public ArrayList<Entity> fetchFromSparqlEndPoint(Request request) throws UnsupportedEncodingException{
     		String baseURI = request.getUrl(); 
     		if (baseURI.isEmpty()) {
