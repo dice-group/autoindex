@@ -136,16 +136,13 @@ public class EntityRepository{
 		
 		String strType = getType(type);
 		if(query.contains("*") || query.contains("?") ) {
-			System.out.println("Wild card Query");
-			nativeSearchQueryBuilder.withQuery(QueryBuilders.queryStringQuery(query)).withPageable(new PageRequest(0, 100));
+			nativeSearchQueryBuilder.withQuery(QueryBuilders.queryStringQuery(query)).withPageable(new PageRequest(0, 1000));
 		}
 		else if(Type.URI.equals(type)) {
-			System.out.println("URI Search");
-			nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery(strType , query)).withPageable(new PageRequest(0, 100));
+			nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery(strType , query)).withPageable(new PageRequest(0, 1000));
 		}
 		else {
-			//TODO: Add Fuzzy Search (0,1,2)
-			nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery(strType , query)).withPageable(new PageRequest(0, 100));
+			nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery(strType , query).fuzziness(1).prefixLength(0).maxExpansions(2)).withPageable(new PageRequest(0, 1000));
 		}
 		SearchQuery searchQuery = nativeSearchQueryBuilder.build();
 		List<Entity> entityList = elasticSearchRepositoryInterface.search(searchQuery).getContent();
