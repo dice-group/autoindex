@@ -132,11 +132,21 @@ public class EntityRepository{
 			nativeSearchQueryBuilder.withIndices(strCategory);
 			nativeSearchQueryBuilder.withTypes(strCategory);
 		}
-		
+
 		
 		String strType = getType(type);
-		nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery(strType , query)).withPageable(new PageRequest(0, 100));
-		
+		if(query.contains("*") || query.contains("?") ) {
+			System.out.println("Wild card Query");
+			nativeSearchQueryBuilder.withQuery(QueryBuilders.queryStringQuery(query)).withPageable(new PageRequest(0, 100));
+		}
+		else if(Type.URI.equals(type)) {
+			System.out.println("URI Search");
+			nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery(strType , query)).withPageable(new PageRequest(0, 100));
+		}
+		else {
+			//TODO: Add Fuzzy Search (0,1,2)
+			nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery(strType , query)).withPageable(new PageRequest(0, 100));
+		}
 		SearchQuery searchQuery = nativeSearchQueryBuilder.build();
 		List<Entity> entityList = elasticSearchRepositoryInterface.search(searchQuery).getContent();
 		return createResponse(entityList);
