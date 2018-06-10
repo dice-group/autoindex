@@ -30,11 +30,12 @@ public class Keys{
 	}
 	
 	public void setCategory(String category) {
-		if("CLASS".equals(category) || "class".equals(category) || "Class".equals(category))
+		String type = category.toLowerCase();
+		if("class".equals(type))
 			this.category = Category.CLASS;
-		else if ("PROPERTY".equals(category) || "property".equals(category) || "Property".equals(category))
+		else if ("property".equals(type))
 			this.category = Category.PROPERTY; 
-		else if ("ENTITY".equals(category) || "entity".equals(category) || "Entity".equals(category))
+		else if ("entity".equals(type))
 			this.category = Category.ENTITY;
 		else
 			this.category = Category.NONE;

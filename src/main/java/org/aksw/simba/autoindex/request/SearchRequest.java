@@ -41,20 +41,22 @@ public class SearchRequest{
 	}
 	
 	public void setType(String type) {
-		if("uri".equals(type) || "URI".equals(type) || "Uri".equals(type))
+		String varType = type.toLowerCase();
+		if("uri".equals(varType))
 			this.type = Type.URI;
-		else if ("label".equals(type) || "LABEL".equals(type) || "Label".equals(type))
+		else if ("label".equals(varType))
 			this.type = Type.LABEL;
 		else
 			this.type = Type.NONE;
 	}
 	
 	public void setCategory(String category) {
-		if("CLASS".equals(category) || "class".equals(category) || "Class".equals(category))
+		String type = category.toLowerCase();
+		if("class".equals(type))
 			this.category = Category.CLASS;
-		else if ("PROPERTY".equals(category) || "property".equals(category) || "Property".equals(category))
+		else if ("property".equals(type))
 			this.category = Category.PROPERTY; 
-		else if ("ENTITY".equals(category) || "entity".equals(category) || "Entity".equals(category))
+		else if ("entity".equals(type))
 			this.category = Category.ENTITY;
 		else
 			this.category = Category.ALL;

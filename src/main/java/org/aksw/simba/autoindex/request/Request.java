@@ -98,11 +98,12 @@ public class Request{
 	}
 	
 	public void setRequestType (String requestType) {
-		if (requestType.compareTo("URI") == 0 || requestType.compareTo("0") == 0 || requestType.compareTo("uri") == 0 || requestType.compareTo("Uri") == 0) 
+		String type = requestType.toLowerCase();
+		if ("uri".equals(type)) 
 			this.requestType = RequestType.URI;
-		else if (requestType.compareTo("filePath") == 0  || requestType.compareTo("1") == 0 || requestType.compareTo("FilePath") == 0 || requestType.compareTo("filepath") == 0 || requestType.compareTo("FILEPATH") == 0) 
+		else if ("filepath".equals(type)) 
 			this.requestType = RequestType.RDF_FILE;
-		else if (requestType.compareTo("custom") == 0  || requestType.compareTo("2") == 0 || requestType.compareTo("CUSTOM") == 0 || requestType.compareTo("Custom") == 0) 
+		else if ("custom".equals(type)) 
 			this.requestType = RequestType.CUSTOM_STRING;
 		else 
 			this.requestType = RequestType.NONE;
