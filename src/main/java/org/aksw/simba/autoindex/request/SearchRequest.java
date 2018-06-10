@@ -1,7 +1,5 @@
 package org.aksw.simba.autoindex.request;
 
-import org.aksw.simba.autoindex.request.Keys.Category;
-
 public class SearchRequest{
 	String query;
 	
