@@ -45,7 +45,7 @@ Create Index from File : Require Multipart Form data , API : /index/uploadFile
 Parameters: userId {if any}
 
 Search : /search
-Parameters: query : { Query to search} , type: {LABEL or URI}, userId : {if any and must match the id provided during createIndex} , category : {Either Entity , Class or Property}.
+Parameters: query : { Query to search} , type: {LABEL or URI}, userId : {if any and must match the id provided during createIndex} , category : {Either ENTITY , CLASS or PROPERTY}.
 
 ### Customizing Select Queries
 application.properties file contains options to edit/add new prefixes , modify existing select queries for entity,class and property by modifying entity.whereclause , class.whereclause and property.whereclause fields respectively.
