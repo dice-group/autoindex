@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.aksw.simba.autoindex.custom.CustomStringHandler;
+import org.aksw.simba.autoindex.datasource.custom.CustomStringHandler;
 import org.aksw.simba.autoindex.datasource.file.FileHandler;
 import org.aksw.simba.autoindex.datasource.sparql.SparqlHandler;
 import org.aksw.simba.autoindex.es.model.DataClass;
@@ -87,6 +87,9 @@ public class EntityRepository{
 		case ENTITY :{
 			return categoryEntity;
 		}
+		case ALL :{
+			return "all";
+		}
 		default:
 			break;
 		}
@@ -94,7 +97,7 @@ public class EntityRepository{
 	}
 	
 	public String getType(Type type) {
-		String strType = "_all";
+		String strType = "";
 		switch(type) {
 		case LABEL:{
 			strType = "label";
@@ -121,8 +124,15 @@ public class EntityRepository{
 			throw new IllegalArgumentException("Invalid Category or type or empty Query");
 		}
 		String strCategory = getCategory(category); 
-		nativeSearchQueryBuilder.withIndices(strCategory);
-		nativeSearchQueryBuilder.withTypes(strCategory);
+		if(strCategory.equals("all")) {
+			nativeSearchQueryBuilder.withIndices("class" , "entity" , "property");
+			nativeSearchQueryBuilder.withTypes("class" , "entity" , "property");
+		}
+		else {
+			nativeSearchQueryBuilder.withIndices(strCategory);
+			nativeSearchQueryBuilder.withTypes(strCategory);
+		}
+		
 		
 		String strType = getType(type);
 		nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery(strType , query)).withPageable(new PageRequest(0, 100));
