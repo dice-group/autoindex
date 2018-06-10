@@ -120,11 +120,11 @@ public class EntityRepository{
 		Type type = searchRequest.getType();
 		Category category = searchRequest.getCategory();
 		NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
-		if(category.equals(Category.NONE) || type.equals(Type.NONE) || query.isEmpty()) {
+		if(Category.NONE.equals(category) || Type.NONE.equals(type) || query.isEmpty()) {
 			throw new IllegalArgumentException("Invalid Category or type or empty Query");
 		}
 		String strCategory = getCategory(category); 
-		if(strCategory.equals("all")) {
+		if("all".equals(strCategory)) {
 			nativeSearchQueryBuilder.withIndices("class" , "entity" , "property");
 			nativeSearchQueryBuilder.withTypes("class" , "entity" , "property");
 		}
