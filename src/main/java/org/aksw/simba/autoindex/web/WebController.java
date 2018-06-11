@@ -27,21 +27,8 @@ public class WebController {
 	
 	@RequestMapping(value = "/index/create")
 	public Response indexCreate(@RequestBody final Request request) {
-			Response response;
-			try {
-				response = entityRepo.createIndex(request);
-			} catch (IOException e) {
-				response = new Response();
-				response.setBoolean(false);
-				e.printStackTrace();
-				return response;
-			}
-			catch (Exception e) {
-				response = new Response();
-				response.setBoolean(false);
-				e.printStackTrace();
-				return response;
-			}
+		Response response;
+		response = sendRequest(request);		
 		return response;
 	}
 	
@@ -49,26 +36,10 @@ public class WebController {
 	public Response indexCreateWithFileUpload(@RequestParam("file") final MultipartFile multipartFile, @RequestParam(value = "userId" , required=false) final String userId, RedirectAttributes redirectAttributes) throws IOException {
 		MultipartFileHandler multipartFileHandler = new MultipartFileHandler();
 		Response response;
-		try {
-			multipartFileHandler.store(multipartFile);
-			Request request = new Request(multipartFileHandler.getFiles() , userId);
-			response = entityRepo.createIndex(request);
-		} catch (IOException e) {
-			response = new Response();
-			response.setBoolean(false);
-			e.printStackTrace();
-			return response;
-		}
-		catch (Exception e) {
-			response = new Response();
-			response.setBoolean(false);
-			e.printStackTrace();
-			return response;
-		}
-		
-		finally {
-			multipartFileHandler.deleteAllFiles();
-		}
+		multipartFileHandler.store(multipartFile);
+		Request request = new Request(multipartFileHandler.getFiles() , userId);
+		response = sendRequest(request);
+		multipartFileHandler.deleteAllFiles();	
 		return response;
 	}
 	
@@ -83,4 +54,22 @@ public class WebController {
 		return entityRepo.search(searchRequest);	
 	}
 	
+	private Response sendRequest(Request request) {
+		Response response;
+		try {
+			response = entityRepo.createIndex(request);
+		} catch (IOException e) {
+			response = new Response();
+			response.setBoolean(false);
+			e.printStackTrace();
+			return response;
+		}
+		catch (Exception e) {
+			response = new Response();
+			response.setBoolean(false);
+			e.printStackTrace();
+			return response;
+		}
+		return response;
+	}
 }

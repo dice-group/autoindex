@@ -58,7 +58,6 @@ public class SparqlHandler {
 				 ++i;
 			 }
 			 prefixMap = Collections.unmodifiableMap(prefix);
-			 System.out.println(prefixMap.toString());
 		}
 		catch (IOException ex) {
 			ex.printStackTrace();

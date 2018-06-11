@@ -2,6 +2,7 @@ package org.aksw.simba.autoindex.es.repository;
 
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,37 +114,39 @@ public class EntityRepository{
 		return strType;
 	}
 	
-	public Response search(SearchRequest searchRequest) {	
-		//TODO: Add exception Handling and generate Output Response accordingly. 
-		//JSON must be sent at all times and not a 500 error
-		String query = searchRequest.getQuery();
-		Type type = searchRequest.getType();
-		Category category = searchRequest.getCategory();
+	public NativeSearchQueryBuilder createNativeSearchQueryBuilder(String query , String strCategory , String strType) {
 		NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
-		if(Category.NONE.equals(category) || Type.NONE.equals(type) || query.isEmpty()) {
-			throw new IllegalArgumentException("Invalid Category or type or empty Query");
-		}
-		String strCategory = getCategory(category); 
 		if("all".equals(strCategory)) {
-			nativeSearchQueryBuilder.withIndices("class" , "entity" , "property");
-			nativeSearchQueryBuilder.withTypes("class" , "entity" , "property");
+			nativeSearchQueryBuilder.withIndices(categoryClass , categoryEntity , categoryProperty);
+			nativeSearchQueryBuilder.withTypes(categoryClass , categoryEntity , categoryProperty);
 		}
 		else {
 			nativeSearchQueryBuilder.withIndices(strCategory);
 			nativeSearchQueryBuilder.withTypes(strCategory);
 		}
-
-		
-		String strType = getType(type);
 		if(query.contains("*") || query.contains("?") ) {
 			nativeSearchQueryBuilder.withQuery(QueryBuilders.queryStringQuery(query)).withPageable(new PageRequest(0, 1000));
 		}
-		else if(Type.URI.equals(type)) {
+		else if("url".equals(strType)) {
 			nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery(strType , query)).withPageable(new PageRequest(0, 1000));
 		}
 		else {
 			nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery(strType , query).fuzziness(1).prefixLength(0).maxExpansions(2)).withPageable(new PageRequest(0, 1000));
 		}
+		return nativeSearchQueryBuilder;
+	}
+	
+	public Response search(SearchRequest searchRequest) {	
+		String query = searchRequest.getQuery();
+		Type type = searchRequest.getType();
+		Category category = searchRequest.getCategory();
+		
+		if(Category.NONE.equals(category) || Type.NONE.equals(type) || query.isEmpty()) {
+			throw new IllegalArgumentException("Invalid Category or type or empty Query");
+		}
+		String strCategory = getCategory(category);
+		String strType = getType(type);
+		NativeSearchQueryBuilder nativeSearchQueryBuilder = createNativeSearchQueryBuilder(query, strCategory , strType );
 		SearchQuery searchQuery = nativeSearchQueryBuilder.build();
 		List<Entity> entityList = elasticSearchRepositoryInterface.search(searchQuery).getContent();
 		return createResponse(entityList);
@@ -154,6 +157,65 @@ public class EntityRepository{
 		Iterable<Entity> entities = elasticSearchRepositoryInterface.findAll();
 		entities.forEach(entityList::add);
 		return entityList;
+	}
+	public Response createNewResponse() {
+		Response response = new Response();
+		response.setBoolean(true);
+		return response;
+	}
+	public Response handleEndPointURL(Request request) {
+		ArrayList<Entity> entity_list = null;
+		Response response = createNewResponse();
+		SparqlHandler sparqlHandler = new SparqlHandler();
+		try {
+			entity_list = sparqlHandler.fetchFromSparqlEndPoint(request);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			log.warn("Unsupported Encoding Exception");
+			response.setBoolean(false);
+			return response;
+		}
+	    elasticSearchRepositoryInterface.save(entity_list);
+		log.warn("Fetch and Index Properties");
+		ArrayList<Property> propertyList = sparqlHandler.fetchProperties(request);
+		elasticSearchRepositoryInterface.save(propertyList);
+		log.warn("Fetch and Index Classes");
+		ArrayList<DataClass> classList = sparqlHandler.fetchClasses(request);
+		elasticSearchRepositoryInterface.save(classList);
+		return response;
+	}
+	
+	public Response handleFile(Request request) {
+		ArrayList<Entity> entity_list = null;
+		Response response = createNewResponse();
+		FileHandler fileHandler = new FileHandler();
+		List<String> fileList = request.getFileList();
+		for (String file : fileList ) {
+			try {
+				entity_list = fileHandler.indexInputFile(file);
+			} catch (IOException e) {
+				log.warn("IO Exception on RDF Files");
+				response.setBoolean(false);
+				return response;
+			}
+			elasticSearchRepositoryInterface.save(entity_list);
+		}
+		return response;
+	}
+	
+	public Response handleCustomString(Request request) {
+		ArrayList<Entity> entity_list = null;
+		Response response = createNewResponse();
+		CustomStringHandler manual_input = new CustomStringHandler();
+		try {
+			entity_list = manual_input.indexInput(request);
+		} catch (UnsupportedEncodingException e) {
+			log.warn("Unsupported Encoding Exception");
+			response.setBoolean(false);
+			return response;
+		}
+		elasticSearchRepositoryInterface.save(entity_list);
+		return response;
 	}
 	
 	public Response createIndex(Request request) throws IOException {
@@ -170,31 +232,13 @@ public class EntityRepository{
 			log.warn("Index from Database-MS, Not implemented yet");
 			return response;
 		}
-		ArrayList<Entity> entity_list = null;
-
 		switch(requestType) {
 
 			case URI : {
-				SparqlHandler sparqlHandler = new SparqlHandler();
-				entity_list = sparqlHandler.fetchFromSparqlEndPoint(request);
-			    elasticSearchRepositoryInterface.save(entity_list);
-				log.warn("Fetch and Index Properties");
-				ArrayList<Property> propertyList = sparqlHandler.fetchProperties(request);
-				elasticSearchRepositoryInterface.save(propertyList);
-				//Index Property
-				log.warn("Fetch and Index Classes");
-				ArrayList<DataClass> classList = sparqlHandler.fetchClasses(request);
-				elasticSearchRepositoryInterface.save(classList);
-				return response;
+				return handleEndPointURL(request);
 			}
-			case RDF_FILE: {
-				FileHandler fileHandler = new FileHandler();
-				List<String> fileList = request.getFileList();
-				for (String file : fileList ) {
-					entity_list = fileHandler.indexInputFile(file);
-					elasticSearchRepositoryInterface.save(entity_list);
-				}
-				return response;
+			case RDF_FILE: {	
+				return handleFile(request);
 			}
 			case LOCAL_DB: {
 				log.warn("Index from Database-MS, Not implemented yet");
@@ -202,12 +246,8 @@ public class EntityRepository{
 				return response;
 			}
 			case CUSTOM_STRING: {
-				CustomStringHandler manual_input = new CustomStringHandler();
-				entity_list = manual_input.indexInput(request);
-				elasticSearchRepositoryInterface.save(entity_list);
-				return response;
-			}
-			
+				return handleCustomString(request);
+			}			
 			default :{
 				log.warn("Not implemented yet");
 				response.setBoolean(false);
