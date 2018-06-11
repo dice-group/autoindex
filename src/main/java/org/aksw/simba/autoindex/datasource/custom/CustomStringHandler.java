@@ -40,21 +40,20 @@ public class CustomStringHandler<T>{
 		default:
 			break;
 	 		
-	 	}
- 		
+	 	}		
  		return (ArrayList<T>) indexed_list;
 	 }
 	 public void createPropertyArray(String label, String url, ArrayList<Property> property_list) {
-	 		Property property = new Property(label,  url);
+	 		Property property = new Property(url,  label);
  			property_list.add(property);
 	 }
 	 
 	 public void createEntityArray(String label, String url, ArrayList<Entity> entity_list) {
-			Entity entity = new Entity(label,  url);
+			Entity entity = new Entity(url,  label);
 			entity_list.add(entity);
 	 }
 	 public void createClassArray(String label, String url, ArrayList<DataClass> class_list) {
-	 		DataClass class_data = new DataClass(label,  url);
+	 		DataClass class_data = new DataClass(url,  label);
  	 		class_list.add(class_data);
 	 }
 }

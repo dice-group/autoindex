@@ -1,7 +1,6 @@
 package org.aksw.simba.autoindex.request;
 
-public class Keys{
-	
+public class Keys{	
 	private String firstKey;
 	private String secondKey;
 	private Category category;

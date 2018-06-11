@@ -18,14 +18,18 @@ public class Entity {
 	private String id;
 	
 	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
-	protected String url;
-	protected String label;
+	protected String url="";
+	protected String label="";
 
 	public Entity(String url, String label) {
 		this.url=url;
 		this.label=label;
+		this.id = label + "_" + url;
 	}
-
+	public Entity() {
+		this.url = "";
+		this.label="";
+	}
 	public String getUrl() {
 		return url;
 	}
@@ -33,18 +37,12 @@ public class Entity {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-
+	
 	public String getLabel() {
 		return label;
 	}
-
+	
 	public void setLabel(String label) {
 		this.label = label;
 	}
-
-	public Entity() {
-		this.url="";
-		this.label="";
-	}
-
 }
