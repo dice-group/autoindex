@@ -8,7 +8,7 @@ Autoindex is a REST API that aims to index any RDF Dump or Sparql Endpoint and t
 
 ### Prerequisites
 
-Maven is the only pre-requisite for  . The instructions to install maven can be found [here](https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html).
+Maven is the only pre-requisite. The instructions to install maven can be found [here](https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html).
 
 ### Installing
 
@@ -22,7 +22,7 @@ Maven is the only pre-requisite for  . The instructions to install maven can be 
 
 3. Run `mvn clean spring-boot:run`
 
-4. Use Web Page available under localhost:9091.
+4. Use test Website available under localhost:9091.
 
 For docker, refer to the end of this file.
 
@@ -34,7 +34,7 @@ For docker, refer to the end of this file.
 
 2. Get results for a label search or URI Search
 
-   http://localhost:9091/results.html
+   http://localhost:9091/query.html
 
 ### REST Interfaces available for POST Requests. 
 
@@ -44,8 +44,11 @@ Parameters  : url : {Valid End Point URL} , requestType : URI , userId : {if any
 Create Index from File : Require Multipart Form data , API : /index/uploadFile
 Parameters: userId {if any}
 
+Add any single Custom key,value Pair:
+Parameters: requestType : custom, userId : {if any} , useLocalDataSource : false (true to use a local Extraction data source), a json field "keys" which takes {"firstKey: key , "secondKey": value , "category": (Entity,Property or Class) } 
+
 Search : /search
-Parameters: query : { Query to search} , type: {LABEL or URI}, userId : {if any and must match the id provided during createIndex} , category : {Either Entity , Class or Property}.
+Parameters: query : { Query to search} , type: {LABEL or URI}, userId : {if any and must match the id provided during createIndex} , category : {Either Entity , Class or Property}. Wildcards * and ? are supported in the query field.
 
 ### Customizing Select Queries
 application.properties file contains options to edit/add new prefixes , modify existing select queries for entity,class and property by modifying entity.whereclause , class.whereclause and property.whereclause fields respectively.
