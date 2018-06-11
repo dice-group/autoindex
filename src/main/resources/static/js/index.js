@@ -14,12 +14,7 @@ function sendRequest(data , isMultipart){
 	var asyncFlag = true;
 	var params = {
 		type : "POST",
-		dataType: "text",
-		data: JSON.stringify(data),
-		url: "/index/create",
-		timeout: 100000,
-		contentType: "application/json",
-		async: asyncFlag
+		timeout: 100000
 	};
 	if(isMultipart === true){
 		params.async = false;
@@ -28,6 +23,14 @@ function sendRequest(data , isMultipart){
 		params.url="/index/uploadFile";
 		params.contentType=false;
 		params.cache=false;
+		params.data=data;
+	}
+	else {
+		params.dataType="text";
+		params.url="/index/create";
+		params.contentType="application/json";
+		params.data=JSON.stringify(data);
+		params.async = true;
 	}
 	$.ajax(params)
 	.done(function(data){	
