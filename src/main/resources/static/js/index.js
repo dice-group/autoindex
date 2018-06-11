@@ -60,7 +60,7 @@ $("#submit_labeled_url").click(function(){
 	data["userId"] = "00000000001";
 	var file = [];
 	data["fileList"] = file;
-	data["keys"] = {"firstKey":urlVal ,"secondKey":labelVal,"thirdKey":selectedIndexType};
+	data["keys"] = {"firstKey": urlVal ,"secondKey": labelVal,"category": selectedIndexType};
 	$.ajax({
 		type : "POST",
 		dataType: "text",

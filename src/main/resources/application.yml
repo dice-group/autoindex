@@ -20,4 +20,4 @@ spring:
           data: ${ES_HOME_DIR:.}/elasticsearch/data
         http:
           enabled: true
-          port: 9200
+          port: 9092

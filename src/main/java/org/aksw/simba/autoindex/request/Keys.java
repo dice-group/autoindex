@@ -4,7 +4,13 @@ public class Keys{
 	
 	private String firstKey;
 	private String secondKey;
-	private String thirdKey;
+	private Category category;
+	public enum Category{
+		CLASS,
+		ENTITY,
+		PROPERTY,
+		NONE
+	};
 	public String getFirstKey() {
 		return this.firstKey;
 	}
@@ -21,12 +27,20 @@ public class Keys{
 		this.secondKey = secondKey;
 	}
 	
-	public String getThirdKey() {
-		return this.thirdKey;
+	public void setCategory(String category) {
+		String type = category.toLowerCase();
+		if("class".equals(type))
+			this.category = Category.CLASS;
+		else if ("property".equals(type))
+			this.category = Category.PROPERTY; 
+		else if ("entity".equals(type))
+			this.category = Category.ENTITY;
+		else
+			this.category = Category.NONE;
 	}
 	
-	public void setThirdKey(String thirdKey) {
-		this.thirdKey = thirdKey;
+	public Category getCategory(){
+		return this.category;
 	}
 
 }

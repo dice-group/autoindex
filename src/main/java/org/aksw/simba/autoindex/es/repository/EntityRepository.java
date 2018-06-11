@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.aksw.simba.autoindex.custom.CustomStringHandler;
+import org.aksw.simba.autoindex.datasource.custom.CustomStringHandler;
 import org.aksw.simba.autoindex.datasource.file.FileHandler;
 import org.aksw.simba.autoindex.datasource.sparql.SparqlHandler;
 import org.aksw.simba.autoindex.es.model.DataClass;
@@ -87,6 +87,9 @@ public class EntityRepository{
 		case ENTITY :{
 			return categoryEntity;
 		}
+		case ALL :{
+			return "all";
+		}
 		default:
 			break;
 		}
@@ -94,7 +97,7 @@ public class EntityRepository{
 	}
 	
 	public String getType(Type type) {
-		String strType = "_all";
+		String strType = "";
 		switch(type) {
 		case LABEL:{
 			strType = "label";
@@ -117,16 +120,30 @@ public class EntityRepository{
 		Type type = searchRequest.getType();
 		Category category = searchRequest.getCategory();
 		NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
-		if(category.equals(Category.NONE) || type.equals(Type.NONE) || query.isEmpty()) {
+		if(Category.NONE.equals(category) || Type.NONE.equals(type) || query.isEmpty()) {
 			throw new IllegalArgumentException("Invalid Category or type or empty Query");
 		}
 		String strCategory = getCategory(category); 
-		nativeSearchQueryBuilder.withIndices(strCategory);
-		nativeSearchQueryBuilder.withTypes(strCategory);
+		if("all".equals(strCategory)) {
+			nativeSearchQueryBuilder.withIndices("class" , "entity" , "property");
+			nativeSearchQueryBuilder.withTypes("class" , "entity" , "property");
+		}
+		else {
+			nativeSearchQueryBuilder.withIndices(strCategory);
+			nativeSearchQueryBuilder.withTypes(strCategory);
+		}
+
 		
 		String strType = getType(type);
-		nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery(strType , query)).withPageable(new PageRequest(0, 100));
-		
+		if(query.contains("*") || query.contains("?") ) {
+			nativeSearchQueryBuilder.withQuery(QueryBuilders.queryStringQuery(query)).withPageable(new PageRequest(0, 1000));
+		}
+		else if(Type.URI.equals(type)) {
+			nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery(strType , query)).withPageable(new PageRequest(0, 1000));
+		}
+		else {
+			nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery(strType , query).fuzziness(1).prefixLength(0).maxExpansions(2)).withPageable(new PageRequest(0, 1000));
+		}
 		SearchQuery searchQuery = nativeSearchQueryBuilder.build();
 		List<Entity> entityList = elasticSearchRepositoryInterface.search(searchQuery).getContent();
 		return createResponse(entityList);

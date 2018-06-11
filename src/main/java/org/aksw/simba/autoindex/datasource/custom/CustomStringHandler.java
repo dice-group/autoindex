@@ -1,8 +1,9 @@
-package org.aksw.simba.autoindex.custom;
+package org.aksw.simba.autoindex.datasource.custom;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import org.aksw.simba.autoindex.es.model.Entity;
 import org.aksw.simba.autoindex.request.Keys;
+import org.aksw.simba.autoindex.request.Keys.Category;
 import org.aksw.simba.autoindex.request.Request;
 import org.aksw.simba.autoindex.es.model.Property;
 import org.aksw.simba.autoindex.es.model.DataClass;
@@ -12,22 +13,35 @@ public class CustomStringHandler<T>{
  		String label = keys.getFirstKey();
  		String url = keys.getSecondKey();
  	    ArrayList<String> indexed_list = new ArrayList<String>();
-	 	String index_type = keys.getThirdKey();
- 		if("class".equals(index_type)) {
- 	 			ArrayList<DataClass> class_list = new ArrayList<DataClass>();
- 	 			createClassArray(label, url,class_list);
-	 	 		indexed_list = (ArrayList<String>) class_list.clone();
- 	     }
- 		else if("entity".equals(index_type)) {
- 				ArrayList<Entity> entity_list = new ArrayList<Entity>();
- 				createEntityArray(label, url,entity_list);
-				indexed_list = (ArrayList<String>) entity_list.clone();
- 		}
- 		else if("property".equals(index_type)) {
- 	 			ArrayList<Property> property_list = new ArrayList<Property>();
- 	 			createPropertyArray(label, url,property_list);
-	 			indexed_list = (ArrayList<String>) property_list.clone();
- 		}
+	 	Category index_type = keys.getCategory();
+	 	switch(index_type) {
+		case CLASS:
+		{
+ 			ArrayList<DataClass> class_list = new ArrayList<DataClass>();
+ 			createClassArray(label, url,class_list);
+ 	 		indexed_list = (ArrayList<String>) class_list.clone();
+ 	 		break;
+	     }
+		case ENTITY:
+		{
+			ArrayList<Entity> entity_list = new ArrayList<Entity>();
+			createEntityArray(label, url,entity_list);
+			indexed_list = (ArrayList<String>) entity_list.clone();
+			break;
+		}
+		case PROPERTY:
+		{
+ 			ArrayList<Property> property_list = new ArrayList<Property>();
+ 			createPropertyArray(label, url,property_list);
+ 			indexed_list = (ArrayList<String>) property_list.clone();
+ 			break;
+		}
+		case NONE:
+		default:
+			break;
+	 		
+	 	}
+ 		
  		return (ArrayList<T>) indexed_list;
 	 }
 	 public void createPropertyArray(String label, String url, ArrayList<Property> property_list) {
