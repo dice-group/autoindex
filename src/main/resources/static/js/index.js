@@ -1,3 +1,42 @@
+function createRequestParameters(url, requestType){
+	var data = {};
+	if(url){
+		data["url"] = url;
+	}
+	data["useLocalDataSource"] = "false";
+	data["default_graph"] = "";
+	data["requestType"] = requestType;
+	data["userId"] = "00000000001";
+	return data;
+}
+
+function sendRequest(data , isMultipart){
+	var asyncFlag = true;
+	var params = {
+		type : "POST",
+		dataType: "text",
+		data: JSON.stringify(data),
+		url: "/index/create",
+		timeout: 100000,
+		contentType: "application/json",
+		async: asyncFlag
+	};
+	if(isMultipart === true){
+		params.async = false;
+		params.enctype = "multipart/form-data";
+		params.processData = false;
+		params.url="/index/uploadFile";
+		params.contentType=false;
+		params.cache=false;
+	}
+	$.ajax(params)
+	.done(function(data){	
+		alert("Indexing done");
+	})
+	.fail(function(data){
+		alert("Error occured");
+	});
+}
 $("#btn_submit").click(function(){
 	var url = $("#index").val();
 	var data = createRequestParameters(url , "URI");
@@ -21,42 +60,3 @@ $("#submit_labeled_url").click(function(){
 	data["keys"] = {"firstKey": labelVal ,"secondKey": urlVal,"category": selectedIndexType};
 	sendRequest(data , false);
 });
-
-function createRequestParameters(url, requestType){
-	var data = {};
-	if(url){
-		data["url"] = url;
-	}
-	data["useLocalDataSource"] = "false";
-	data["default_graph"] = "";
-	data["requestType"] = requestType;
-	data["userId"] = "00000000001";
-	return data;
-}
-function sendRequest(data , isMultipart){
-	var asyncFlag = true;
-	var params = {
-		type : "POST",
-		dataType: "text",
-		data: JSON.stringify(data),
-		url: "/index/create",
-		timeout: 100000,
-		contentType: "application/json",
-		async: asyncFlag
-	};
-	if(isMultipart === true){
-		params.async = false;
-		prams.enctype = "multipart/form-data";
-		params.processData = false;
-		params.url="/index/uploadFile";
-		params.contentType=false;
-		params.cache=false;
-	}
-	$.ajax(params)
-	.done(function(data){	
-		alert("Indexing done");
-	})
-	.fail(function(data){
-		alert("Error occured");
-	});
-}
