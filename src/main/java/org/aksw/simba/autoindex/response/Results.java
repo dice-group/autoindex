@@ -11,9 +11,6 @@ public class Results{
 		return this.bindings;
 	}
 	
-	public Results(){
-	}
-	
 	public void addBinding(Bindings bindings) {
 		this.bindings.add(bindings);
 	}

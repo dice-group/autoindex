@@ -3,7 +3,7 @@ $("#searchButtonLabel").click(function(){
 	var data = {};
 	data["query"] = label;
 	data["type"] = $("input[name=options]:checked").val();
-	data["category"] = $("#sel1").val()
+	data["category"] = $("#sel1").val();
 	$.ajax({
 		type : "POST",
 		dataType: "text",
@@ -19,26 +19,25 @@ $("#searchButtonLabel").click(function(){
 });
 function renderTable(data){
 	var obj = JSON.parse(data);
-	if(obj.boolean == false){
+	if(obj.boolean === false){
 		alert("Search Failed");
 	}
 	else{
-		
 	var tableData = "<table align=\"center\"><tr><th>LABEL</th><th>URL</th></tr>";	
 	for (var i = 0; i < obj.results.bindings.length; i++) {
-	    var counter = obj.results.bindings[i];
-	    var temp = "<tr>";
-	    temp = "<td>" + counter.label.value + "</td>";
-	    temp += "<td>" + counter.uri.value + "</td>";
-	    temp += "</tr>";
-	    tableData += temp;
+		var counter=obj.results.bindings[i];
+	    var temp="<tr>";
+	    temp="<td>" + counter.label.value + "</td>";
+	    temp+="<td>" + counter.uri.value + "</td>";
+	    temp+="</tr>";
+	    tableData+=temp;
 	}
 	tableData += "</table><h1 align=\"center\">End of Results</h1>";
 	$("#results").html(tableData);
 	}
 }
 $("input[name=options]").change(function () {
-	if(this.value == "uri"){
+	if(this.value === "uri"){
 		$("#queryText").attr("placeholder", "Enter Query URL");
 	}
 	else{
