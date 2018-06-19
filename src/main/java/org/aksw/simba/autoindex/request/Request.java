@@ -6,8 +6,6 @@ import java.util.List;
 /*Class for Dependancy Injection of Spring for Handling Index Create Requests*/
 
 public class Request{
-	
-	private String url;
 	private String default_graph;
 	private String userId;
 	private Boolean useLocalDataSource;
@@ -24,7 +22,6 @@ public class Request{
 	private List<String> fileList;
 	private int limit;
 	public Request(){
-		this.url = "";
 		this.default_graph = "";
 		this.userId = "00000000001";
 		this.useLocalDataSource = false;
@@ -34,7 +31,6 @@ public class Request{
 		this.keys = new Keys();
 	}
 	public Request(String url) {
-		this.url = url;
 		this.default_graph = "";
 		this.userId = "00000000001";
 		this.useLocalDataSource = false;
@@ -44,7 +40,6 @@ public class Request{
 		this.keys = new Keys();
 	}
 	public Request(String url , String label , String userId){
-		this.url = url;
 		this.default_graph = label;
 		this.userId = userId;
 		this.useLocalDataSource = false;
@@ -59,16 +54,8 @@ public class Request{
 		this.useLocalDataSource = false;
 		this.requestType = RequestType.RDF_FILE;
 		this.limit = 0;
-		this.url = "";
 		this.default_graph = "";
 		this.keys = new Keys();
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
-	
-	public String getUrl() {
-		return this.url;
 	}
 	
 	public void setDefaultGraph(String default_graph) {

@@ -38,7 +38,6 @@ var handleClassCancel = function(){
 function createRequestParameters(url, requestType){
 	var data = {};
 	if(url){
-		data["url"] = url;
 		var endPointParameters={"url":url, "isEntityCustomized":isEntityChanged , "isPropertyCustomized":isPropertyChanged, "isClassCustomized":isClassChanged,"entitySelectQuery":entity_input , "propertySelectQuery":property_input , "classSelectQuery":class_input };
 		data["endPointParameters"]=endPointParameters;
 	}
