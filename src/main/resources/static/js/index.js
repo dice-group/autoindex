@@ -1,6 +1,10 @@
 var entity_input = "";
 var property_input = "";
 var class_input = "";
+var isEntityChanged = false;
+var isPropertyChanged = false;
+var isClassChanged = false;
+
 function handleChangeBehavior(textAreaId , collapsibleId){
 	entity_input = document.getElementById(textAreaId).value;
 	document.getElementById(collapsibleId).click(); 
@@ -11,12 +15,15 @@ function handleCancelBehavior(textAreaId , collapsibleId){
 };
 var changeEntity = function(){
 	handleChangeBehavior("entity_textarea" , "collapsible_entity");
+	isEntityChanged=true;
 };
 var changeProperty = function(){
 	handleChangeBehavior("property_textarea" , "collapsible_property");
+	isPropertyChanged = true;
 };
 var changeClass = function(){
 	handleChangeBehavior("class_textarea" , "collapsible_class");
+	isClassChanged=true;
 };
 var handleEntityCancel = function(){
 	handleCancelBehavior("entity_textarea" , "collapsible_entity");
@@ -32,6 +39,8 @@ function createRequestParameters(url, requestType){
 	var data = {};
 	if(url){
 		data["url"] = url;
+		var endPointParameters={"url":url, "isEntityCustomized":isEntityChanged , "isPropertyCustomized":isPropertyChanged, "isClassCustomized":isClassChanged,"entitySelectQuery":entity_input , "propertySelectQuery":property_input , "classSelectQuery":class_input };
+		data["endPointParameters"]=endPointParameters;
 	}
 	data["useLocalDataSource"] = "false";
 	data["default_graph"] = "";
