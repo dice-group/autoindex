@@ -13,6 +13,7 @@ public class Request{
 	private Boolean useLocalDataSource;
 	private RequestType requestType;
 	private Keys keys;
+	private EndPointParameters endPointParameters;
 	public enum RequestType {
 		URI ,
 		RDF_FILE  , 
@@ -136,7 +137,20 @@ public class Request{
 		}
 		return this.keys;
 	}	
+	
 	public void setKeys(Keys keys) {
 		this.keys = keys;
-  }	
+	}
+	
+	public EndPointParameters getEndPointParameters() {
+		if(this.endPointParameters == null) {
+			this.endPointParameters = new EndPointParameters();
+		}
+		return this.endPointParameters;		
+	}
+	
+	public void setEndPointParameters(EndPointParameters endPointParameters) {
+		this.endPointParameters = endPointParameters;
+	}
+	
 }
