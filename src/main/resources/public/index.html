@@ -6,6 +6,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <link rel="stylesheet" href="/webjars/bootstrap/4.0.0-beta/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="css/main.css">
+<link rel="stylesheet" type="text/css" href="css/index.css">
 <title>AutoIndex</title>
 </head>
 <body>
@@ -49,6 +50,26 @@
 						<!-- small
 							id="countHelp" class="form-text text-muted"> limit=0 indexes all Records </small-->
 						<button type="submit" class="btn btn-primary" id="btn_submit">Submit</button>
+						<br><p>Customizations of Select Queries</p>
+						<button class="collapsible" id="collapsible_entity">Entity</button>
+						<div class="content">
+						  <textarea rows="15" cols="50" id="entity_textarea"></textarea> <br>
+						  <button type="submit" class="btn btn-primary" id="entity_save">Save</button>
+						  <button type="submit" class="btn btn-primary" id="entity_cancel">Cancel</button>
+						</div>
+						<br>
+						<button class="collapsible" id="collapsible_property">Property</button>
+						<div class="content">
+						  <textarea rows="15" cols="300" id="property_textarea"></textarea> <br>
+						  <button type="submit" class="btn btn-primary" id="prop_save">Save</button>
+						  <button type="submit" class="btn btn-primary" id="prop_cancel">Cancel</button>
+						</div><br>
+						<button class="collapsible" id="collapsible_class">Class</button>
+						<div class="content">
+						  <textarea rows="15" cols="300" id="class_textarea"></textarea> <br>
+						  <button type="submit" class="btn btn-primary" id="class_save">Save</button>
+						  <button type="submit" class="btn btn-primary" id="class_cancel">Cancel</button>
+						</div>
 					</fieldset>
 					</div>	
 					<h1 class="mt-5" align="center">OR</h1>
@@ -61,7 +82,7 @@
 						<button type="submit" class="btn btn-primary" id="btn_submitfile">Submit</button>
 					</fieldset>
 					</div>	
-										<div class="form-group">
+					<div class="form-group">
 					
 					<h1 class="mt-5" align="center">OR</h1>
 					<fieldset>
