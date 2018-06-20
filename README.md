@@ -39,7 +39,7 @@ For docker, refer to the end of this file.
 ### REST Interfaces available for POST Requests. 
 
 Create Index : /index/create 
-Parameters  : url : {Valid End Point URL} , requestType : URI , userId : {if any} , useLocalDataSource : false (true to use a local Extraction data source) , default_graph : { if any}
+Parameters  : endPointParameters : {"url":Valid End Point URL} , requestType : URI , userId : {if any} , useLocalDataSource : false (true to use a local Extraction data source) , default_graph : { if any}
 
 Create Index from File : Require Multipart Form data , API : /index/uploadFile
 Parameters: userId {if any}
@@ -48,13 +48,24 @@ Add any single Custom key,value Pair:
 Parameters: requestType : custom, userId : {if any} , useLocalDataSource : false (true to use a local Extraction data source), a json field "keys" which takes {"firstKey: key , "secondKey": value , "category": (Entity,Property or Class) } 
 
 Search : /search
-Parameters: query : { Query to search} , type: {LABEL or URI}, userId : {if any and must match the id provided during createIndex} , category : {Either Entity , Class or Property}. Wildcards * and ? are supported in the query field.
+Parameters: query : { Query to search} , type: {LABEL or URI}, userId : {if any and must match the id provided during createIndex} , category : {Either Entity , Class or Property}. 
+Wildcards * and ? are supported in the query field.
 
 ### Customizing Select Queries
 application.properties file contains options to edit/add new prefixes , modify existing select queries for entity,class and property by modifying entity.whereclause , class.whereclause and property.whereclause fields respectively.
 
 To add new prefixes, go to the prefix list, add a new entry, both name and url are mandatory. If the last line in prefixes in configuration file is prefix4.url then you can add a new entry as prefix5.name and prefix5.url and so on.
 
+Additionally, Select Queries can be customized through the Rest interface call of Indexing any EndPoint URL.
+
+Create Index : /index/create 
+Parameters  : endPointParameters : {"url":Valid End Point URL , "isEntityCustomized": true , "isPropertyCustomized" : true , "isClassCustomized" : true , "entitySelectQuery" : Select Query for indexing Entities with necessary Prefixes , "propertySelectQuery" :Select Query for indexing Properties with necessary Prefixes , "classSelectQuery" : Select Query for indexing classes with necessary Prefixes} , requestType : URI , userId : {if any} , useLocalDataSource : false (true to use a local Extraction data source) , default_graph : { if any}.
+
+Please note the following when there is a need to customize select Queries through Rest interfaces.
+1. isEntityCustomized , isPropertyCustomized or isClassCustomized can be true when the user wants to overwrite the default Select Query with the select Query provided in the rest Interface. Please note it is mandatory to provide a value for entitySelectQuery when isEntityCustomized is passed as true. Similarly for properties and class Select Queries. By default, isEntityCustomized , isPropertyCustomized and isClassCustomized are optional and is assigned as false even if parameter is not passed.
+
+2. Select Query for indexing Properties with necessary Prefixes : Select Queries provided should follow Sparql standards. Select Query is one complete text field which can also contain prefixes.
+Prefixes should be of the form PREFIX key:<value>, For example : PREFIX owl: <http://www.w3.org/2002/07/owl#>. Please note that when customizing Select Queries, only the values provided in the rest interface calls as a part of Select Query will be considered and the default prefixes will not be considered. 
     
 ### Docker
 First install docker in your system. For ubuntu you may refer to below link. 
