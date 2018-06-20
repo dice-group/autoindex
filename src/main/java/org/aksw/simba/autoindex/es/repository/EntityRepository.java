@@ -221,12 +221,11 @@ public class EntityRepository{
 	public Response createIndex(Request request) throws IOException {
 		Response response = new Response();
 		response.setBoolean(true);
-		String url = request.getUrl();
 		String label = request.getDefaultGraph();
 		RequestType requestType = request.getRequestType();
 		String userId = request.getUserId();
 		Boolean useLocalDataSource = request.isUseLocalDataSource();
-		log.warn("URL=" + url + " , label=" + label + " , userId = " + userId + ", useLocalDataSource =" + useLocalDataSource);
+		log.warn( "label=" + label + " , userId = " + userId + ", useLocalDataSource =" + useLocalDataSource);
 		if(useLocalDataSource) { 
 			//Read from Database-ms
 			log.warn("Index from Database-MS, Not implemented yet");

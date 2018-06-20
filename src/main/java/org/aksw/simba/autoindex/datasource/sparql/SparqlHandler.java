@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
@@ -19,6 +20,7 @@ import javax.annotation.PostConstruct;
 import org.aksw.simba.autoindex.es.model.DataClass;
 import org.aksw.simba.autoindex.es.model.Entity;
 import org.aksw.simba.autoindex.es.model.Property;
+import org.aksw.simba.autoindex.request.EndPointParameters;
 import org.aksw.simba.autoindex.request.Request;
 import org.apache.jena.query.ParameterizedSparqlString;
 import org.apache.jena.query.Query;
@@ -73,9 +75,30 @@ public class SparqlHandler {
 		}
 	}
 	
+	private String getPrefixString() {
+		String output = "";
+		for (Entry<String, String> entry : prefixMap.entrySet()) {
+			output += "PREFIX " + entry.getKey() + ":<" + entry.getValue() + ">\n";
+		}
+		return output;
+	}
+	
+	public String getPropertyQueryString() {
+		return getPrefixString() + propertiesString;
+	}
+	
+	public String getClassQueryString() {
+		return getPrefixString() + classesString;
+	}
+	
+	public String getEntityQueryString() {
+		return getPrefixString() + commandString;
+	}
+	
 	public ArrayList<DataClass> fetchClasses(Request request){
 		ArrayList<DataClass> classList = null;
-		String baseURI = request.getUrl(); 
+		EndPointParameters endPointParameters= request.getEndPointParameters();
+		String baseURI = endPointParameters.getUrl(); 	
 		if (baseURI.isEmpty()) {
 			log.warn("base URI is empty, Cannot proceed further");
 			throw new IllegalArgumentException("base URI is empty");
@@ -83,8 +106,18 @@ public class SparqlHandler {
 		if (!baseURI.startsWith("http://")) {
 			baseURI = "http://" + baseURI; //Appending because QueryHandler appends local path otherwise
 		}
+		String commandText = "";
+		Map<String, String> prefixes = new HashMap<String, String>();  		
+		if(endPointParameters.getIsClassCustomized()) {
+			String selectQuery = endPointParameters.getClassSelectQuery();
+			commandText = extractPrefixes(selectQuery , prefixes);
+		}
+		else {
+			prefixes = prefixMap;
+			commandText = classesString;
+		}
 		String defaultGraph = request.getDefaultGraph();
-		Query query = constructSparqlQuery(baseURI , defaultGraph , 0 , classesString);
+		Query query = constructSparqlQuery(baseURI , defaultGraph , 0 , commandText , prefixes);
 		ResultSet output = executeQuery(baseURI , query);
 		classList = generateClasses(output);
 		return classList;
@@ -102,7 +135,8 @@ public class SparqlHandler {
 	
 	public ArrayList<Property> fetchProperties(Request request){
 		ArrayList<Property> propertyList = null;
-		String baseURI = request.getUrl(); 
+		EndPointParameters endPointParameters= request.getEndPointParameters();
+		String baseURI = endPointParameters.getUrl();
 		if (baseURI.isEmpty()) {
 			log.warn("base URI is empty, Cannot proceed further");
 			throw new IllegalArgumentException("base URI is empty");
@@ -111,7 +145,17 @@ public class SparqlHandler {
 			baseURI = "http://" + baseURI; //Appending because QueryHandler appends local path otherwise
 		}
 		String defaultGraph = request.getDefaultGraph();
-		Query query = constructSparqlQuery(baseURI , defaultGraph , 0 , propertiesString);
+		String commandText = "";
+		Map<String, String> prefixes = new HashMap<String, String>();  		
+		if(endPointParameters.getIsPropertyCustomized()) {
+			String selectQuery = endPointParameters.getPropertySelectQuery();
+			commandText = extractPrefixes(selectQuery , prefixes);
+		}
+		else {
+			prefixes = prefixMap;
+			commandText = propertiesString;
+		}
+		Query query = constructSparqlQuery(baseURI , defaultGraph , 0 , commandText , prefixes);
 		ResultSet output = executeQuery(baseURI , query);
 		propertyList = generatePropertiesList(output);
 		return propertyList;
@@ -127,10 +171,10 @@ public class SparqlHandler {
 		return propertyList;
 	}
 	
-    	public Query constructSparqlQuery(String baseURI , String defaultGraph , int limit , String commandString) {
+    	public Query constructSparqlQuery(String baseURI , String defaultGraph , int limit , String commandString , Map<String,String> prefixes) {
     		ParameterizedSparqlString sparqlQueryHandler = new ParameterizedSparqlString();
     		sparqlQueryHandler.setBaseUri(baseURI);
-    		sparqlQueryHandler.setNsPrefixes(prefixMap);
+    		sparqlQueryHandler.setNsPrefixes(prefixes);
     		//TODO: Find a way to handle this by ParameterizedSparql String. 
     		// Doesnt work with SetLiteral or SetParam(Node) or setIRI. Try other options
     		String commandText = commandString;
@@ -166,9 +210,27 @@ public class SparqlHandler {
     		return entity_list;
     	}
     	
+    	public String extractPrefixes(String selectQuery , Map<String,String> prefixes) {
+    		String query = "";
+    		String[] entities = selectQuery.split("\n");
+			for(String s: entities) {	
+				if(s.startsWith("PREFIX")) {
+					s = s.substring(7 , s.length());
+					// +2 is because it should not consider : and <  and > which are not required for our prefix map
+					prefixes.put(s.substring(0 , s.indexOf(":") ), s.substring(s.indexOf(":") +2, s.length()-1));
+				}
+				else
+				{
+					query += s ;
+				}
+				
+			}
+			return query;
+    	}
 
     public ArrayList<Entity> fetchFromSparqlEndPoint(Request request) throws UnsupportedEncodingException{
-    		String baseURI = request.getUrl(); 
+    		EndPointParameters endPointParameters= request.getEndPointParameters();
+    		String baseURI = endPointParameters.getUrl();
     		if (baseURI.isEmpty()) {
     			log.warn("base URI is empty, Cannot proceed further");
     			throw new IllegalArgumentException("base URI is empty");
@@ -178,7 +240,17 @@ public class SparqlHandler {
     		}
     		String defaultGraph = request.getDefaultGraph();
     		int limit = request.getlimit();
-    		Query query = constructSparqlQuery(baseURI , defaultGraph , limit , commandString);
+    		String commandText = null;
+    		Map<String, String> prefixes = new HashMap<String, String>();  		
+    		if(endPointParameters.getIsEntityCustomized()) {
+    			String selectQuery = endPointParameters.getEntitySelectQuery();
+    			commandText = extractPrefixes(selectQuery , prefixes);
+    		}
+    		else {
+    			prefixes = prefixMap;
+    			commandText = commandString;
+    		}
+    		Query query = constructSparqlQuery(baseURI , defaultGraph , limit , commandText , prefixes);
     		ResultSet output = executeQuery(baseURI , query);
     		ArrayList<Entity> entity_list = generateOutputEntities(output); 		
 		return entity_list;

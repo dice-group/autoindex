@@ -2,6 +2,8 @@ package org.aksw.simba.autoindex.web;
 
 
 import java.io.IOException;
+
+import org.aksw.simba.autoindex.datasource.sparql.SparqlHandler;
 import org.aksw.simba.autoindex.es.repository.EntityRepository;
 import org.aksw.simba.autoindex.request.Request;
 import org.aksw.simba.autoindex.request.SearchRequest;
@@ -71,5 +73,23 @@ public class WebController {
 			return response;
 		}
 		return response;
+	}
+	
+	@RequestMapping("/getEntityQuery")
+	public String getEntityQuery() {
+		SparqlHandler sparqlHandler = new SparqlHandler();
+		return sparqlHandler.getEntityQueryString();	
+	}
+	
+	@RequestMapping("/getPropertyQuery")
+	public String getPropertyQuery() {
+		SparqlHandler sparqlHandler = new SparqlHandler();
+		return sparqlHandler.getPropertyQueryString();	
+	}
+	
+	@RequestMapping("/getClassQuery")
+	public String getClassQuery() {
+		SparqlHandler sparqlHandler = new SparqlHandler();
+		return sparqlHandler.getClassQueryString();	
 	}
 }
