@@ -125,8 +125,8 @@ public class EntityRepository{
 			nativeSearchQueryBuilder.withIndices(strCategory);
 			nativeSearchQueryBuilder.withTypes(strCategory);
 		}
-		//Support Wildcard and Fuzzy search
-		if(query.contains("*") || query.contains("?") || query.contains("~") || query.contains("^") ) {
+		//Support Wildcard and Fuzzy search. If Any Regular expression is contained, then it must be within /
+		if(query.contains("*") || query.contains("?") || query.contains("~") || query.contains("^") || query.contains("/") ) {
 			nativeSearchQueryBuilder.withQuery(QueryBuilders.queryStringQuery(query)).withPageable(new PageRequest(0, 1000));
 		}
 		else if(query.contains(" OR ") || query.contains(" AND ") || query.contains(" NOT ") || query.contains(" + ") || query.contains(" - ")) { //Boolean Search
