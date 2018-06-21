@@ -84,6 +84,15 @@ Support for Search Options would be similar to what is supported by Lucene and E
 7. Fuzzy search with similarity weight For example AA~0.8
 8. Term Boosting. For example "Michelle"^4 "Obama"
 9. Term Grouping with Boolean Search.
+
+### Connecting to Eureka Server
+
+If there is a Eureka Server or other discovery client with which you want Auto Index to connect to, modify application.yml file as below:
+Change eureka.client.enabled to true and set serviceurl.defaultzone to the url of the eureka server to connect to. By default, AutoIndex has Discovery set to false and will not connect to any discovery client.
+
+Please note Eureka Server must be running when eureka.client.enabled=true. Otherwise the application will not start and there would be a lot of errors from DiscoveryClient.
+
+By connecting to eureka server, Auto Index behaves as a microservice and components can send Rest calls using http://AUTOINDEX.
     
 ### Docker
 First install docker in your system. For ubuntu you may refer to below link. 
