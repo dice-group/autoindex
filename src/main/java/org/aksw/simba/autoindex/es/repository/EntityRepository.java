@@ -124,14 +124,21 @@ public class EntityRepository{
 			nativeSearchQueryBuilder.withIndices(strCategory);
 			nativeSearchQueryBuilder.withTypes(strCategory);
 		}
-		if(query.contains("*") || query.contains("?") ) {
+		//Support Wild card and Fuzzy search. If Any Regular expression is contained, then it must be within /
+		if(query.contains("*") || query.contains("?") || query.contains("~") || query.contains("^") || query.contains("/") ) {
+			nativeSearchQueryBuilder.withQuery(QueryBuilders.queryStringQuery(query)).withPageable(new PageRequest(0, 1000));
+		}
+		else if(query.contains(" OR ") || query.contains(" AND ") || query.contains(" NOT ") || query.contains(" + ") || query.contains(" - ")) { //Boolean Search
+			nativeSearchQueryBuilder.withQuery(QueryBuilders.queryStringQuery(query)).withPageable(new PageRequest(0, 1000));
+		}
+		else if(query.contains(" TO ") && ((query.contains("[") && query.contains("]")) || (query.contains("{") && query.contains("}")))) {//Range Search
 			nativeSearchQueryBuilder.withQuery(QueryBuilders.queryStringQuery(query)).withPageable(new PageRequest(0, 1000));
 		}
 		else if("url".equals(strType)) {
 			nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery(strType , query)).withPageable(new PageRequest(0, 1000));
 		}
 		else {
-			nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery(strType , query).fuzziness(1).prefixLength(0).maxExpansions(2)).withPageable(new PageRequest(0, 1000));
+			nativeSearchQueryBuilder.withQuery(QueryBuilders.matchQuery(strType , query).fuzziness(1).prefixLength(0).maxExpansions(2).fuzzyTranspositions(true)).withPageable(new PageRequest(0, 1000));
 		}
 		return nativeSearchQueryBuilder;
 	}
