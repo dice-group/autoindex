@@ -124,7 +124,7 @@ public class EntityRepository{
 			nativeSearchQueryBuilder.withIndices(strCategory);
 			nativeSearchQueryBuilder.withTypes(strCategory);
 		}
-		//Support Wildcard and Fuzzy search. If Any Regular expression is contained, then it must be within /
+		//Support Wild card and Fuzzy search. If Any Regular expression is contained, then it must be within /
 		if(query.contains("*") || query.contains("?") || query.contains("~") || query.contains("^") || query.contains("/") ) {
 			nativeSearchQueryBuilder.withQuery(QueryBuilders.queryStringQuery(query)).withPageable(new PageRequest(0, 1000));
 		}
