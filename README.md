@@ -1,4 +1,5 @@
 # Autoindex
+[![Build Status](https://travis-ci.org/dice-group/autoindex.svg?branch=master)](https://travis-ci.org/dice-group/autoindex)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5da35f0710b845ba968aa98863556d7a)](https://www.codacy.com/app/idreestahir/autoindex?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dice-group/autoindex&amp;utm_campaign=Badge_Grade)
 [![BCH compliance](https://bettercodehub.com/edge/badge/dice-group/autoindex?branch=master)](https://bettercodehub.com/)
 
