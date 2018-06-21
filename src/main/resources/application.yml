@@ -1,5 +1,11 @@
 server:
   port: 9091
+# Discovery Server Access
+eureka:
+  client:
+    enabled: false
+    serviceUrl:
+      defaultZone: http://localhost:1111/eureka/
 
 spring:
   application:
