@@ -39,7 +39,7 @@ public class EntityRepository{
 	private static final String categoryEntity = "entity";
 	
 	@Autowired
-	ElasticSearchRepositoryInterface elasticSearchRepositoryInterface;
+	public ElasticSearchRepositoryInterface elasticSearchRepositoryInterface;
 	
 	@Autowired
 	public ElasticsearchTemplate elasticsearchTemplate;

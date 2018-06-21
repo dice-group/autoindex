@@ -1,7 +1,7 @@
 package org.aksw.simba.autoindex.request;
 
 public class SearchRequest{
-	String query;
+	private String query;
 	
 	public enum Type {
 		LABEL ,
@@ -17,8 +17,8 @@ public class SearchRequest{
 		NONE
 	};
 	
-	Type type;
-	Category category;
+	private Type type;
+	private Category category;
 	
 	public SearchRequest(){
 		this.query = "";
