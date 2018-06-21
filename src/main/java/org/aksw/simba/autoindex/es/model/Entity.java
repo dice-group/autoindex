@@ -1,9 +1,7 @@
 package org.aksw.simba.autoindex.es.model;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.MappedSuperclass;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -16,7 +14,6 @@ public class Entity {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String id;
-	
 	@Field(type = FieldType.String, index = FieldIndex.not_analyzed)
 	protected String url="";
 	protected String label="";
