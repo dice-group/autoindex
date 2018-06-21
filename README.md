@@ -42,6 +42,8 @@ For docker, refer to the end of this file.
 Create Index : /index/create 
 Parameters  : endPointParameters : {"url":Valid End Point URL} , requestType : URI , userId : {if any} , useLocalDataSource : false (true to use a local Extraction data source) , default_graph : { if any}
 
+If there are Select Queries to be modified or to know what default Select Queries would be executed, please refer below to Section "Customizing Select Queries".
+
 Create Index from File : Require Multipart Form data , API : /index/uploadFile
 Parameters: userId {if any}
 
@@ -50,7 +52,8 @@ Parameters: requestType : custom, userId : {if any} , useLocalDataSource : false
 
 Search : /search
 Parameters: query : { Query to search} , type: {LABEL or URI}, userId : {if any and must match the id provided during createIndex} , category : {Either Entity , Class or Property}. 
-Wildcards * and ? are supported in the query field.
+For custom options which are supported by Search, please refer to section below under Section "Search Options".
+
 
 ### Customizing Select Queries
 application.properties file contains options to edit/add new prefixes , modify existing select queries for entity,class and property by modifying entity.whereclause , class.whereclause and property.whereclause fields respectively.
@@ -67,6 +70,20 @@ Please note the following when there is a need to customize select Queries throu
 
 2. Select Query for indexing Properties with necessary Prefixes : Select Queries provided should follow Sparql standards. Select Query is one complete text field which can also contain prefixes.
 Prefixes should be of the form PREFIX key:<value>, For example : PREFIX owl: <http://www.w3.org/2002/07/owl#>. Please note that when customizing Select Queries, only the values provided in the rest interface calls as a part of Select Query will be considered and the default prefixes will not be considered. 
+    
+### Search Options
+
+Support for Search Options would be similar to what is supported by Lucene and Elastic Search. These include
+
+1. Regular URL and Label Search.
+2. Proximity Search with ~, For example "AAA"~5.
+3. Regular expressions with string contained between / and /. For example /A.B/
+4. Wild card search with * and ?.
+5. Range Search For example [Aa TO Bb] and {Aa TO Bb}.
+6. Boolean Search (OR AND NOT + and -).
+7. Fuzzy search with similarity weight For example AA~0.8
+8. Term Boosting. For example "Michelle"^4 "Obama"
+9. Term Grouping with Boolean Search.
     
 ### Docker
 First install docker in your system. For ubuntu you may refer to below link. 
