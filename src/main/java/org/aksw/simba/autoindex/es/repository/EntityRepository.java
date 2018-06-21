@@ -21,7 +21,6 @@ import org.aksw.simba.autoindex.response.Bindings;
 import org.aksw.simba.autoindex.response.Head;
 import org.aksw.simba.autoindex.response.Response;
 import org.aksw.simba.autoindex.response.Results;
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
