@@ -170,10 +170,10 @@ public class EntityRepository{
 		response.setBoolean(true);
 		return response;
 	}
-	public Response handleEndPointURL(Request request) {
+	
+	public Response indexEntity(SparqlHandler sparqlHandler , Request request) {
 		ArrayList<Entity> entity_list = null;
 		Response response = createNewResponse();
-		SparqlHandler sparqlHandler = new SparqlHandler();
 		try {
 			entity_list = sparqlHandler.fetchFromSparqlEndPoint(request);
 		} catch (UnsupportedEncodingException e) {
@@ -183,29 +183,26 @@ public class EntityRepository{
 			return response;
 		}
 	    elasticSearchRepositoryInterface.save(entity_list);
-		log.warn("Fetch and Index Properties");
-		ArrayList<Property> propertyList = sparqlHandler.fetchProperties(request);
-		elasticSearchRepositoryInterface.save(propertyList);
-		log.warn("Fetch and Index Classes");
-		ArrayList<DataClass> classList = sparqlHandler.fetchClasses(request);
-		elasticSearchRepositoryInterface.save(classList);
+	    return response;
+	}
+	
+	public Response handleEndPointURL(Request request) {
+		SparqlHandler sparqlHandler = new SparqlHandler();
+		Response response = indexEntity(sparqlHandler , request);
+		if(response.getBoolean()) {
+			log.warn("Fetch and Index Properties");
+			ArrayList<Property> propertyList = sparqlHandler.fetchProperties(request);
+			elasticSearchRepositoryInterface.save(propertyList);
+			log.warn("Fetch and Index Classes");
+			ArrayList<DataClass> classList = sparqlHandler.fetchClasses(request);
+			elasticSearchRepositoryInterface.save(classList);
+		}
 		return response;
 	}
 	
 	public Response handleLocalEndPoint(Request request) {
-		ArrayList<Entity> entity_list = null;
-		Response response = createNewResponse();
 		SparqlHandler sparqlHandler = new SparqlHandler();
-		try {
-			entity_list = sparqlHandler.fetchFromSparqlEndPoint(request);
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			log.warn("Unsupported Encoding Exception");
-			response.setBoolean(false);
-			return response;
-		}
-	    elasticSearchRepositoryInterface.save(entity_list);
-		return response;
+		return indexEntity(sparqlHandler, request);
 	}
 	
 	public Response handleFile(Request request) {
