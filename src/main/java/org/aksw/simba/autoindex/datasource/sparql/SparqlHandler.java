@@ -29,7 +29,6 @@ import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -265,7 +264,7 @@ public class SparqlHandler {
 				break;
 			}
 			else {
-				if(true ==token.contains("?")) {
+				if(token.contains("?")) {
 					keyList.add(token.substring(1, token.length()));
 				}
 			}

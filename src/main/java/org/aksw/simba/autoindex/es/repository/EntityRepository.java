@@ -44,6 +44,8 @@ public class EntityRepository{
 	@Autowired
 	public ElasticsearchTemplate elasticsearchTemplate;
 	
+	@Autowired
+	public SparqlHandler sparqlHandler;
 	private static final Logger log = LoggerFactory
             .getLogger(EntityRepository.class);
 	
@@ -171,7 +173,8 @@ public class EntityRepository{
 		return response;
 	}
 	
-	public Response indexEntity(SparqlHandler sparqlHandler , Request request) {
+	public Response indexEntity(Request request) {
+		//SparqlHandler sparqlHandler = new SparqlHandler();
 		ArrayList<Entity> entity_list = null;
 		Response response = createNewResponse();
 		try {
@@ -187,8 +190,7 @@ public class EntityRepository{
 	}
 	
 	public Response handleEndPointURL(Request request) {
-		SparqlHandler sparqlHandler = new SparqlHandler();
-		Response response = indexEntity(sparqlHandler , request);
+		Response response = indexEntity(request);
 		if(response.getBoolean()) {
 			log.warn("Fetch and Index Properties");
 			ArrayList<Property> propertyList = sparqlHandler.fetchProperties(request);
@@ -201,8 +203,7 @@ public class EntityRepository{
 	}
 	
 	public Response handleLocalEndPoint(Request request) {
-		SparqlHandler sparqlHandler = new SparqlHandler();
-		return indexEntity(sparqlHandler, request);
+		return indexEntity(request);
 	}
 	
 	public Response handleFile(Request request) {
