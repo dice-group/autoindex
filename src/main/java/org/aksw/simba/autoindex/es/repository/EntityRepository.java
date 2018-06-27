@@ -192,6 +192,22 @@ public class EntityRepository{
 		return response;
 	}
 	
+	public Response handleLocalEndPoint(Request request) {
+		ArrayList<Entity> entity_list = null;
+		Response response = createNewResponse();
+		SparqlHandler sparqlHandler = new SparqlHandler();
+		try {
+			entity_list = sparqlHandler.fetchFromSparqlEndPoint(request);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			log.warn("Unsupported Encoding Exception");
+			response.setBoolean(false);
+			return response;
+		}
+	    elasticSearchRepositoryInterface.save(entity_list);
+		return response;
+	}
+	
 	public Response handleFile(Request request) {
 		ArrayList<Entity> entity_list = null;
 		Response response = createNewResponse();
@@ -233,11 +249,11 @@ public class EntityRepository{
 		String userId = request.getUserId();
 		Boolean useLocalDataSource = request.isUseLocalDataSource();
 		log.warn( "label=" + label + " , userId = " + userId + ", useLocalDataSource =" + useLocalDataSource);
-		if(useLocalDataSource) { 
+		/*if(useLocalDataSource) { 
 			//Read from Database-ms
 			log.warn("Index from Database-MS, Not implemented yet");
 			return response;
-		}
+		}*/
 		switch(requestType) {
 
 			case URI : {
@@ -247,9 +263,7 @@ public class EntityRepository{
 				return handleFile(request);
 			}
 			case LOCAL_DB: {
-				log.warn("Index from Database-MS, Not implemented yet");
-				response.setBoolean(false);
-				return response;
+				return handleLocalEndPoint(request);
 			}
 			case CUSTOM_STRING: {
 				return handleCustomString(request);
