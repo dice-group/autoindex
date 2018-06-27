@@ -28,6 +28,8 @@ import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -127,7 +129,9 @@ public class SparqlHandler {
 		ArrayList<DataClass> classList = new ArrayList<DataClass>();
 		while (result.hasNext()) {
 			QuerySolution qs = result.next();
-			DataClass dataClass = new DataClass(qs.getResource("key1").getURI().toString() , qs.getLiteral("key2").getString());
+			String entry1 = getResourceValue(qs , "key1");
+			String entry2 = getResourceValue(qs , "key2");
+			DataClass dataClass = new DataClass(entry1 , entry2);
 			classList.add(dataClass);
 		}
 		return classList;
@@ -165,7 +169,9 @@ public class SparqlHandler {
 		ArrayList<Property> propertyList = new ArrayList<Property>();
 		while (result.hasNext()) {
 			QuerySolution qs = result.next();
-			Property property = new Property(qs.getResource("key1").getURI().toString() , qs.getLiteral("key2").getString());
+			String entry1 = getResourceValue(qs , "key1");
+			String entry2 = getResourceValue(qs , "key2");
+			Property property = new Property(entry1 , entry2);
 			propertyList.add(property);
 		}
 		return propertyList;
@@ -200,11 +206,30 @@ public class SparqlHandler {
     		return output;
     	}
     	
+    	public String getResourceValue(QuerySolution qs , String key) {
+    		String value = "";
+    		RDFNode rdfNode = qs.get(key);
+			if(rdfNode.isResource() || rdfNode.isURIResource() ) {
+				value = qs.getResource(key).getURI().toString();
+			}
+			else if(rdfNode.isLiteral())
+			{
+				value = qs.getLiteral(key).getString();
+			}
+			else {
+				log.error("Unsupported type, Not going to end well");
+			}
+
+			return value;
+    	}
+    	
     	public ArrayList<Entity> generateOutputEntities(ResultSet result){
     		ArrayList<Entity> entity_list = new ArrayList<Entity>();
     		while (result.hasNext()) {
     			QuerySolution qs = result.next();
-    			Entity entity = new Entity(qs.getResource("key1").getURI().toString() , qs.getLiteral("key2").getString());
+    			String entry1 = getResourceValue(qs , "key1");
+    			String entry2 = getResourceValue(qs , "key2");
+    			Entity entity = new Entity(entry1 , entry2);
     			entity_list.add(entity);
     		}
     		return entity_list;
@@ -249,6 +274,21 @@ public class SparqlHandler {
     		else {
     			prefixes = prefixMap;
     			commandText = commandString;
+    		}
+    		//Read Command Text and get Name of Key1,Key2. THis is important for Custom Queries where user can enter his own choice of name
+    		ArrayList<String> keyList = new ArrayList<String>();
+    		String[] splitStr = commandText.split("\\s+");
+    		for (int i = 0; i < splitStr.length; i++) {
+    			String token = splitStr[i];
+    			System.out.println("i=" + i);
+    			if(i > 4) {// Query can be SELECT key1, key2 or SELECT UNIQUE/DISTINCT key1,key2
+    				break;
+    			}
+    			else {
+    				if(true ==token.contains("?")) {
+    					keyList.add(token.substring(1, token.length()));
+    				}
+    			}
     		}
     		Query query = constructSparqlQuery(baseURI , defaultGraph , limit , commandText , prefixes);
     		ResultSet output = executeQuery(baseURI , query);
