@@ -3,7 +3,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5da35f0710b845ba968aa98863556d7a)](https://www.codacy.com/app/idreestahir/autoindex?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dice-group/autoindex&amp;utm_campaign=Badge_Grade)
 [![BCH compliance](https://bettercodehub.com/edge/badge/dice-group/autoindex?branch=master)](https://bettercodehub.com/)
 
-Autoindex is a REST API that aims to index any RDF Dump or Sparql Endpoint and the query it. It is currently a work in progress. A UI is also available for test under http://localhost:9091/
+Autoindex are a set of REST API's that aims to index various types of RDF data and also query it. It is currently a work in progress. A UI is also available for test under http://localhost:9091/
 
 ## Getting Started
 
@@ -46,6 +46,12 @@ If there are Select Queries to be modified or to know what default Select Querie
 
 Create Index from File : Require Multipart Form data , API : /index/uploadFile
 Parameters: userId {if any}
+
+CreateIndex From any Local Sparql End point: /index/create
+
+Parameters  : endPointParameters : {"url":Valid LocalHost End Point URL , "isEntityCustomized": true , "entitySelectQuery" : Select Query for indexing Entities with necessary Prefixes} , useLocalDataSource : true
+
+Currently the entries would be indexed as an "Entity". The Query passed would be executed as is on the Local End point URL. If you would prefer the Query present in application.properties to be executed, isEntityCustomized and entitySelectQuery can be ignored and not passed as parameter.
 
 Add any single Custom key,value Pair:
 Parameters: requestType : custom, userId : {if any} , useLocalDataSource : false (true to use a local Extraction data source), a json field "keys" which takes {"firstKey: key , "secondKey": value , "category": (Entity,Property or Class) } 
