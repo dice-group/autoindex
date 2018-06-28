@@ -254,14 +254,13 @@ public class EntityRepository{
 		}*/
 		switch(requestType) {
 
-			case URI : {
+			case URI : 
+			case LOCAL_DB: //Behave similar to a Remote End point. Until the expected behavior becomes such that we need to isolate these two logics, its fine to keep them together
+			{
 				return handleEndPointURL(request);
 			}
 			case RDF_FILE: {	
 				return handleFile(request);
-			}
-			case LOCAL_DB: {
-				return handleLocalEndPoint(request);
 			}
 			case CUSTOM_STRING: {
 				return handleCustomString(request);
