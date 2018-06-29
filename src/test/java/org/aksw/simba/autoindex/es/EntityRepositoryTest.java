@@ -31,13 +31,13 @@ public class EntityRepositoryTest {
 			      .put("http.enabled", "false")
 			      .put("path.home", storagePath_);
 
-			    node_ = new NodeBuilder()
-			      .local(true)
-			      .settings(elasticsearchSettings.build())
-			      .node();
+	    node_ = new NodeBuilder()
+	      .local(true)
+	      .settings(elasticsearchSettings.build())
+	      .node();
 
-			    client_ = node_.client();
-			    elasticSearchTemplate = new ElasticsearchTemplate(client_);
+	    client_ = node_.client();
+	    elasticSearchTemplate = new ElasticsearchTemplate(client_);
 	}
 	@Test
 	public void Test1() {
