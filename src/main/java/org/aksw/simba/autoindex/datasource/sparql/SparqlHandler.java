@@ -28,6 +28,7 @@ import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
+import org.apache.jena.rdf.model.RDFNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -116,18 +117,21 @@ public class SparqlHandler {
 			prefixes = prefixMap;
 			commandText = classesString;
 		}
+		ArrayList<String> keyList = getKeyNames(commandText);
 		String defaultGraph = request.getDefaultGraph();
 		Query query = constructSparqlQuery(baseURI , defaultGraph , 0 , commandText , prefixes);
 		ResultSet output = executeQuery(baseURI , query);
-		classList = generateClasses(output);
+		classList = generateClasses(output , keyList);
 		return classList;
 	}
 	
-	public ArrayList<DataClass> generateClasses(ResultSet result){
+	public ArrayList<DataClass> generateClasses(ResultSet result , ArrayList<String> keyList){
 		ArrayList<DataClass> classList = new ArrayList<DataClass>();
 		while (result.hasNext()) {
 			QuerySolution qs = result.next();
-			DataClass dataClass = new DataClass(qs.getResource("key1").getURI().toString() , qs.getLiteral("key2").getString());
+			String entry1 = getResourceValue(qs , keyList.get(0));
+			String entry2 = getResourceValue(qs , keyList.get(1));
+			DataClass dataClass = new DataClass(entry1 , entry2);
 			classList.add(dataClass);
 		}
 		return classList;
@@ -155,17 +159,20 @@ public class SparqlHandler {
 			prefixes = prefixMap;
 			commandText = propertiesString;
 		}
+		ArrayList<String> keyList = getKeyNames(commandText);
 		Query query = constructSparqlQuery(baseURI , defaultGraph , 0 , commandText , prefixes);
 		ResultSet output = executeQuery(baseURI , query);
-		propertyList = generatePropertiesList(output);
+		propertyList = generatePropertiesList(output , keyList);
 		return propertyList;
 	}
 	
-	public ArrayList<Property> generatePropertiesList(ResultSet result){
+	public ArrayList<Property> generatePropertiesList(ResultSet result , ArrayList<String> keyList){
 		ArrayList<Property> propertyList = new ArrayList<Property>();
 		while (result.hasNext()) {
 			QuerySolution qs = result.next();
-			Property property = new Property(qs.getResource("key1").getURI().toString() , qs.getLiteral("key2").getString());
+			String entry1 = getResourceValue(qs , keyList.get(0));
+			String entry2 = getResourceValue(qs , keyList.get(1));
+			Property property = new Property(entry1 , entry2);
 			propertyList.add(property);
 		}
 		return propertyList;
@@ -200,11 +207,30 @@ public class SparqlHandler {
     		return output;
     	}
     	
-    	public ArrayList<Entity> generateOutputEntities(ResultSet result){
+    	public String getResourceValue(QuerySolution qs , String key) {
+    		String value = "";
+    		RDFNode rdfNode = qs.get(key);
+			if(rdfNode.isResource() || rdfNode.isURIResource() ) {
+				value = qs.getResource(key).getURI().toString();
+			}
+			else if(rdfNode.isLiteral())
+			{
+				value = qs.getLiteral(key).getString();
+			}
+			else {
+				log.error("Unsupported type, Not going to end well");
+			}
+
+			return value;
+    	}
+    	
+    	public ArrayList<Entity> generateOutputEntities(ResultSet result , ArrayList<String> keyList){
     		ArrayList<Entity> entity_list = new ArrayList<Entity>();
     		while (result.hasNext()) {
     			QuerySolution qs = result.next();
-    			Entity entity = new Entity(qs.getResource("key1").getURI().toString() , qs.getLiteral("key2").getString());
+    			String entry1 = getResourceValue(qs , keyList.get(0));
+    			String entry2 = getResourceValue(qs , keyList.get(1));
+    			Entity entity = new Entity(entry1 , entry2);
     			entity_list.add(entity);
     		}
     		return entity_list;
@@ -227,6 +253,24 @@ public class SparqlHandler {
 			}
 			return query;
     	}
+    
+    public ArrayList<String> getKeyNames(String commandText){
+    	//Read Command Text and get Name of Key1,Key2. THis is important for Custom Queries where user can enter his own choice of name
+		ArrayList<String> keyList = new ArrayList<String>();
+		String[] splitStr = commandText.split("\\s+");
+		for (int i = 0; i < splitStr.length; i++) {
+			String token = splitStr[i];
+			if(i > 4) {// Query can be SELECT key1, key2 or SELECT UNIQUE/DISTINCT key1,key2
+				break;
+			}
+			else {
+				if(token.contains("?")) {
+					keyList.add(token.substring(1, token.length()));
+				}
+			}
+		}
+		return keyList;
+    }
 
     public ArrayList<Entity> fetchFromSparqlEndPoint(Request request) throws UnsupportedEncodingException{
     		EndPointParameters endPointParameters= request.getEndPointParameters();
@@ -250,9 +294,10 @@ public class SparqlHandler {
     			prefixes = prefixMap;
     			commandText = commandString;
     		}
+    		ArrayList<String> keyList = getKeyNames(commandText);
     		Query query = constructSparqlQuery(baseURI , defaultGraph , limit , commandText , prefixes);
     		ResultSet output = executeQuery(baseURI , query);
-    		ArrayList<Entity> entity_list = generateOutputEntities(output); 		
+    		ArrayList<Entity> entity_list = generateOutputEntities(output , keyList); 		
 		return entity_list;
     } 
 }
