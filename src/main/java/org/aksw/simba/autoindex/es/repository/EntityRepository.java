@@ -118,8 +118,17 @@ public class EntityRepository{
 	
 	public NativeSearchQueryBuilder createNativeSearchQueryBuilder(String query , String strCategory , String strType) {
 		NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
+		
 		if("all".equals(strCategory)) {
+			//Avoid Index not found issue
+			if(!elasticsearchTemplate.indexExists(categoryProperty)) {
+				elasticsearchTemplate.createIndex(categoryProperty);
+			}
+			if(!elasticsearchTemplate.indexExists(categoryClass)) {
+				elasticsearchTemplate.createIndex(categoryClass);
+			}
 			nativeSearchQueryBuilder.withIndices(categoryClass , categoryEntity , categoryProperty);
+			
 			nativeSearchQueryBuilder.withTypes(categoryClass , categoryEntity , categoryProperty);
 		}
 		else {
