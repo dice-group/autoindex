@@ -3,7 +3,6 @@
  */
 package org.aksw.simba.autoindex.datasource.sparql;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +12,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 
@@ -31,10 +29,15 @@ import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.RDFNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SparqlHandler {
+	
+	@Autowired
+	private Environment env;
 	
 	private static final Logger log = LoggerFactory
 	            .getLogger(SparqlHandler.class);
@@ -42,38 +45,20 @@ public class SparqlHandler {
 	private static  String propertiesString = "" ;
 	private static  String classesString = "";
 	public static  Map<String, String> prefixMap;
-	private static final String TEMPLATE_FILE = "src/main/resources/application.properties";
-	private Properties properties = new Properties();
 	
 	@PostConstruct
-	private void resourceLoader() throws FileNotFoundException {
-		InputStream input = null;
-		try {
-			 input = new FileInputStream(TEMPLATE_FILE);
-			 properties.load(input);
-			 commandString = properties.getProperty("entity.whereclause");
-			 propertiesString = properties.getProperty("property.whereclause");
-			 classesString = properties.getProperty("class.whereclause");
-			 int i=1;
-			 Map<String, String> prefix = new HashMap<String, String>();
-			 while(properties.containsKey("prefix" + i + ".name")) {
-				 prefix.put(properties.getProperty("prefix" + i + ".name") , properties.getProperty("prefix" + i + ".url"));
-				 ++i;
-			 }
-			 prefixMap = Collections.unmodifiableMap(prefix);
-		}
-		catch (IOException ex) {
-			ex.printStackTrace();
-		}	
-		finally {
-			if (input != null) {
-				try {
-					input.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+	public void resourceLoader() {
+		 commandString = env.getProperty("entity.whereclause");
+		 propertiesString = env.getProperty("property.whereclause");
+		 classesString = env.getProperty("class.whereclause");
+		 int i=1;
+		 Map<String, String> prefix = new HashMap<String, String>();
+		 while(env.containsProperty("prefix" + i + ".name")) {
+			 prefix.put(env.getProperty("prefix" + i + ".name") , env.getProperty("prefix" + i + ".url"));
+			 ++i;
+		 }
+		 prefixMap = Collections.unmodifiableMap(prefix);
+		
 	}
 	
 	private String getPrefixString() {
