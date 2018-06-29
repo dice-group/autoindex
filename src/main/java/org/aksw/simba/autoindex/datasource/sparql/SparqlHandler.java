@@ -47,7 +47,7 @@ public class SparqlHandler {
 	public static  Map<String, String> prefixMap;
 	
 	@PostConstruct
-	private void resourceLoader() throws FileNotFoundException, IOException {
+	public void resourceLoader() {
 		 commandString = env.getProperty("entity.whereclause");
 		 propertiesString = env.getProperty("property.whereclause");
 		 classesString = env.getProperty("class.whereclause");
