@@ -30,23 +30,22 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+//import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 
 //Tried Spring Runner, SpringBoot test, Enabling JPA Repositores, using a custom version of ESTemplate and also a custom Config file with varying ComponentScan.
 //All mostly dont autowire ElasticSearchRepositoryInterface
 //Additionally capturing argument on a mocked interface works unreliably. So commented out FileHandler code for now.
 //TODO: Write Propert Unit tests/integration tests without mock which can verify ES Repository functionality from installation time.
-//Currently ES Repository called ElasticTests is created and deleted but it doesnt get used as the current autowiring of ESRepositoryInterface doesnt work with Unit tests using examples from internet for CrudRepository.
+//Currently ES Repository called ElasticTests is created and deleted but it doesnt get used as the current autowiring of ESRepositoryInterface doesnt work with Unit tests using examples from internet for CrudRepository
 
 //@RunWith(SpringRunner.class)//
 //@SpringBootTest(classes = EntityRepository.class)
@@ -56,14 +55,14 @@ import org.springframework.data.elasticsearch.core.query.SearchQuery;
 //@ComponentScan({"org.aksw.simba.autoindex.es.config" ,"org.aksw.simba.autoindex.es.repository" , "org.aksw.simba.autoindex.datasource.sparql"})
 public class EntityRepositoryTest {
 	
-	  @Autowired
-	  private static ElasticsearchTemplate elasticSearchTemplate;
+	 // @Autowired
+	//  private static ElasticsearchTemplate elasticSearchTemplate;
 		
 	  private static Client client_;
 	  private static Node node_;
 	  private static String storagePath_ = "./elasticTests";
-	  @Mock
-		private FileHandler fileHandler = Mockito.mock(FileHandler.class);
+	  //@Mock
+		//private FileHandler fileHandler = Mockito.mock(FileHandler.class);
 	  @Mock
 	  private Page<Entity> pageEntityspy = Mockito.mock(PageImpl.class);
 		
@@ -73,13 +72,15 @@ public class EntityRepositoryTest {
 	  private ElasticSearchRepositoryInterface elasticSearchRepositoryInterface = Mockito.mock(ElasticSearchRepositoryInterface.class);
 	  @InjectMocks
 	  private EntityRepository entityRepository = new EntityRepository() ;
+	  
 	  @Before
 	  public void setUp() {
 			MockitoAnnotations.initMocks(this);
+			//elasticSearchTemplate = new ElasticsearchTemplate(client_);
 	  }
 		
 	@BeforeClass
-	public static void Setup() throws IOException {
+	public static void createESIndex() throws IOException {
 		
 		Settings.Builder elasticsearchSettings = Settings.settingsBuilder()
 			//      .put("http.enabled", "false")
@@ -89,9 +90,7 @@ public class EntityRepositoryTest {
 	      .local(true)
 	      .settings(elasticsearchSettings.build())
 	      .node();
-	    client_ = node_.client();
-	    
-	    elasticSearchTemplate = new ElasticsearchTemplate(client_);
+	    client_ = node_.client();  
 	    
 	}
 	
@@ -172,29 +171,29 @@ public class EntityRepositoryTest {
 	public void testGetCategory() {
 		Category category = Category.CLASS;
 		String strCategory = entityRepository.getCategory(category);
-		assertTrue(strCategory.equals("class"));
+		assertTrue("class".equals(strCategory));
 		category = Category.PROPERTY;
 		strCategory = entityRepository.getCategory(category);
-		assertTrue(strCategory.equals("property"));
+		assertTrue("property".equals(strCategory));
 		category = Category.ENTITY;
 		strCategory = entityRepository.getCategory(category);
-		assertTrue(strCategory.equals("entity"));
+		assertTrue("entity".equals(strCategory));
 		category = Category.ALL;
 		strCategory = entityRepository.getCategory(category);
-		assertTrue(strCategory.equals("all"));
+		assertTrue("all".equals(strCategory));
 	}
 	
 	@Test
 	public void testGetType() {
 		Type type = Type.LABEL;
 		String strType = entityRepository.getType(type);
-		assertTrue(strType.equals("label"));
+		assertTrue("label".equals(strType));
 		type = Type.URI;
 		strType = entityRepository.getType(type);
-		assertTrue(strType.equals("url"));
+		assertTrue("url".equals(strType));
 		type = Type.NONE;
 		strType = entityRepository.getType(type);
-		assertTrue(strType.equals(""));
+		assertTrue("".equals(strType));
 	}
 	//Should make this run instead of the mocked version. ES Repository interface is not easy to Integration test functionality from install time.
 /*	@Test
@@ -264,7 +263,7 @@ public class EntityRepositoryTest {
 		//Mockito.verify(elasticSearchRepositoryInterface , Mockito.times(3)).save(Mockito.any(ArrayList.class));
 		Response response = entityRepository.createIndex(request);
 		assertTrue(response != null);
-		assertTrue(response.getBoolean()== true);
+		assertTrue(response.getBoolean());
 		
 		
 	}
@@ -338,7 +337,7 @@ public class EntityRepositoryTest {
 		request.setUserId("0000001");
 		Response response = entityRepository.createIndex(request);
 		assertTrue(response != null);
-		assertTrue(response.getBoolean()== true);	
+		assertTrue(response.getBoolean());	
 	}
 	//Not implemented yet in source
 	@Test
@@ -349,7 +348,7 @@ public class EntityRepositoryTest {
 		request.setUserId("0000001");
 		Response response = entityRepository.createIndex(request);
 		assertTrue(response != null);
-		assertTrue(response.getBoolean()== false);	
+		assertTrue(!response.getBoolean());	
 	}
 	
 	@Test 
@@ -362,7 +361,7 @@ public class EntityRepositoryTest {
 		request.setUserId("0000001");
 		Response response = entityRepository.createIndex(request);
 		assertTrue(response != null);
-		assertTrue(response.getBoolean()== false);	
+		assertTrue(!response.getBoolean());	
 	}
 	
 }
