@@ -6,19 +6,19 @@ import java.util.List;
 /*Class for Dependancy Injection of Spring for Handling Index Create Requests*/
 
 public class Request{
-	private String default_graph;
-	private String userId;
-	private Boolean useLocalDataSource;
-	private RequestType requestType;
-	private Keys keys;
-	private EndPointParameters endPointParameters;
 	public enum RequestType {
 		URI ,
 		RDF_FILE  , 
 		LOCAL_DB,
 		CUSTOM_STRING,
 		NONE
-	}
+	};
+	private String default_graph;
+	private String userId;
+	private Boolean useLocalDataSource;
+	private RequestType requestType = RequestType.NONE;
+	private Keys keys;
+	private EndPointParameters endPointParameters;
 	private List<String> fileList;
 	private int limit;
 	public Request(){
@@ -93,6 +93,10 @@ public class Request{
 			this.requestType = RequestType.RDF_FILE;
 		else if ("custom".equals(type)) 
 			this.requestType = RequestType.CUSTOM_STRING;
+		else if ("localdb".equals(type)) {
+			this.requestType = RequestType.LOCAL_DB;
+			this.useLocalDataSource=true;
+		}
 		else 
 			this.requestType = RequestType.NONE;
 

@@ -22,11 +22,11 @@ public class EndPointParameters{
 	}
 	
 	public void setIsPropertyCustomized(Boolean isPropertyCustomized) {
-		this.isPropertyCustomized = isEntityCustomized;
+		this.isPropertyCustomized = isPropertyCustomized;
 	}
 	
 	public void setIsClassCustomized(Boolean isClassCustomized) {
-		this.isClassCustomized = isEntityCustomized;
+		this.isClassCustomized = isClassCustomized;
 	}
 	
 	public void setClassSelectQuery(String classSelectQuery) {
