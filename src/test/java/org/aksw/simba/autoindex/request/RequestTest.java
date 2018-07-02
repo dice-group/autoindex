@@ -96,5 +96,8 @@ public class RequestTest {
 		request.setRequestType("localdb");
 		assertTrue(RequestType.LOCAL_DB.equals(request.getRequestType()));
 		assertTrue(request.isUseLocalDataSource());
+		
+		request.setUserId("1111");
+		assertTrue("1111".equals(request.getUserId()));
 	}
 }
