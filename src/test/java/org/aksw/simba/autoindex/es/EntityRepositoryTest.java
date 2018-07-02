@@ -1,5 +1,6 @@
 package org.aksw.simba.autoindex.es;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -7,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.aksw.simba.autoindex.datasource.file.FileHandler;
 import org.aksw.simba.autoindex.datasource.sparql.SparqlHandler;
 import org.aksw.simba.autoindex.es.model.DataClass;
 import org.aksw.simba.autoindex.es.model.Entity;
@@ -21,7 +21,6 @@ import org.aksw.simba.autoindex.request.SearchRequest.Category;
 import org.aksw.simba.autoindex.request.SearchRequest.Type;
 import org.aksw.simba.autoindex.response.Response;
 import org.apache.commons.io.FileUtils;
-import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
@@ -35,10 +34,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-//import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 
 //Tried Spring Runner, SpringBoot test, Enabling JPA Repositores, using a custom version of ESTemplate and also a custom Config file with varying ComponentScan.
@@ -58,7 +55,7 @@ public class EntityRepositoryTest {
 	 // @Autowired
 	//  private static ElasticsearchTemplate elasticSearchTemplate;
 		
-	  private static Client client_;
+//	  private static Client client_;
 	  private static Node node_;
 	  private static String storagePath_ = "./elasticTests";
 	  //@Mock
@@ -76,7 +73,7 @@ public class EntityRepositoryTest {
 	  @Before
 	  public void setUp() {
 			MockitoAnnotations.initMocks(this);
-			//elasticSearchTemplate = new ElasticsearchTemplate(client_);
+			
 	  }
 		
 	@BeforeClass
@@ -90,8 +87,8 @@ public class EntityRepositoryTest {
 	      .local(true)
 	      .settings(elasticsearchSettings.build())
 	      .node();
-	    client_ = node_.client();  
-	    
+	    //	    client_ = node_.client();  
+	  //elasticSearchTemplate = new ElasticsearchTemplate(client_);
 	}
 	
 	@AfterClass
@@ -348,7 +345,7 @@ public class EntityRepositoryTest {
 		request.setUserId("0000001");
 		Response response = entityRepository.createIndex(request);
 		assertTrue(response != null);
-		assertTrue(!response.getBoolean());	
+		assertFalse(response.getBoolean());	
 	}
 	
 	@Test 
@@ -361,7 +358,7 @@ public class EntityRepositoryTest {
 		request.setUserId("0000001");
 		Response response = entityRepository.createIndex(request);
 		assertTrue(response != null);
-		assertTrue(!response.getBoolean());	
+		assertFalse(response.getBoolean());	
 	}
 	
 }
