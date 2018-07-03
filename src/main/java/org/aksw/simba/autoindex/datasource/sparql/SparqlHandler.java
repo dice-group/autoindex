@@ -116,8 +116,10 @@ public class SparqlHandler {
 			QuerySolution qs = result.next();
 			String entry1 = getResourceValue(qs , keyList.get(0));
 			String entry2 = getResourceValue(qs , keyList.get(1));
-			DataClass dataClass = new DataClass(entry1 , entry2);
-			classList.add(dataClass);
+			if(!entry1.isEmpty() && !entry2.isEmpty()) {
+				DataClass dataClass = new DataClass(entry1 , entry2);
+				classList.add(dataClass);
+			}
 		}
 		return classList;
 	}
@@ -157,8 +159,10 @@ public class SparqlHandler {
 			QuerySolution qs = result.next();
 			String entry1 = getResourceValue(qs , keyList.get(0));
 			String entry2 = getResourceValue(qs , keyList.get(1));
-			Property property = new Property(entry1 , entry2);
-			propertyList.add(property);
+			if(!entry1.isEmpty() && !entry2.isEmpty()) {
+				Property property = new Property(entry1 , entry2);
+				propertyList.add(property);
+			}
 		}
 		return propertyList;
 	}
@@ -195,6 +199,10 @@ public class SparqlHandler {
     	public String getResourceValue(QuerySolution qs , String key) {
     		String value = "";
     		RDFNode rdfNode = qs.get(key);
+    		if (rdfNode == null) {
+    			log.info("RDF Node is empty");
+    			return "";
+    		}
 			if(rdfNode.isResource() || rdfNode.isURIResource() ) {
 				value = qs.getResource(key).getURI().toString();
 			}
@@ -215,8 +223,10 @@ public class SparqlHandler {
     			QuerySolution qs = result.next();
     			String entry1 = getResourceValue(qs , keyList.get(0));
     			String entry2 = getResourceValue(qs , keyList.get(1));
-    			Entity entity = new Entity(entry1 , entry2);
-    			entity_list.add(entity);
+    			if(!entry1.isEmpty() && !entry2.isEmpty()) { //Should not create empty value fields
+	    			Entity entity = new Entity(entry1 , entry2);
+	    			entity_list.add(entity);
+    			}
     		}
     		return entity_list;
     	}
@@ -227,6 +237,7 @@ public class SparqlHandler {
 			for(String s: entities) {	
 				if(s.startsWith("PREFIX")) {
 					s = s.substring(7 , s.length());
+					s = s.replaceAll("\\s+",""); //Remove space before and after prefix name if found. If not found, then perfect.
 					// +2 is because it should not consider : and <  and > which are not required for our prefix map
 					prefixes.put(s.substring(0 , s.indexOf(":") ), s.substring(s.indexOf(":") +2, s.length()-1));
 				}

@@ -193,7 +193,9 @@ public class EntityRepository{
 			response.setBoolean(false);
 			return response;
 		}
-	    elasticSearchRepositoryInterface.save(entity_list);
+		if(!entity_list.isEmpty()) {//Do not insert empty arrays as these throw exceptions
+			elasticSearchRepositoryInterface.save(entity_list);
+		}
 	    return response;
 	}
 	
@@ -202,10 +204,15 @@ public class EntityRepository{
 		if(response.getBoolean()) {
 			log.warn("Fetch and Index Properties");
 			ArrayList<Property> propertyList = sparqlHandler.fetchProperties(request);
-			elasticSearchRepositoryInterface.save(propertyList);
+			if(!propertyList.isEmpty()) {//Do not insert empty arrays as these throw exceptions
+				elasticSearchRepositoryInterface.save(propertyList);
+			}
+			
 			log.warn("Fetch and Index Classes");
 			ArrayList<DataClass> classList = sparqlHandler.fetchClasses(request);
-			elasticSearchRepositoryInterface.save(classList);
+			if(!classList.isEmpty()) { //Do not insert empty arrays as these throw exceptions
+				elasticSearchRepositoryInterface.save(classList); 
+			}
 		}
 		return response;
 	}
