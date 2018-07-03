@@ -290,8 +290,6 @@ public class SparqlHandler {
     			prefixes = prefixMap;
     			commandText = commandString;
     		}
-    		log.warn("Query String=" + commandText + ", URL=" + baseURI);
-    		log.warn("Prefixes = " + prefixes.toString());
     		ArrayList<String> keyList = getKeyNames(commandText);
     		Query query = constructSparqlQuery(baseURI , defaultGraph , limit , commandText , prefixes);
     		ResultSet output = executeQuery(baseURI , query);
