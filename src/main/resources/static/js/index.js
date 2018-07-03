@@ -1,17 +1,17 @@
-var entity_input = "";
-var property_input = "";
-var class_input = "";
+var entityInput = "";
+var propertyInput = "";
+var classInput = "";
 var isEntityChanged = false;
 var isPropertyChanged = false;
 var isClassChanged = false;
 
 function handleChangeBehavior(textAreaId , collapsibleId){
-	entity_input = document.getElementById(textAreaId).value;
+	entityInput = document.getElementById(textAreaId).value;
 	document.getElementById(collapsibleId).click(); 
 };
 function handleCancelBehavior(textAreaId , collapsibleId){
 	document.getElementById(collapsibleId).click(); 
-	document.getElementById(textAreaId).value = entity_input; 
+	document.getElementById(textAreaId).value = entityInput; 
 };
 var changeEntity = function(){
 	handleChangeBehavior("entity_textarea" , "collapsible_entity");
@@ -38,7 +38,7 @@ var handleClassCancel = function(){
 function createRequestParameters(url, requestType){
 	var data = {};
 	if(url){
-		var endPointParameters={"url":url, "isEntityCustomized":isEntityChanged , "isPropertyCustomized":isPropertyChanged, "isClassCustomized":isClassChanged,"entitySelectQuery":entity_input , "propertySelectQuery":property_input , "classSelectQuery":class_input };
+		var endPointParameters={"url":url, "isEntityCustomized":isEntityChanged , "isPropertyCustomized":isPropertyChanged, "isClassCustomized":isClassChanged,"entitySelectQuery":entityInput , "propertySelectQuery":propertyInput , "classSelectQuery":classInput };
 		data["endPointParameters"]=endPointParameters;
 	}
 	data["useLocalDataSource"] = "false";
@@ -118,15 +118,15 @@ function sendAjax(queryUrl , classId , id){
 };
 
 var getClassQuery = function(){	
-	sendAjax("/getClassQuery" , "class_textarea" , class_input);
+	sendAjax("/getClassQuery" , "class_textarea" , classInput);
 };
 
 var getPropertyQuery = function(){	
-	sendAjax("/getPropertyQuery" , "property_textarea" , property_input);
+	sendAjax("/getPropertyQuery" , "property_textarea" , propertyInput);
 };
 
 var getEntityQuery = function(){
-	sendAjax("/getEntityQuery" , "entity_textarea" , entity_input);
+	sendAjax("/getEntityQuery" , "entity_textarea" , entityInput);
 }
 var addEventListeners = function(){
 	document.getElementById("entity_save").addEventListener("click", changeEntity);
@@ -137,27 +137,23 @@ var addEventListeners = function(){
 	document.getElementById("class_cancel").addEventListener("click", changeClass);
 };
 
-var toggleButtonHandler = function(){
-	var coll = document.getElementsByClassName("collapsible");
-	var i;
-	for (i = 0; i < coll.length; i++) {
-	    coll[i].addEventListener("click", function() {
-	        this.classList.toggle("active");
-	        var content = this.nextElementSibling;
-	        if (content.style.display === "block") {
-	            content.style.display = "none";
-	        } else {
-	            content.style.display = "block";
-	        }
-	    });
-	}
+var toggleCollapsibleButtons = function(){
+	$("button.collapsible").on("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+	});
 };
 
 $(document).ready(function() {
 	getEntityQuery();
 	getPropertyQuery();
 	getClassQuery();
-	toggleButtonHandler();
+	toggleCollapsibleButtons();
 	addEventListeners();
 
 });

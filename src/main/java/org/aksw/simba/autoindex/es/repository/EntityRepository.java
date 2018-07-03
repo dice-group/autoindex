@@ -120,6 +120,7 @@ public class EntityRepository{
 			elasticsearchTemplate.createIndex(indexName);
 		}
 	}
+
 	public NativeSearchQueryBuilder createNativeSearchQueryBuilder(String query , String strCategory , String strType) {
 		NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
 		
