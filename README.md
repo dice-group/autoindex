@@ -49,9 +49,9 @@ Parameters: userId {if any}
 
 CreateIndex From any Local Sparql End point: /index/create
 
-Parameters  : endPointParameters : {"url":Valid LocalHost End Point URL , "isEntityCustomized": true , "entitySelectQuery" : Select Query for indexing Entities with necessary Prefixes} , useLocalDataSource : true
+Parameters  : endPointParameters : {"url":Valid LocalHost End Point URL} , useLocalDataSource : true
 
-Currently the entries would be indexed as an "Entity". The Query passed would be executed as is on the Local End point URL. If you would prefer the Query present in application.properties to be executed, isEntityCustomized and entitySelectQuery can be ignored and not passed as parameter.
+The Query passed would be executed as is on the Local End point URL. If you would prefer the Query present in application.properties to be executed, isEntityCustomized and entitySelectQuery can be ignored and not passed as parameter. Similar to Remote End Points, Local Sparql End points also support Query Customization and indexing of entity, classes and property ( either by default queries present under application.properties or by user provided custom queries). For custom queries, please refer to the section under "Customizing Select Queries". 
 
 Add any single Custom key,value Pair:
 Parameters: requestType : custom, userId : {if any} , useLocalDataSource : false (true to use a local Extraction data source), a json field "keys" which takes {"firstKey: key , "secondKey": value , "category": (Entity,Property or Class) } 
