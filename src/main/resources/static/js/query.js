@@ -4,15 +4,15 @@ function renderTable(data){
 		alert("Search Failed");
 	}
 	else{
-	var tableData = "<table align=\"center\"><tr><th>LABEL</th><th>URL</th></tr>";	
-	for (var i = 0; i < obj.results.bindings.length; i++) {
-		var counter = obj.results.bindings[i];
+	var tableData = "<table align=\"center\"><tr><th>LABEL</th><th>URL</th></tr>";
+	var elementList = obj.results.bindings;
+	elementList.forEach(counter => {
 		var temp = "<tr>";
 		temp = "<td>" + counter.label.value + "</td>";
 		temp += "<td>" + counter.uri.value + "</td>";
 		temp += "</tr>";
 		tableData += temp;
-	}
+	});
 	tableData += "</table><h1 align=\"center\">End of Results</h1>";
 	$("#results").html(tableData);
 	}
