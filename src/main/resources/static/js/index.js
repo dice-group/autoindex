@@ -6,33 +6,34 @@ var isPropertyChanged = false;
 var isClassChanged = false;
 
 function handleChangeBehavior(textAreaId , collapsibleId){
-	entityInput = document.getElementById(textAreaId).value;
+	var input = document.getElementById(textAreaId).value;
 	document.getElementById(collapsibleId).click(); 
+	return input;
 };
 function handleCancelBehavior(textAreaId , collapsibleId){
 	document.getElementById(collapsibleId).click(); 
-	document.getElementById(textAreaId).value = entityInput; 
+	return document.getElementById(textAreaId).value; 
 };
 var changeEntity = function(){
-	handleChangeBehavior("entity_textarea" , "collapsible_entity");
+	entityInput = handleChangeBehavior("entity_textarea" , "collapsible_entity");
 	isEntityChanged=true;
 };
 var changeProperty = function(){
-	handleChangeBehavior("property_textarea" , "collapsible_property");
+	propertyInput = handleChangeBehavior("property_textarea" , "collapsible_property");
 	isPropertyChanged = true;
 };
 var changeClass = function(){
-	handleChangeBehavior("class_textarea" , "collapsible_class");
+	classInput = handleChangeBehavior("class_textarea" , "collapsible_class");
 	isClassChanged=true;
 };
 var handleEntityCancel = function(){
-	handleCancelBehavior("entity_textarea" , "collapsible_entity");
+	entityInput = handleCancelBehavior("entity_textarea" , "collapsible_entity");
 };
 var handlePropertyCancel = function(){
-	handleCancelBehavior("property_textarea" , "collapsible_property");
+	propertyInput = handleCancelBehavior("property_textarea" , "collapsible_property");
 };
 var handleClassCancel = function(){
-	handleCancelBehavior("class_textarea" , "collapsible_class");
+	classInput = handleCancelBehavior("class_textarea" , "collapsible_class");
 };
 
 function createRequestParameters(url, requestType){
@@ -142,8 +143,8 @@ var addEventListeners = function(){
 	document.getElementById("prop_save").addEventListener("click", changeProperty);
 	document.getElementById("class_save").addEventListener("click", changeClass);
 	document.getElementById("entity_cancel").addEventListener("click", handleEntityCancel);
-	document.getElementById("prop_cancel").addEventListener("click", changeProperty);
-	document.getElementById("class_cancel").addEventListener("click", changeClass);
+	document.getElementById("prop_cancel").addEventListener("click", handlePropertyCancel);
+	document.getElementById("class_cancel").addEventListener("click", handleClassCancel);
 };
 
 var toggleCollapsibleButtons = function(){
