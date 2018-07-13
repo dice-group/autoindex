@@ -6,7 +6,7 @@ function renderTable(data){
 	else{
 	var tableData = "<table align=\"center\"><tr><th>LABEL</th><th>URL</th></tr>";
 	var elementList = obj.results.bindings;
-	elementList.forEach(counter => {
+	elementList.forEach((counter) => {
 		var temp = "<tr>";
 		temp = "<td>" + counter.label.value + "</td>";
 		temp += "<td>" + counter.uri.value + "</td>";

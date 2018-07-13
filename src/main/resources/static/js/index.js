@@ -38,7 +38,14 @@ var handleClassCancel = function(){
 function createRequestParameters(url, requestType){
 	var data = {};
 	if(url){
-		var endPointParameters={"url":url, "isEntityCustomized":isEntityChanged , "isPropertyCustomized":isPropertyChanged, "isClassCustomized":isClassChanged,"entitySelectQuery":entityInput , "propertySelectQuery":propertyInput , "classSelectQuery":classInput };
+		var endPointParameters={"url":url, 
+								"isEntityCustomized":isEntityChanged, 
+								"isPropertyCustomized":isPropertyChanged, 
+								"isClassCustomized":isClassChanged,
+								"entitySelectQuery":entityInput, 
+								"propertySelectQuery":propertyInput, 
+								"classSelectQuery":classInput 
+								};
 		data["endPointParameters"]=endPointParameters;
 	}
 	data["useLocalDataSource"] = "false";
@@ -127,7 +134,8 @@ var getPropertyQuery = function(){
 
 var getEntityQuery = function(){
 	sendAjax("/getEntityQuery" , "entity_textarea" , entityInput);
-}
+};
+
 var addEventListeners = function(){
 	document.getElementById("entity_save").addEventListener("click", changeEntity);
 	document.getElementById("prop_save").addEventListener("click", changeProperty);

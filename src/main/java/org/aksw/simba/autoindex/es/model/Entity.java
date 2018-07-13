@@ -42,4 +42,12 @@ public class Entity {
 	public void setLabel(String label) {
 		this.label = label;
 	}
+	
+	public String getId(){
+		return this.id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
+	}
 }
