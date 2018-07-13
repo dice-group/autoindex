@@ -139,4 +139,5 @@ Indexing RDF Data:
 
 Search Options:
 
-![Search Options](https://user-images.githubusercontent.com/33149420/42695011-66bb5004-86b4-11e8-93b8-f915535fedc4.gif)
+![Search Options](https://user-images.githubusercontent.com/33149420/42704693-250a23a2-86d1-11e8-8e15-ffb43c590218.gif)
+
