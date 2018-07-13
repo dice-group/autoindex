@@ -48,7 +48,6 @@ function createRequestParameters(url, requestType){
 								"propertySelectQuery":propertyInput, 
 								"classSelectQuery":classInput 
 								};
-		console.log(endPointParameters);
 		data["endPointParameters"]=endPointParameters;
 	}
 	data["useLocalDataSource"] = "false";
