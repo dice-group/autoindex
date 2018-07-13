@@ -3,7 +3,9 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5da35f0710b845ba968aa98863556d7a)](https://www.codacy.com/app/idreestahir/autoindex?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dice-group/autoindex&amp;utm_campaign=Badge_Grade)
 [![BCH compliance](https://bettercodehub.com/edge/badge/dice-group/autoindex?branch=master)](https://bettercodehub.com/)
 
-Autoindex are a set of REST API's that aims to index various types of RDF data and also query it. It is currently a work in progress. A UI is also available for test under http://localhost:9091/
+Autoindex are a set of REST API's that aims to index various types of RDF data and also query it. It is currently a work in progress. A UI is also available for test under http://localhost:9091/.
+
+Please go to the end of this ReadMe file for a simple demo of the UI.
 
 ## Getting Started
 
@@ -134,3 +136,7 @@ sudo docker run dicegroup/autoindex
 Indexing RDF Data:
 
 ![Indexing RDF Data](https://user-images.githubusercontent.com/33149420/42691297-b7cab9b0-86a7-11e8-9c6f-cc62eca3bc18.gif)
+
+Search Options:
+
+![Search Options](https://user-images.githubusercontent.com/33149420/42695011-66bb5004-86b4-11e8-93b8-f915535fedc4.gif)
