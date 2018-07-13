@@ -30,24 +30,6 @@ public class Request{
 		this.limit = 0;
 		this.keys = new Keys();
 	}
-	public Request(String url) {
-		this.default_graph = "";
-		this.userId = "00000000001";
-		this.useLocalDataSource = false;
-		this.requestType = RequestType.URI;
-		this.fileList = new ArrayList<String>();
-		this.limit = 0;
-		this.keys = new Keys();
-	}
-	public Request(String url , String label , String userId){
-		this.default_graph = label;
-		this.userId = userId;
-		this.useLocalDataSource = false;
-		this.requestType = RequestType.URI;
-		this.fileList = new ArrayList<String>();
-		this.limit = 0;
-		this.keys = new Keys();
-	}
 	public Request(List<String> fileList , String userId) {
 		this.fileList = fileList;
 		this.userId = userId;
