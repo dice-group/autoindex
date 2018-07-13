@@ -128,3 +128,9 @@ sudo docker run dicegroup/autoindex
 1. To see created images:`docker image ls`
 2. To see running containers:`docker container ps`
 3. To see all created containers:`docker container ps -a`
+
+### Using the UI of Auto Index
+
+Indexing RDF Data:
+
+![Indexing RDF Data](https://user-images.githubusercontent.com/33149420/42691297-b7cab9b0-86a7-11e8-9c6f-cc62eca3bc18.gif)
