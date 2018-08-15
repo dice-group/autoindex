@@ -115,15 +115,15 @@ Move to the parent directory of project and execute the below commands
 
 Now to build your image, type the below command.
 ```
-sudo docker build -f DockerFile -t {Name of your image} .
+sudo docker build -f Dockerfile -t autoindex_local .
 ```
 To run your image, type the below command.
 ```
-sudo docker run -p {Your port id for example 3030}:8080 -t {Name of your image}
+sudo docker run -d -p 8186:9091 -t autoindex_local --restart always
 ```
 To pull image from the hub,type the below command in terminal.
 ```
-sudo docker run dicegroup/autoindex
+sudo docker run -d -p 8186:9091 dice-group/autoindex --restart always
 ```
 
 #### Some useful terminal commands for docker
