@@ -119,7 +119,7 @@ sudo docker build -f Dockerfile -t autoindex_local .
 ```
 To run your image, type the below command.
 ```
-sudo docker run -d -p 8186:9091 -t autoindex_local --restart always
+sudo docker run -d --restart=always -p 8186:9091 -t autoindex_local
 ```
 To pull image from the hub,type the below command in terminal.
 ```
